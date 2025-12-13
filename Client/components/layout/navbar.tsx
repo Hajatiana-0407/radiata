@@ -22,7 +22,7 @@ export function Navbar() {
   return (
     <>
       <div style={{ backgroundColor: "#7ac243" }}>
-        <div className="max-w-7xl mx-auto px-4 py-3 flex items-center justify-between flex-wrap gap-4">
+        <div className="max-w-7xl mx-auto px-4 py-3 flex items-center justify-end flex-wrap gap-4">
           <div className="flex items-center gap-6 flex-wrap">
             <a
               href="tel:+33123456789"
@@ -50,15 +50,6 @@ export function Navbar() {
               <span>info@radiata.com</span>
             </a>
           </div>
-          <div className="flex items-center gap-4">
-            <Link href="/admin/login" className="text-white hover:text-[#40e0d0] font-medium transition-colors">
-              Connexion
-            </Link>
-            <span className="text-white/30">|</span>
-            <Link href="/admin" className="text-white hover:text-[#40e0d0] font-medium transition-colors">
-              Admin
-            </Link>
-          </div>
         </div>
       </div>
 
@@ -66,56 +57,46 @@ export function Navbar() {
       <nav className="sticky top-0 z-50 border-b-4" style={{ borderColor: "#40e0d0", backgroundColor: "white" }}>
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="flex h-20 items-center justify-between">
-            <Link href="/" className="flex items-center gap-3 font-bold text-xl hover:opacity-80 transition-opacity">
-              <div
-                className="h-12 w-12 rounded-xl bg-gradient-to-br flex items-center justify-center text-white font-bold text-lg shadow-lg"
-                style={{ background: "linear-color" }}
-              >
-                <div
-                  className="h-full w-full rounded-xl flex items-center justify-center font-bold text-lg text-white"
-                  style={{ backgroundColor: "#7ac243" }}
-                >
-                  R
-                </div>
-              </div>
-              <div>
-                <div className="text-slate-900 font-bold">Radiata</div>
-                <div className="text-xs text-[#40e0d0] font-semibold">Explorer</div>
-              </div>
+            <Link href="/" className="flex items-center gap-3 font-bold text-xl hover:opacity-80 transition-opacity h-full">
+              <img src="./logo-no-bg.png" alt="" className="h-32" />
             </Link>
 
-            {/* Desktop Navigation */}
-            <div className="hidden lg:flex items-center gap-1">
-              {navItems.map((item) => (
-                <Link
-                  key={item.href}
-                  href={item.href}
-                  className="px-4 py-2 text-sm font-semibold text-slate-700 hover:text-[#7ac243] hover:bg-slate-100 rounded-lg transition-all"
-                >
-                  {item.label}
+            <div className="flex items-center gap-2">
+              {/* Desktop Navigation */}
+              <div className="hidden lg:flex items-center gap-1">
+                {navItems.map((item) => (
+                  <Link
+                    key={item.href}
+                    href={item.href}
+                    className="px-4 py-2 text-sm font-semibold text-slate-700 hover:text-[#7ac243] hover:bg-slate-100 rounded-lg transition-all"
+                  >
+                    {item.label}
+                  </Link>
+                ))}
+              </div>
+
+              {/* Actions */}
+              <div className="flex items-center gap-4">
+                <Link href="/reservation">
+                  <Button
+                    className="font-semibold shadow-lg hover:shadow-xl transition-shadow cursor-pointer"
+                    style={{ backgroundColor: "#40e0d0", color: "#333" }}
+                  >
+                    Réserver Maintenant
+                  </Button>
                 </Link>
-              ))}
-            </div>
 
-            {/* Actions */}
-            <div className="flex items-center gap-4">
-              <Link href="/reservation">
-                <Button
-                  className="font-semibold shadow-lg hover:shadow-xl transition-shadow"
-                  style={{ backgroundColor: "#40e0d0", color: "#333" }}
+                {/* Mobile Menu Button */}
+                <button
+                  onClick={() => setIsMenuOpen(!isMenuOpen)}
+                  className="lg:hidden p-2 hover:bg-slate-100 rounded-lg transition-colors"
                 >
-                  Réserver Maintenant
-                </Button>
-              </Link>
-
-              {/* Mobile Menu Button */}
-              <button
-                onClick={() => setIsMenuOpen(!isMenuOpen)}
-                className="lg:hidden p-2 hover:bg-slate-100 rounded-lg transition-colors"
-              >
-                <span className="text-2xl text-slate-900">{isMenuOpen ? "✕" : "☰"}</span>
-              </button>
+                  <span className="text-2xl text-slate-900">{isMenuOpen ? "✕" : "☰"}</span>
+                </button>
+              </div>
             </div>
+
+
           </div>
 
           {/* Mobile Navigation */}
