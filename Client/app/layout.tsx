@@ -4,6 +4,12 @@ import { Analytics } from '@vercel/analytics/next'
 import { ReduxProvider } from '@/components/providers';
 import './globals.css'
 import { Icon } from 'lucide-react';
+import { Outfit } from 'next/font/google';
+
+const outfit = Outfit({
+  subsets: ['latin'],
+  weight: ['100', '200', '300', '400', '500', '600', '700', '800', '900'],
+});
 
 const _geist = Geist({ subsets: ["latin"] });
 const _geistMono = Geist_Mono({ subsets: ["latin"] });
@@ -24,7 +30,7 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en">
-      <body className={`font-sans antialiased`}>
+      <body className={outfit.className}>
         <ReduxProvider>
           {children}
         </ReduxProvider>
