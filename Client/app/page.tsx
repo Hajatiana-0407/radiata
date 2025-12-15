@@ -55,7 +55,7 @@ export default function Home() {
             content?.heroDescription ||
             "Découvrez des destinations à couper le souffle tout en soutenant les efforts de conservation"
           }
-          backgroundVideo="/beautiful-nature-video-with-forest-mountains-and-w.jpg"
+          backgroundVideo="/hero_video.mp4"
           backgroundImage="/beautiful-nature-landscape.jpg"
           cta={{ text: "Commencer l'exploration", href: "/destinations" }}
           showSearchBar={true}

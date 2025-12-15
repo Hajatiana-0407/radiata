@@ -37,7 +37,7 @@ export function HeroSection({
   }
 
   return (
-    <section className="relative min-h-screen md:h-auto w-full overflow-hidden">
+    <section className="relative min-h-[80vh] md:h-auto w-full overflow-hidden">
       {backgroundVideo ? (
         <video autoPlay loop muted playsInline className="absolute inset-0 w-full h-full object-cover">
           <source src={backgroundVideo} type="video/mp4" />
