@@ -21,9 +21,9 @@ export function Navbar() {
 
   return (
     <>
-      <div style={{ backgroundColor: "#7ac243" }}>
-        <div className="max-w-7xl mx-auto px-4 py-3 flex items-center justify-end flex-wrap gap-4">
-          <div className="flex items-center gap-6 flex-wrap">
+      <div className="bg-[#7ac243]">
+        <div className="flex items-center justify-end flex-wrap gap-4">
+          <div className="flex items-center gap-6 flex-wrap md:bg-[#40e0d0] px-15 py-2 pr-6 sm:pr-10 md:pr-16 lg:pr-24 xl:pr-32 rounded-l-full">
             <a
               href="tel:+33123456789"
               className="flex items-center gap-2 text-white hover:text-white hover:scale-105 transition-transform font-medium"
