@@ -54,7 +54,7 @@ export function HeroSection({
       ) : null}
 
       <div className="absolute inset-0 bg-black/50"></div>
-      <div className="relative flex h-full flex-col items-center justify-between gap-8 text-center text-white px-4 py-12 md:py-20 min-h-screen md:min-h-[600px]">
+      <div className="relative flex h-full flex-col items-center justify-between gap-8 text-center text-white px-4 py-12 md:py-20 min-h-screen md:min-h-150">
         <div className="max-w-3xl mt-8 animate-fade-in">
           <h1 className="text-5xl md:text-6xl lg:text-7xl font-bold text-balance leading-tight mb-4">{title}</h1>
           <p className="text-lg md:text-xl text-white/90 leading-relaxed">{description}</p>

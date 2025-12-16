@@ -1,3 +1,4 @@
+import clsx from "clsx"
 import type React from "react"
 
 interface Feature {
@@ -33,15 +34,36 @@ export function FeatureSection({ title, subtitle, description, features }: Featu
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-5 gap-4">
           {features.map((feature, idx) => (
             <div
-              key={idx}
-              className="rounded-xl border border-slate-200 bg-white p-6 text-center hover:shadow-xl transition-all duration-300"
+              className={`relative overflow-hidden rounded-3xl bg-white p-6 border border-slate-200
+    ${idx % 2 === 0 ? "lg:-translate-y-6" : "lg:translate-y-6"}
+  `}
             >
-              <div className="flex justify-center mb-4 text-4xl text-[#7ac243]">{feature.icon}</div>
-              <h3 className="font-bold mb-2 text-lg text-slate-900">{feature.title}</h3>
-              <p className="text-slate-600 text-sm leading-relaxed">{feature.description}</p>
+              {/* Bordure intérieure en bas */}
+              <div className={clsx("pointer-events-none absolute inset-0.5 rounded-3xl border-b-10",
+                { "border-[#40e0d0]": idx % 2 === 0 },
+                { "border-[#7ac243]": idx % 2 !== 0 },
+              )}></div>
+
+              <div className="relative z-10">
+                <div className={clsx("flex justify-center mb-4 text-4xl",
+                  { "text-[#40e0d0]": idx % 2 === 0 },
+                  { "text-[#7ac243]": idx % 2 !== 0 },
+                )}>
+                  {feature.icon}
+                </div>
+
+                <h3 className="font-bold mb-2 text-lg text-slate-900">
+                  {feature.title}
+                </h3>
+
+                <p className="text-slate-600 text-sm leading-relaxed">
+                  {feature.description}
+                </p>
+              </div>
             </div>
           ))}
         </div>
+
       </div>
     </section>
   )
