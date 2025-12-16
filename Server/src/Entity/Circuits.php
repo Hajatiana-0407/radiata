@@ -7,6 +7,7 @@ use App\Repository\CircuitsRepository;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\String\Slugger\AsciiSlugger;
 
 #[ApiResource()]
 #[ORM\Entity(repositoryClass: CircuitsRepository::class)]
@@ -66,8 +67,22 @@ class Circuits
     #[ORM\OneToMany(targetEntity: Avis::class, mappedBy: 'circuit')]
     private Collection $avis;
 
-    #[ORM\OneToOne(mappedBy: 'circuit', cascade: ['persist', 'remove'])]
-    private ?CircuitsTraductions $circuitsTraductions = null;
+
+    #[ORM\Column(length: 255)]
+    private ?string $titre = null;
+
+    #[ORM\Column(length: 255)]
+    private ?string $slug = null;
+
+    #[ORM\Column(length: 255)]
+    private ?string $description = null;
+
+    #[ORM\Column(length: 255)]
+    private ?string $meto_titre = null;
+
+    #[ORM\Column(length: 255)]
+    private ?string $meta_description = null;
+
 
     public function __construct()
     {
@@ -76,7 +91,7 @@ class Circuits
         $this->devis = new ArrayCollection();
         $this->reservations = new ArrayCollection();
         $this->avis = new ArrayCollection();
-        $this->date_creation = new \DateTime() ; 
+        $this->date_creation = new \DateTime();
     }
 
     public function getId(): ?int
@@ -156,10 +171,6 @@ class Circuits
         return $this;
     }
 
-    /**
-     * @return Collection<int, CircuitsTraductions>
-     */
- 
     /**
      * @return Collection<int, self>
      */
@@ -301,21 +312,67 @@ class Circuits
         return $this;
     }
 
-    public function getCircuitsTraductions(): ?CircuitsTraductions
+
+
+
+    public function getTitre(): ?string
     {
-        return $this->circuitsTraductions;
+        return $this->titre;
     }
 
-    public function setCircuitsTraductions(CircuitsTraductions $circuitsTraductions): static
+    public function setTitre(string $titre): static
     {
-        // set the owning side of the relation if necessary
-        if ($circuitsTraductions->getCircuit() !== $this) {
-            $circuitsTraductions->setCircuit($this);
-        }
+        $this->titre = $titre;
+        $slugger = new AsciiSlugger();
+        $this->slug = $slugger->slug($this->titre);
+        return $this;
+    }
 
-        $this->circuitsTraductions = $circuitsTraductions;
+    public function getSlug(): ?string
+    {
+        return $this->slug;
+    }
+
+    public function setSlug(string $slug): static
+    {
+        $this->slug = $slug;
 
         return $this;
     }
 
+    public function getDescription(): ?string
+    {
+        return $this->description;
+    }
+
+    public function setDescription(string $description): static
+    {
+        $this->description = $description;
+
+        return $this;
+    }
+
+    public function getMetoTitre(): ?string
+    {
+        return $this->meto_titre;
+    }
+
+    public function setMetoTitre(string $meto_titre): static
+    {
+        $this->meto_titre = $meto_titre;
+
+        return $this;
+    }
+
+    public function getMetaDescription(): ?string
+    {
+        return $this->meta_description;
+    }
+
+    public function setMetaDescription(string $meta_description): static
+    {
+        $this->meta_description = $meta_description;
+
+        return $this;
+    }
 }

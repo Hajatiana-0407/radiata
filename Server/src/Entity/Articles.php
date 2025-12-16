@@ -3,9 +3,8 @@
 namespace App\Entity;
 
 use App\Repository\ArticlesRepository;
-use Doctrine\Common\Collections\ArrayCollection;
-use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
+use Doctrine\DBAL\Types\Types;
 
 #[ORM\Entity(repositoryClass: ArticlesRepository::class)]
 class Articles
@@ -19,6 +18,21 @@ class Articles
     #[ORM\Column(length: 255)]
     private ?string $image_couverture = null;
 
+    #[ORM\Column(length: 255)]
+    private ?string $titre = null;
+
+    #[ORM\Column(length: 255)]
+    private ?string $slug = null;
+
+    #[ORM\Column(type: Types::TEXT)]
+    private ?string $contenu = null;
+
+    #[ORM\Column(length: 255)]
+    private ?string $meto_titre = null;
+
+    #[ORM\Column(length: 255)]
+    private ?string $meta_description = null;
+
     #[ORM\Column]
     private ?\DateTime $date_publication = null;
 
@@ -28,15 +42,9 @@ class Articles
     #[ORM\Column]
     private ?\DateTime $date_creation = null;
 
-    /**
-     * @var Collection<int, ArticlesTraductions>
-     */
-    #[ORM\OneToMany(targetEntity: ArticlesTraductions::class, mappedBy: 'article', orphanRemoval: true)]
-    private Collection $articlesTraductions;
 
     public function __construct()
     {
-        $this->articlesTraductions = new ArrayCollection();
         $this->date_creation = new \DateTime();
     }
 
@@ -53,6 +61,55 @@ class Articles
     public function setImageCouverture(string $image_couverture): static
     {
         $this->image_couverture = $image_couverture;
+
+        return $this;
+    }
+
+
+    public function getTitre(): ?string
+    {
+        return $this->titre;
+    }
+
+    public function setTitre(string $titre): static
+    {
+        $this->titre = $titre;
+
+        return $this;
+    }
+
+    public function getContenu(): ?string
+    {
+        return $this->contenu;
+    }
+
+    public function setContenu(string $contenu): static
+    {
+        $this->contenu = $contenu;
+
+        return $this;
+    }
+
+    public function getMetoTitre(): ?string
+    {
+        return $this->meto_titre;
+    }
+
+    public function setMetoTitre(string $meto_titre): static
+    {
+        $this->meto_titre = $meto_titre;
+
+        return $this;
+    }
+
+    public function getMetaDescription(): ?string
+    {
+        return $this->meta_description;
+    }
+
+    public function setMetaDescription(string $meta_description): static
+    {
+        $this->meta_description = $meta_description;
 
         return $this;
     }
@@ -93,32 +150,14 @@ class Articles
         return $this;
     }
 
-    /**
-     * @return Collection<int, ArticlesTraductions>
-     */
-    public function getArticlesTraductions(): Collection
+    public function getSlug(): ?string
     {
-        return $this->articlesTraductions;
+        return $this->slug;
     }
 
-    public function addArticlesTraduction(ArticlesTraductions $articlesTraduction): static
+    public function setSlug(string $slug): static
     {
-        if (!$this->articlesTraductions->contains($articlesTraduction)) {
-            $this->articlesTraductions->add($articlesTraduction);
-            $articlesTraduction->setArticle($this);
-        }
-
-        return $this;
-    }
-
-    public function removeArticlesTraduction(ArticlesTraductions $articlesTraduction): static
-    {
-        if ($this->articlesTraductions->removeElement($articlesTraduction)) {
-            // set the owning side to null (unless already changed)
-            if ($articlesTraduction->getArticle() === $this) {
-                $articlesTraduction->setArticle(null);
-            }
-        }
+        $this->slug = $slug;
 
         return $this;
     }

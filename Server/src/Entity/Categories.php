@@ -3,8 +3,7 @@
 namespace App\Entity;
 
 use App\Repository\CategoriesRepository;
-use Doctrine\Common\Collections\ArrayCollection;
-use Doctrine\Common\Collections\Collection;
+use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
 
 #[ORM\Entity(repositoryClass: CategoriesRepository::class)]
@@ -14,6 +13,12 @@ class Categories
     #[ORM\GeneratedValue]
     #[ORM\Column]
     private ?int $id = null;
+
+    #[ORM\Column(length: 255)]
+    private ?string $nom = null;
+
+    #[ORM\Column(length: 255)]
+    private ?string $description = null;
 
     #[ORM\Column(length: 255)]
     private ?string $icone = null;
@@ -30,17 +35,39 @@ class Categories
     #[ORM\Column]
     private ?\DateTime $date_creation = null;
 
-    #[ORM\OneToOne(mappedBy: 'categorie', cascade: ['persist', 'remove'])]
-    private ?CategoriesTraductions $categoriesTraductions = null;
-
     public function __construct()
-    { 
+    {
         $this->date_creation = new \DateTime();
     }
 
     public function getId(): ?int
     {
         return $this->id;
+    }
+
+
+    public function getNom(): ?string
+    {
+        return $this->nom;
+    }
+
+    public function setNom(string $nom): static
+    {
+        $this->nom = $nom;
+
+        return $this;
+    }
+
+    public function getDescription(): ?string
+    {
+        return $this->description;
+    }
+
+    public function setDescription(string $description): static
+    {
+        $this->description = $description;
+
+        return $this;
     }
 
     public function getIcone(): ?string
@@ -99,27 +126,6 @@ class Categories
     public function setDateCreation(\DateTime $date_creation): static
     {
         $this->date_creation = $date_creation;
-
-        return $this;
-    }
-
-    /**
-     * @return Collection<int, CategoriesTraductions>
-     */
-
-    public function getCategoriesTraductions(): ?CategoriesTraductions
-    {
-        return $this->categoriesTraductions;
-    }
-
-    public function setCategoriesTraductions(CategoriesTraductions $categoriesTraductions): static
-    {
-        // set the owning side of the relation if necessary
-        if ($categoriesTraductions->getCategorie() !== $this) {
-            $categoriesTraductions->setCategorie($this);
-        }
-
-        $this->categoriesTraductions = $categoriesTraductions;
 
         return $this;
     }

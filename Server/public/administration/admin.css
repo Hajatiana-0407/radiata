@@ -1,0 +1,51 @@
+@import url('https://fonts.googleapis.com/css2?family=Outfit:wght@100..900&display=swap');
+
+/* Light + Dark + Root */
+:root,
+[data-bs-theme="light"],
+[data-bs-theme="dark"] {
+
+    /* === COULEUR PRINCIPALE === */
+    --ea-color-primary: #40e0d0;
+    --ea-color-primary-light: #7ff5ee;
+    --ea-color-primary-dark: #2ab3a7;
+
+    /* === BOOTSTRAP (obligatoire) === */
+    --bs-primary: #40e0d0;
+    --bs-primary-rgb: 64, 224, 208;
+
+    /* === SUCCESS (accent vert) === */
+    --bs-success: #7ac243;
+    --bs-success-rgb: 122, 194, 67;
+}
+
+
+/* Appliquer à tout EasyAdmin */
+body {
+    font-family: 'Outfit', sans-serif;
+}
+
+.logo {
+    padding: 0 !important;
+}
+
+.logo-custom {
+    display: flex !important;
+    justify-content: center;
+    align-items: center;
+
+
+}
+
+.__admin_logo {
+    margin-inline: auto;
+}
+
+.menu-header-contents {
+    font-style: italic;
+}
+
+#main-menu .menu .menu-item {
+    margin-bottom: 5px;
+    padding-block: 4px;
+}

@@ -6,6 +6,7 @@ use App\Repository\ServicesRepository;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
+use Doctrine\DBAL\Types\Types;
 
 #[ORM\Entity(repositoryClass: ServicesRepository::class)]
 class Services
@@ -21,14 +22,14 @@ class Services
     #[ORM\Column]
     private ?bool $actif = null;
 
+    #[ORM\Column(length: 255)]
+    private ?string $nom = null;
+
+    #[ORM\Column(type: Types::TEXT)]
+    private ?string $description = null;
+
     #[ORM\Column]
     private ?int $ordre_affichage = null;
-
-    /**
-     * @var Collection<int, ServicesTraductions>
-     */
-    #[ORM\OneToMany(targetEntity: ServicesTraductions::class, mappedBy: 'service', orphanRemoval: true)]
-    private Collection $servicesTraductions;
 
     /**
      * @var Collection<int, GalerieMedias>
@@ -50,7 +51,6 @@ class Services
 
     public function __construct()
     {
-        $this->servicesTraductions = new ArrayCollection();
         $this->galerieMedias = new ArrayCollection();
         $this->devis = new ArrayCollection();
         $this->reservations = new ArrayCollection();
@@ -59,6 +59,31 @@ class Services
     public function getId(): ?int
     {
         return $this->id;
+    }
+
+
+    public function getNom(): ?string
+    {
+        return $this->nom;
+    }
+
+    public function setNom(string $nom): static
+    {
+        $this->nom = $nom;
+
+        return $this;
+    }
+
+    public function getDescription(): ?string
+    {
+        return $this->description;
+    }
+
+    public function setDescription(string $description): static
+    {
+        $this->description = $description;
+
+        return $this;
     }
 
     public function getIcone(): ?string
@@ -93,36 +118,6 @@ class Services
     public function setOrdreAffichage(int $ordre_affichage): static
     {
         $this->ordre_affichage = $ordre_affichage;
-
-        return $this;
-    }
-
-    /**
-     * @return Collection<int, ServicesTraductions>
-     */
-    public function getServicesTraductions(): Collection
-    {
-        return $this->servicesTraductions;
-    }
-
-    public function addServicesTraduction(ServicesTraductions $servicesTraduction): static
-    {
-        if (!$this->servicesTraductions->contains($servicesTraduction)) {
-            $this->servicesTraductions->add($servicesTraduction);
-            $servicesTraduction->setService($this);
-        }
-
-        return $this;
-    }
-
-    public function removeServicesTraduction(ServicesTraductions $servicesTraduction): static
-    {
-        if ($this->servicesTraductions->removeElement($servicesTraduction)) {
-            // set the owning side to null (unless already changed)
-            if ($servicesTraduction->getService() === $this) {
-                $servicesTraduction->setService(null);
-            }
-        }
 
         return $this;
     }

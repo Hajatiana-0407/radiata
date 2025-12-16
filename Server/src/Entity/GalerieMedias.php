@@ -4,8 +4,7 @@ namespace App\Entity;
 
 use App\Repository\GalerieMediasRepository;
 use DateTime;
-use Doctrine\Common\Collections\ArrayCollection;
-use Doctrine\Common\Collections\Collection;
+use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
 
 #[ORM\Entity(repositoryClass: GalerieMediasRepository::class)]
@@ -15,6 +14,12 @@ class GalerieMedias
     #[ORM\GeneratedValue]
     #[ORM\Column]
     private ?int $id = null;
+
+    #[ORM\Column(length: 255)]
+    private ?string $titre = null;
+
+    #[ORM\Column(type: Types::TEXT)]
+    private ?string $description = null;
 
     #[ORM\Column(length: 255)]
     private ?string $nom_ficher = null;
@@ -39,22 +44,11 @@ class GalerieMedias
     private ?int $ordre_affichage = null;
 
     #[ORM\Column(nullable: true)]
-    private ?\DateTime $date_upload = null;
+    private ?DateTime $date_upload = null;
 
     #[ORM\Column]
     private ?bool $actif = null;
 
-    /**
-     * @var Collection<int, GalerieTraductions>
-     */
-    #[ORM\OneToMany(targetEntity: GalerieTraductions::class, mappedBy: 'galerie', orphanRemoval: true)]
-    private Collection $galerieTraductions;
-
-    public function __construct()
-    {
-        $this->galerieTraductions = new ArrayCollection();
-        $this->date_upload = new DateTime();
-    }
 
     public function getId(): ?int
     {
@@ -100,6 +94,31 @@ class GalerieMedias
     public function getTags(): ?array
     {
         return $this->tags;
+    }
+
+
+    public function getTitre(): ?string
+    {
+        return $this->titre;
+    }
+
+    public function setTitre(string $titre): static
+    {
+        $this->titre = $titre;
+
+        return $this;
+    }
+
+    public function getDescription(): ?string
+    {
+        return $this->description;
+    }
+
+    public function setDescription(string $description): static
+    {
+        $this->description = $description;
+
+        return $this;
     }
 
     public function setTags(?array $tags): static
@@ -165,36 +184,6 @@ class GalerieMedias
     public function setActif(bool $actif): static
     {
         $this->actif = $actif;
-
-        return $this;
-    }
-
-    /**
-     * @return Collection<int, GalerieTraductions>
-     */
-    public function getGalerieTraductions(): Collection
-    {
-        return $this->galerieTraductions;
-    }
-
-    public function addGalerieTraduction(GalerieTraductions $galerieTraduction): static
-    {
-        if (!$this->galerieTraductions->contains($galerieTraduction)) {
-            $this->galerieTraductions->add($galerieTraduction);
-            $galerieTraduction->setGalerie($this);
-        }
-
-        return $this;
-    }
-
-    public function removeGalerieTraduction(GalerieTraductions $galerieTraduction): static
-    {
-        if ($this->galerieTraductions->removeElement($galerieTraduction)) {
-            // set the owning side to null (unless already changed)
-            if ($galerieTraduction->getGalerie() === $this) {
-                $galerieTraduction->setGalerie(null);
-            }
-        }
 
         return $this;
     }
