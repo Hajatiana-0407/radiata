@@ -100,4 +100,9 @@ class Users implements UserInterface, PasswordAuthenticatedUserInterface
     {
         // @deprecated, to be removed when upgrading to Symfony 8
     }
+
+    public function getFullName(): string
+    {
+        return "Administrateur du site";
+    }
 }

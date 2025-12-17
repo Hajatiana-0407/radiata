@@ -16,14 +16,3 @@ easy_admin:
     list:
         max_results: 20
     
-    # Menu simple
-    menu:
-        - { label: 'Réservations', entity: 'App\Entity\Reservations', icon: 'calendar-check' }
-        - { label: 'Clients', entity: 'App\Entity\Clients', icon: 'users' }
-        - { label: 'Circuits', entity: 'App\Entity\Circuits', icon: 'route' }
-        - { label: 'Articles', entity: 'App\Entity\Articles', icon: 'newspaper' }
-        - { label: 'Services', entity: 'App\Entity\Services', icon: 'concierge-bell' }
-        - { label: 'Catégories', entity: 'App\Entity\Categories', icon: 'folder' }
-        - { label: 'Devis', entity: 'App\Entity\Devis', icon: 'file-contract' }
-        - { label: 'Messages', entity: 'App\Entity\MessagesContact', icon: 'envelope' }
-        - { label: 'Médias', entity: 'App\Entity\GalerieMedias', icon: 'images' }

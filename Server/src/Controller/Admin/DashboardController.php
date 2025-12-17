@@ -97,11 +97,13 @@ class DashboardController extends AbstractDashboardController
         yield MenuItem::linkToCrud('Réservation', 'fa fa-calendar-check', Reservations::class);
         yield MenuItem::linkToCrud('Messages', 'fa fa-message', MessagesContact::class);
 
-        return [
-            MenuItem::linkToUrl('Visit public website', null, '/'),
-            MenuItem::linkToUrl('Search in Google', 'fab fa-google', 'https://google.com'),
-            // ...
-        ];
+        yield MenuItem::section('Mon compte');
+
+        // Lien vers votre page de profil
+        yield MenuItem::linkToRoute('Mon Profil', 'fas fa-user-cog', 'admin_my_profile');
+
+        // Déconnexion
+        yield MenuItem::linkToLogout('Déconnexion', 'fas fa-sign-out-alt');
     }
 
     public function configureAssets(): Assets
