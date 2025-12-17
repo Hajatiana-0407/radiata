@@ -7,6 +7,7 @@ use App\Entity\Categories;
 use App\Entity\Circuits;
 use App\Entity\Clients;
 use App\Entity\Devis;
+use App\Entity\GalerieMedias;
 use App\Entity\MessagesContact;
 use App\Entity\Reservations;
 use App\Entity\Services;
@@ -15,6 +16,9 @@ use EasyCorp\Bundle\EasyAdminBundle\Config\Assets;
 use EasyCorp\Bundle\EasyAdminBundle\Config\Dashboard;
 use EasyCorp\Bundle\EasyAdminBundle\Config\MenuItem;
 use EasyCorp\Bundle\EasyAdminBundle\Controller\AbstractDashboardController;
+use EasyCorp\Bundle\EasyAdminBundle\Field\ChoiceField;
+use EasyCorp\Bundle\EasyAdminBundle\Field\ColorField;
+use EasyCorp\Bundle\EasyAdminBundle\Field\TextField;
 use EasyCorp\Bundle\EasyAdminBundle\Router\AdminUrlGenerator;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\RequestStack;
@@ -83,14 +87,15 @@ class DashboardController extends AbstractDashboardController
         yield MenuItem::linkToCrud('Catégories', 'fa fa-tags', Categories::class);
         yield MenuItem::linkToCrud('Circuits', 'fa fa-route', Circuits::class);
 
+        yield MenuItem::section('Contenu');
+        yield MenuItem::linkToCrud('Articles', 'fa fa-newspaper', Articles::class);
+        yield MenuItem::linkToCrud('Galerie', 'fa fa-image', GalerieMedias::class);
+
         yield MenuItem::section('Clients');
         yield MenuItem::linkToCrud('Liste des clients', 'fa fa-list', Clients::class);
         yield MenuItem::linkToCrud('Devis', 'fa fa-file-invoice', Devis::class);
         yield MenuItem::linkToCrud('Réservation', 'fa fa-calendar-check', Reservations::class);
         yield MenuItem::linkToCrud('Messages', 'fa fa-message', MessagesContact::class);
-
-        yield MenuItem::section('Contenu');
-        yield MenuItem::linkToCrud('Articles', 'fa fa-newspaper', Articles::class);
 
         return [
             MenuItem::linkToUrl('Visit public website', null, '/'),
@@ -103,4 +108,5 @@ class DashboardController extends AbstractDashboardController
     {
         return Assets::new()->addCssFile('administration/admin.css');
     }
+
 }

@@ -18,6 +18,24 @@ class Circuits
     #[ORM\Column]
     private ?int $id = null;
 
+    #[ORM\Column(length: 255)]
+    private ?string $titre = null;
+
+    #[ORM\Column(length: 255)]
+    private ?string $image = '';
+
+    #[ORM\Column(length: 255)]
+    private ?string $slug = null;
+
+    #[ORM\Column(length: 255)]
+    private ?string $description = null;
+
+    #[ORM\Column(length: 255, nullable: true)]
+    private ?string $meto_titre = '';
+
+    #[ORM\Column(length: 255, nullable: true)]
+    private ?string $meta_description = '';
+
     #[ORM\Column]
     private ?float $duree_jours = null;
 
@@ -25,13 +43,13 @@ class Circuits
     private ?float $prix_base = null;
 
     #[ORM\Column]
-    private ?int $difficulte = null;
+    private ?int $difficulte = 1;
 
     #[ORM\Column]
-    private ?float $score_ecotourisme = null;
+    private ?float $score_ecotourisme = 1;
 
     #[ORM\Column]
-    private ?bool $actif = null;
+    private ?bool $actif = true;
 
     #[ORM\Column]
     private ?\DateTime $date_creation = null;
@@ -67,21 +85,11 @@ class Circuits
     #[ORM\OneToMany(targetEntity: Avis::class, mappedBy: 'circuit')]
     private Collection $avis;
 
-
-    #[ORM\Column(length: 255)]
-    private ?string $titre = null;
-
-    #[ORM\Column(length: 255)]
-    private ?string $slug = null;
-
-    #[ORM\Column(length: 255)]
-    private ?string $description = null;
-
-    #[ORM\Column(length: 255)]
-    private ?string $meto_titre = null;
-
-    #[ORM\Column(length: 255)]
-    private ?string $meta_description = null;
+    /**
+     * @var Collection<int, Categories>
+     */
+    #[ORM\ManyToMany(targetEntity: Categories::class, inversedBy: 'circuits')]
+    private Collection $categories;
 
 
     public function __construct()
@@ -92,6 +100,7 @@ class Circuits
         $this->reservations = new ArrayCollection();
         $this->avis = new ArrayCollection();
         $this->date_creation = new \DateTime();
+        $this->categories = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -311,10 +320,6 @@ class Circuits
 
         return $this;
     }
-
-
-
-
     public function getTitre(): ?string
     {
         return $this->titre;
@@ -374,5 +379,46 @@ class Circuits
         $this->meta_description = $meta_description;
 
         return $this;
+    }
+
+    public function getImage(): ?string
+    {
+        return $this->image;
+    }
+
+    public function setImage(string $image): static
+    {
+        $this->image = $image;
+
+        return $this;
+    }
+
+    /**
+     * @return Collection<int, Categories>
+     */
+    public function getCategories(): Collection
+    {
+        return $this->categories;
+    }
+
+    public function addCategory(Categories $category): static
+    {
+        if (!$this->categories->contains($category)) {
+            $this->categories->add($category);
+        }
+
+        return $this;
+    }
+
+    public function removeCategory(Categories $category): static
+    {
+        $this->categories->removeElement($category);
+
+        return $this;
+    }
+
+    public function __tostring(): string
+    {
+        return $this->titre;
     }
 }

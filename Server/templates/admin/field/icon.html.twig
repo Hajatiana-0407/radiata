@@ -1,0 +1,10 @@
+{# templates/admin/field/icon.html.twig #}
+{% if field.value %}
+    {% if field.value starts with 'fas ' or field.value starts with 'fab ' or field.value starts with 'far ' %}
+        <i class="{{ field.value }} fa-lg"></i>
+    {% else %}
+        <span style="font-size: 1.5em;">{{ field.value }}</span>
+    {% endif %}
+{% else %}
+    <span class="badge badge-secondary">Aucune icône</span>
+{% endif %}

@@ -1,15 +1,17 @@
 export interface Destination {
   id: string;
-  name: string;
+  titre: string;
   description: string;
   image: string;
-  price: number;
-  difficulty: 'easy' | 'moderate' | 'hard';
-  duration: number;
+  prix_base: number;
+  difficulte: 'easy' | 'moderate' | 'hard';
+  duree_jours: number;
   location: string;
   highlights: string[];
-  createdAt: string;
+  date_creation: string;
   updatedAt: string;
+  score_ecotourisme?: number ; 
+  actif?: boolean ;
 }
 
 export interface Reservation {

@@ -1,0 +1,9 @@
+{# templates/admin/field/color.html.twig #}
+{% if field.value %}
+    <div style="display: flex; align-items: center; gap: 8px;">
+        <div style="width: 20px; height: 20px; background-color: {{ field.value }}; border-radius: 3px; border: 1px solid #ddd;"></div>
+        <span>{{ field.value }}</span>
+    </div>
+{% else %}
+    <span class="text-muted">Non définie</span>
+{% endif %}

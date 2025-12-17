@@ -27,17 +27,17 @@ class Articles
     #[ORM\Column(type: Types::TEXT)]
     private ?string $contenu = null;
 
-    #[ORM\Column(length: 255)]
-    private ?string $meto_titre = null;
+    #[ORM\Column(length: 255 , nullable: true )]
+    private ?string $meto_titre = '';
 
-    #[ORM\Column(length: 255)]
-    private ?string $meta_description = null;
+    #[ORM\Column(length: 255 , nullable: true )]
+    private ?string $meta_description = '';
 
     #[ORM\Column]
     private ?\DateTime $date_publication = null;
 
     #[ORM\Column]
-    private ?bool $actif = null;
+    private ?bool $actif = true ;
 
     #[ORM\Column]
     private ?\DateTime $date_creation = null;

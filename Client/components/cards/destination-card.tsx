@@ -25,7 +25,7 @@ export function DestinationCard({ destination, link = true }: DestinationCardPro
             className="px-4 py-1 rounded-full text-sm font-bold text-white shadow-lg"
             style={{ backgroundColor: "#7ac243" }}
           >
-            {destination.difficulty}
+            {destination.difficulte}
           </div>
         </div>
 
@@ -38,7 +38,7 @@ export function DestinationCard({ destination, link = true }: DestinationCardPro
 
       <div className="p-6 space-y-4">
         <h3 className="font-bold text-xl group-hover:translate-x-1 transition-transform" style={{ color: "#7ac243" }}>
-          {destination.name}
+          {destination.titre}
         </h3>
         <p className="text-sm text-slate-600 line-clamp-2 leading-relaxed">{destination.description}</p>
 
@@ -59,7 +59,7 @@ export function DestinationCard({ destination, link = true }: DestinationCardPro
             >
               <Clock className="h-3 w-3 text-white" />
             </div>
-            <span className="font-semibold text-slate-800">{destination.duration}h</span>
+            <span className="font-semibold text-slate-800">{destination.duree_jours}h</span>
           </div>
         </div>
 
@@ -67,7 +67,7 @@ export function DestinationCard({ destination, link = true }: DestinationCardPro
           <div>
             <p className="text-xs text-slate-500 font-bold">À PARTIR DE</p>
             <p className="text-2xl font-bold" style={{ color: "#7ac243" }}>
-              {destination.price}€
+              {destination.prix_base}€
             </p>
           </div>
           <button

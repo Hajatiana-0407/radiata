@@ -19,9 +19,6 @@ class Services
     #[ORM\Column(length: 255)]
     private ?string $icone = null;
 
-    #[ORM\Column]
-    private ?bool $actif = null;
-
     #[ORM\Column(length: 255)]
     private ?string $nom = null;
 
@@ -30,6 +27,9 @@ class Services
 
     #[ORM\Column]
     private ?int $ordre_affichage = null;
+
+    #[ORM\Column]
+    private ?bool $actif = true;
 
     /**
      * @var Collection<int, GalerieMedias>
@@ -204,5 +204,10 @@ class Services
         }
 
         return $this;
+    }
+
+    public function __tostring(): string
+    {
+        return $this->nom;
     }
 }

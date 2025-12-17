@@ -110,7 +110,7 @@ export default function AdminReservationsPage() {
 
                 <div>
                   <p className="text-sm mb-2">
-                    <strong>Destination:</strong> {reservation.destination?.name || 'N/A'}
+                    <strong>Destination:</strong> {reservation.destination?.titre || 'N/A'}
                   </p>
                   <p className="text-sm mb-2">
                     <strong>Dates:</strong> {new Date(reservation.startDate).toLocaleDateString()} -{' '}

@@ -3,6 +3,8 @@
 namespace App\Entity;
 
 use App\Repository\CategoriesRepository;
+use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
 use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
 
@@ -15,13 +17,13 @@ class Categories
     private ?int $id = null;
 
     #[ORM\Column(length: 255)]
+    private ?string $icone = null;
+
+    #[ORM\Column(length: 255)]
     private ?string $nom = null;
 
     #[ORM\Column(length: 255)]
     private ?string $description = null;
-
-    #[ORM\Column(length: 255)]
-    private ?string $icone = null;
 
     #[ORM\Column(length: 255)]
     private ?string $couleur = null;
@@ -30,14 +32,22 @@ class Categories
     private ?int $ordre_affichage = null;
 
     #[ORM\Column]
-    private ?bool $actif = null;
+    private ?\DateTime $date_creation = null;
 
     #[ORM\Column]
-    private ?\DateTime $date_creation = null;
+    private ?bool $actif = true;
+
+    /**
+     * @var Collection<int, Circuits>
+     */
+    #[ORM\ManyToMany(targetEntity: Circuits::class, mappedBy: 'categories')]
+    private Collection $circuits;
+
 
     public function __construct()
     {
         $this->date_creation = new \DateTime();
+        $this->circuits = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -128,5 +138,37 @@ class Categories
         $this->date_creation = $date_creation;
 
         return $this;
+    }
+
+    /**
+     * @return Collection<int, Circuits>
+     */
+    public function getCircuits(): Collection
+    {
+        return $this->circuits;
+    }
+
+    public function addCircuit(Circuits $circuit): static
+    {
+        if (!$this->circuits->contains($circuit)) {
+            $this->circuits->add($circuit);
+            $circuit->addCategory($this);
+        }
+
+        return $this;
+    }
+
+    public function removeCircuit(Circuits $circuit): static
+    {
+        if ($this->circuits->removeElement($circuit)) {
+            $circuit->removeCategory($this);
+        }
+
+        return $this;
+    }
+
+    public function __toString(): string
+    {
+        return $this->getNom(); 
     }
 }

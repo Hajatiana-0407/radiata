@@ -31,12 +31,12 @@ export function DestinationForm({
   error,
 }: DestinationFormProps) {
   const [formData, setFormData] = useState({
-    name: destination?.name || '',
+    name: destination?.titre || '',
     description: destination?.description || '',
     image: destination?.image || '',
-    price: destination?.price.toString() || '',
-    difficulty: destination?.difficulty || 'moderate',
-    duration: destination?.duration.toString() || '',
+    price: destination?.prix_base.toString() || '',
+    difficulty: destination?.difficulte || 'moderate',
+    duration: destination?.duree_jours.toString() || '',
     location: destination?.location || '',
     highlights: destination?.highlights.join('\n') || '',
   });

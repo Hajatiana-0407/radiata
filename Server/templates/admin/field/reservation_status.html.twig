@@ -1,0 +1,12 @@
+{# templates/admin/field/reservation_status.html.twig #}
+{% if field.value %}
+    <span class="badge bg-success">
+        <i class="fas fa-check-circle me-1"></i>
+        Confirmée
+    </span>
+{% else %}
+    <span class="badge bg-warning">
+        <i class="fas fa-clock me-1"></i>
+        En attente
+    </span>
+{% endif %}
