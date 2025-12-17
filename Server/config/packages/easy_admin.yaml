@@ -1,0 +1,29 @@
+# config/packages/easy_admin.yaml
+easy_admin:
+    site_name: 'Administration'
+    favicon_path: 'favicon.ico'
+    
+    design:
+        brand_color: '#1976D2'
+        form_theme:
+            - '@EasyAdmin/crud/form_theme.html.twig'
+    
+    # Désactiver le login par défaut
+    security:
+        enable_login: false
+    
+    # Configuration de base
+    list:
+        max_results: 20
+    
+    # Menu simple
+    menu:
+        - { label: 'Réservations', entity: 'App\Entity\Reservations', icon: 'calendar-check' }
+        - { label: 'Clients', entity: 'App\Entity\Clients', icon: 'users' }
+        - { label: 'Circuits', entity: 'App\Entity\Circuits', icon: 'route' }
+        - { label: 'Articles', entity: 'App\Entity\Articles', icon: 'newspaper' }
+        - { label: 'Services', entity: 'App\Entity\Services', icon: 'concierge-bell' }
+        - { label: 'Catégories', entity: 'App\Entity\Categories', icon: 'folder' }
+        - { label: 'Devis', entity: 'App\Entity\Devis', icon: 'file-contract' }
+        - { label: 'Messages', entity: 'App\Entity\MessagesContact', icon: 'envelope' }
+        - { label: 'Médias', entity: 'App\Entity\GalerieMedias', icon: 'images' }
