@@ -45,8 +45,3 @@ body {
 .menu-header-contents {
     font-style: italic;
 }
-
-#main-menu .menu .menu-item {
-    margin-bottom: 5px;
-    padding-block: 4px;
-}
