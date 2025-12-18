@@ -70,7 +70,7 @@ class AppFixtures extends Fixture
 
         // --- Circuits ---
         $circuits = [];
-        for ($i = 0; $i < 4; $i++) {
+        for ($i = 0; $i < 15; $i++) {
             $circuit = new Circuits();
             $circuit->setTitre($faker->sentence(3))
                 ->setLocalisation($faker->city)

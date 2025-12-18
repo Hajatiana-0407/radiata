@@ -62,8 +62,57 @@ final class CircuitsController extends AbstractController
             'message' => 'Liste des circuits récupérée avec succès',
             'data' => $circuitsArray,
             'pagination' => [
-                'currentPage' => $page,
-                'totalItems' => $paginator['total'],
+                'page' => $page,
+                'total' => $paginator['total'],
+                'totalPages' => $paginator['totalPages'],
+            ],
+        ];
+
+        return $this->json($response);
+    }
+
+
+    #[Route('/popular', name: 'app_circuits_popular', methods: ['GET'])]
+    public function popular(
+        Request $request,
+        CircuitsRepository $circuitsRepository,
+    ): Response {
+        // Récupération des paramètres de requête
+        $page = $request->query->getInt('page', 1);
+
+        // Récupération des données paginées
+        $paginator = $circuitsRepository->findPopularCircuitsPaginated(
+            $page,
+            10
+        );
+
+        // Construction de la réponse
+        $circuitsArray = [];
+        foreach ($paginator['data'] as $circuit) {
+            $circuitsArray[] = [
+                'id' => $circuit->getId(),
+                'title' => $circuit->getTitre(),
+                'description' => $circuit->getDescription(),
+                'image' => $circuit->getImage(),
+                'price' => $circuit->getPrixBase(),
+                'difficulty' => $circuit->getDifficulte(),
+                'duration' => $circuit->getDureeJours(),
+                'slug' => $circuit->getSlug(),
+                'ecotourism_score' => $circuit->getScoreEcotourisme(),
+                'createdAt' => $circuit->getDateCreation()?->format('Y-m-d H:i:s'),
+                'active' => $circuit->isActif(),
+                'location' => $circuit->getLocalisation(),
+                'isPopular' => $circuit->isPopulare(),
+            ];
+        }
+
+        $response = [
+            'success' => true,
+            'message' => 'Liste des circuits récupérée avec succès',
+            'data' => $circuitsArray,
+            'pagination' => [
+                'page' => $page,
+                'total' => $paginator['total'],
                 'totalPages' => $paginator['totalPages'],
             ],
         ];

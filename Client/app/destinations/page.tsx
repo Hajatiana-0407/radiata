@@ -45,8 +45,6 @@ export default function DestinationsPage() {
     dispatch(setPage(1) as any)
   }
 
-
-  console.log('items : ' , items );
   
   return (
     <>

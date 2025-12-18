@@ -51,6 +51,33 @@ class CircuitsRepository extends ServiceEntityRepository
                 ->setParameter('maxPrice', $maxPrice);
         }
 
+        $qb->andWhere('c.actif = true ');
+
+        $qb->orderBy('c.id', 'DESC');
+
+        // Pagination
+        $qb->setFirstResult(($page - 1) * $limit)
+            ->setMaxResults($limit);
+
+        $paginator = new Paginator($qb->getQuery());
+
+        return [
+            'data' => iterator_to_array($paginator),
+            'total' => count($paginator),
+            'page' => $page,
+            'limit' => $limit,
+            'totalPages' => (int) ceil(count($paginator) / $limit),
+        ];
+    }
+    public function findPopularCircuitsPaginated(
+        int $page = 1,
+        ?int $limit = 10
+    ): array {
+        $qb = $this->createQueryBuilder('c');
+
+        $qb->andWhere('c.is_populare = true ');
+        $qb->andWhere('c.actif = true ');
+
         $qb->orderBy('c.id', 'DESC');
 
         // Pagination

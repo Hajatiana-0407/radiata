@@ -2,6 +2,11 @@ export interface ApiReturnType {
   success: boolean;
   message: string;
   data: any;
+  pagination?: {
+    page: number,
+    totalPages: number,
+    total: number
+  }
 }
 export const ApiReturnTypeInitialValue: ApiReturnType = {
   success: false,

@@ -3,7 +3,7 @@
 import { useEffect } from "react"
 import { useAppDispatch } from "@/hooks/use-app-dispatch"
 import { useAppSelector } from "@/hooks/use-app-selector"
-import { fetchHomeContent, fetchPopularDestinations } from "@/store/slices/homeSlice"
+import {  fetchPopularDestinations } from "@/store/slices/homeSlice"
 import { Navbar } from "@/components/layout/navbar"
 import { Footer } from "@/components/layout/footer"
 import { HeroSection } from "@/components/sections/hero-section"
@@ -18,7 +18,6 @@ export default function Home() {
   const { content, popularDestinations, loading, error } = useAppSelector((state) => state.home)
 
   useEffect(() => {
-    dispatch(fetchHomeContent() as any)
     dispatch(fetchPopularDestinations() as any)
   }, [dispatch])
 
@@ -93,7 +92,7 @@ export default function Home() {
               </p>
             </div>
 
-            {loading ? (
+            {loading && popularDestinations.length == 0  ? (
               <div className="py-12">
                 <Loader />
               </div>

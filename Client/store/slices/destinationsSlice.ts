@@ -46,7 +46,7 @@ export const fetchDestinations = createAsyncThunk(
       const response = await apiClient.get(`/circuits?${params}`);
       const result: ApiReturnType = response.data;
       if (result.success) {
-        return result.data;
+        return result;
       } else {
         return rejectWithValue(result.message || 'Failed to fetch destinations');
       }
@@ -74,11 +74,11 @@ const destinationsSlice = createSlice({
         state.loading = true;
         state.error = null;
       })
-      .addCase(fetchDestinations.fulfilled, (state, action) => {
+      .addCase(fetchDestinations.fulfilled, (state, action: { payload: ApiReturnType }) => {
         state.loading = false;
-        state.items = action.payload;
-        state.page = 1 ;
-        state.totalPages = action.payload.totalPages;
+        state.items = action.payload.data;
+        state.page = action.payload.pagination?.page || 1;
+        state.totalPages = action.payload.pagination?.totalPages || 1;
       })
       .addCase(fetchDestinations.rejected, (state, action) => {
         state.loading = false;

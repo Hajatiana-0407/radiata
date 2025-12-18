@@ -13,7 +13,6 @@ use EasyCorp\Bundle\EasyAdminBundle\Field\{
     TextareaField,
     ImageField,
     NumberField,
-    IntegerField,
     BooleanField,
     DateTimeField,
     AssociationField,
@@ -37,7 +36,7 @@ class CircuitsCrudController extends AbstractCrudController
             ->setEntityLabelInPlural('Circuits')
             ->setDefaultSort(['date_creation' => 'DESC'])
             ->setSearchFields(['titre', 'description', 'slug'])
-            ->setPaginatorPageSize(20)
+            ->setPaginatorPageSize(10)
             ->showEntityActionsInlined()
             ->setHelp('index', 'Gérez vos circuits touristiques');
     }
