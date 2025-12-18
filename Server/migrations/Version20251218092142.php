@@ -10,7 +10,7 @@ use Doctrine\Migrations\AbstractMigration;
 /**
  * Auto-generated Migration: Please modify to your needs!
  */
-final class Version20251217073915 extends AbstractMigration
+final class Version20251218092142 extends AbstractMigration
 {
     public function getDescription(): string
     {
@@ -20,10 +20,10 @@ final class Version20251217073915 extends AbstractMigration
     public function up(Schema $schema): void
     {
         // this up() migration is auto-generated, please modify it to your needs
-        $this->addSql('CREATE TABLE articles (id INT AUTO_INCREMENT NOT NULL, image_couverture VARCHAR(255) NOT NULL, titre VARCHAR(255) NOT NULL, slug VARCHAR(255) NOT NULL, contenu LONGTEXT NOT NULL, meto_titre VARCHAR(255) NOT NULL, meta_description VARCHAR(255) NOT NULL, date_publication DATETIME NOT NULL, actif TINYINT(1) NOT NULL, date_creation DATETIME NOT NULL, PRIMARY KEY(id)) DEFAULT CHARACTER SET utf8mb4');
+        $this->addSql('CREATE TABLE articles (id INT AUTO_INCREMENT NOT NULL, image_couverture VARCHAR(255) NOT NULL, titre VARCHAR(255) NOT NULL, slug VARCHAR(255) NOT NULL, contenu LONGTEXT NOT NULL, meto_titre VARCHAR(255) DEFAULT NULL, meta_description VARCHAR(255) DEFAULT NULL, date_publication DATETIME NOT NULL, actif TINYINT(1) NOT NULL, date_creation DATETIME NOT NULL, PRIMARY KEY(id)) DEFAULT CHARACTER SET utf8mb4');
         $this->addSql('CREATE TABLE avis (id INT AUTO_INCREMENT NOT NULL, note INT NOT NULL, commentaire LONGTEXT NOT NULL, date_publication DATETIME NOT NULL, statut VARCHAR(255) NOT NULL, client_id INT DEFAULT NULL, circuit_id INT DEFAULT NULL, UNIQUE INDEX UNIQ_8F91ABF019EB6921 (client_id), INDEX IDX_8F91ABF0CF2182C8 (circuit_id), PRIMARY KEY(id)) DEFAULT CHARACTER SET utf8mb4');
         $this->addSql('CREATE TABLE categories (id INT AUTO_INCREMENT NOT NULL, icone VARCHAR(255) NOT NULL, nom VARCHAR(255) NOT NULL, description VARCHAR(255) NOT NULL, couleur VARCHAR(255) NOT NULL, ordre_affichage INT NOT NULL, date_creation DATETIME NOT NULL, actif TINYINT(1) NOT NULL, PRIMARY KEY(id)) DEFAULT CHARACTER SET utf8mb4');
-        $this->addSql('CREATE TABLE circuits (id INT AUTO_INCREMENT NOT NULL, titre VARCHAR(255) NOT NULL, image VARCHAR(255) NOT NULL, slug VARCHAR(255) NOT NULL, description VARCHAR(255) NOT NULL, meto_titre VARCHAR(255) DEFAULT NULL, meta_description VARCHAR(255) DEFAULT NULL, duree_jours DOUBLE PRECISION NOT NULL, prix_base DOUBLE PRECISION NOT NULL, difficulte INT NOT NULL, score_ecotourisme DOUBLE PRECISION NOT NULL, actif TINYINT(1) NOT NULL, date_creation DATETIME NOT NULL, PRIMARY KEY(id)) DEFAULT CHARACTER SET utf8mb4');
+        $this->addSql('CREATE TABLE circuits (id INT AUTO_INCREMENT NOT NULL, titre VARCHAR(255) NOT NULL, image VARCHAR(255) NOT NULL, slug VARCHAR(255) NOT NULL, description VARCHAR(255) NOT NULL, meto_titre VARCHAR(255) DEFAULT NULL, meta_description VARCHAR(255) DEFAULT NULL, duree_jours DOUBLE PRECISION NOT NULL, prix_base DOUBLE PRECISION NOT NULL, difficulte INT NOT NULL, score_ecotourisme DOUBLE PRECISION NOT NULL, actif TINYINT(1) NOT NULL, date_creation DATETIME NOT NULL, localisation VARCHAR(255) NOT NULL, is_populare TINYINT(1) NOT NULL, PRIMARY KEY(id)) DEFAULT CHARACTER SET utf8mb4');
         $this->addSql('CREATE TABLE circuits_circuits (circuits_source INT NOT NULL, circuits_target INT NOT NULL, INDEX IDX_FE0884AE35BDB90C (circuits_source), INDEX IDX_FE0884AE2C58E983 (circuits_target), PRIMARY KEY(circuits_source, circuits_target)) DEFAULT CHARACTER SET utf8mb4');
         $this->addSql('CREATE TABLE circuits_categories (circuits_id INT NOT NULL, categories_id INT NOT NULL, INDEX IDX_A1ED34227201D625 (circuits_id), INDEX IDX_A1ED3422A21214B7 (categories_id), PRIMARY KEY(circuits_id, categories_id)) DEFAULT CHARACTER SET utf8mb4');
         $this->addSql('CREATE TABLE clients (id INT AUTO_INCREMENT NOT NULL, nom VARCHAR(255) NOT NULL, prenom VARCHAR(255) NOT NULL, email VARCHAR(255) NOT NULL, mot_de_passe VARCHAR(255) NOT NULL, telephone INT NOT NULL, adresse VARCHAR(255) NOT NULL, ville VARCHAR(255) NOT NULL, pays VARCHAR(255) NOT NULL, date_creation DATETIME NOT NULL, actif TINYINT(1) DEFAULT NULL, PRIMARY KEY(id)) DEFAULT CHARACTER SET utf8mb4');

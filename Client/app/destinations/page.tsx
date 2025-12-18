@@ -10,6 +10,7 @@ import { DestinationSearchForm } from "@/components/forms/destination-search-for
 import { SkeletonCard } from "@/components/ui/skeleton"
 import { Button } from "@/components/ui/button"
 import { ChevronLeft, ChevronRight } from "lucide-react"
+import HeadingSection from "@/components/sections/heading-section"
 
 export default function DestinationsPage() {
   const dispatch = useAppDispatch()
@@ -44,23 +45,20 @@ export default function DestinationsPage() {
     dispatch(setPage(1) as any)
   }
 
+
+  console.log('items : ' , items );
+  
   return (
     <>
       <Navbar />
       <main className="min-h-screen bg-gradient-to-b from-slate-50 to-white">
-        <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 py-12">
-          <div className="mb-12">
-            <h1 className="text-5xl font-bold mb-3" style={{ color: "#7ac243" }}>
-              Nos Destinations
-            </h1>
-            <p className="text-lg text-slate-600">
-              Découvrez nos circuits inoubliables et préparez votre prochaine aventure
-            </p>
-          </div>
 
+        <HeadingSection title="Nos Destinations" description="Découvrez nos circuits inoubliables et préparez votre prochaine aventure">
           <DestinationSearchForm onSearch={handleSearch} onReset={handleReset} compact={true} />
+        </HeadingSection>
 
-          {loading ? (
+        <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 py-12">
+          {loading && items?.length === 0 ? (
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 mt-12">
               {[...Array(6)].map((_, i) => (
                 <SkeletonCard key={i} />
@@ -68,7 +66,7 @@ export default function DestinationsPage() {
             </div>
           ) : error ? (
             <p className="text-center text-destructive py-12">{error}</p>
-          ) : items.length === 0 ? (
+          ) : items?.length === 0 ? (
             <div className="text-center py-12">
               <p className="text-muted-foreground mb-4">Aucune destination trouvée selon vos critères</p>
               <Button onClick={handleReset}>Effacer les filtres</Button>
@@ -76,7 +74,7 @@ export default function DestinationsPage() {
           ) : (
             <>
               <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 mb-8 mt-8">
-                {items.map((destination) => (
+                {items?.map((destination) => (
                   <DestinationCard key={destination.id} destination={destination} />
                 ))}
               </div>

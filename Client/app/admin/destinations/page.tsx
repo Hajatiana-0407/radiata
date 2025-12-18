@@ -81,19 +81,19 @@ export default function AdminDestinationsPage() {
                 {items.map((destination) => (
                   <tr key={destination.id} className="hover:bg-muted">
                     <td className="px-6 py-4 text-sm font-medium">
-                      {destination.titre}
+                      {destination.title}
                     </td>
                     <td className="px-6 py-4 text-sm text-muted-foreground">
                       {destination.location}
                     </td>
                     <td className="px-6 py-4 text-sm">
                       <Badge
-                        label={destination.difficulte}
+                        label={destination.difficulty}
                         variant="primary"
                       />
                     </td>
                     <td className="px-6 py-4 text-sm font-medium">
-                      ${destination.prix_base}
+                      ${destination.price}
                     </td>
                     <td className="px-6 py-4 text-sm">
                       <div className="flex items-center gap-2">

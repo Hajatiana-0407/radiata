@@ -1,17 +1,30 @@
+export interface ApiReturnType {
+  success: boolean;
+  message: string;
+  data: any;
+}
+export const ApiReturnTypeInitialValue: ApiReturnType = {
+  success: false,
+  message: '',
+  data: null,
+};
+
 export interface Destination {
   id: string;
-  titre: string;
+  slug: string
+  title: string;
   description: string;
   image: string;
-  prix_base: number;
-  difficulte: 'easy' | 'moderate' | 'hard';
-  duree_jours: number;
+  price: number;
+  difficulty: number;
+  duration: number;
   location: string;
   highlights: string[];
-  date_creation: string;
+  createdAt: string;
   updatedAt: string;
-  score_ecotourisme?: number ; 
-  actif?: boolean ;
+  ecotourism_score?: number;
+  active?: boolean;
+  isPopular?: boolean
 }
 
 export interface Reservation {

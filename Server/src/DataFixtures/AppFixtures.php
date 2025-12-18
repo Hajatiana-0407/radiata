@@ -73,6 +73,8 @@ class AppFixtures extends Fixture
         for ($i = 0; $i < 4; $i++) {
             $circuit = new Circuits();
             $circuit->setTitre($faker->sentence(3))
+                ->setLocalisation($faker->city)
+                ->setIsPopulare($faker->boolean(50))
                 ->setDescription($faker->paragraph)
                 ->setMetoTitre($faker->sentence(2))
                 ->setMetaDescription($faker->sentence(6))
@@ -83,6 +85,8 @@ class AppFixtures extends Fixture
                 ->setActif($faker->boolean(90))
                 ->setDateCreation($faker->dateTimeBetween('-2 years', 'now'))
                 ->setImage($faker->imageUrl(640, 480, 'nature'));
+            
+
             $manager->persist($circuit);
             $circuits[] = $circuit;
         }

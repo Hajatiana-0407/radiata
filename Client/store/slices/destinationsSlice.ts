@@ -1,6 +1,6 @@
 import { createSlice, createAsyncThunk } from '@reduxjs/toolkit';
 import apiClient from '@/lib/api/client';
-import { Destination } from '@/lib/types';
+import { ApiReturnType, Destination } from '@/lib/types';
 
 interface DestinationsState {
   items: Destination[];
@@ -12,6 +12,7 @@ interface DestinationsState {
     search: string;
     difficulty: string | null;
     maxPrice: number | null;
+    minPrice: number | null;
   };
 }
 
@@ -25,6 +26,7 @@ const initialState: DestinationsState = {
     search: '',
     difficulty: null,
     maxPrice: null,
+    minPrice: null,
   },
 };
 
@@ -41,8 +43,13 @@ export const fetchDestinations = createAsyncThunk(
       if (difficulty) params.append('difficulty', difficulty);
       if (maxPrice) params.append('maxPrice', maxPrice);
 
-      const response = await apiClient.get(`/destinations?${params}`);
-      return response.data;
+      const response = await apiClient.get(`/circuits?${params}`);
+      const result: ApiReturnType = response.data;
+      if (result.success) {
+        return result.data;
+      } else {
+        return rejectWithValue(result.message || 'Failed to fetch destinations');
+      }
     } catch (error: any) {
       return rejectWithValue(error.response?.data?.message || 'Failed to fetch destinations');
     }
@@ -69,8 +76,8 @@ const destinationsSlice = createSlice({
       })
       .addCase(fetchDestinations.fulfilled, (state, action) => {
         state.loading = false;
-        state.items = action.payload.data;
-        state.page = action.payload.page;
+        state.items = action.payload;
+        state.page = 1 ;
         state.totalPages = action.payload.totalPages;
       })
       .addCase(fetchDestinations.rejected, (state, action) => {

@@ -91,6 +91,12 @@ class Circuits
     #[ORM\ManyToMany(targetEntity: Categories::class, inversedBy: 'circuits')]
     private Collection $categories;
 
+    #[ORM\Column(length: 255)]
+    private ?string $localisation = null;
+
+    #[ORM\Column]
+    private ?bool $is_populare = null;
+
 
     public function __construct()
     {
@@ -420,5 +426,29 @@ class Circuits
     public function __tostring(): string
     {
         return $this->titre;
+    }
+
+    public function getLocalisation(): ?string
+    {
+        return $this->localisation;
+    }
+
+    public function setLocalisation(string $localisation): static
+    {
+        $this->localisation = $localisation;
+
+        return $this;
+    }
+
+    public function isPopulare(): ?bool
+    {
+        return $this->is_populare;
+    }
+
+    public function setIsPopulare(bool $is_populare): static
+    {
+        $this->is_populare = $is_populare;
+
+        return $this;
     }
 }

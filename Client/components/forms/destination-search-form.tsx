@@ -5,6 +5,7 @@ import { Search, Gauge, DollarSign, RotateCcw } from "lucide-react"
 import { CustomInput } from "@/components/ui/custom-input"
 import { CustomSelect } from "@/components/ui/custom-select"
 import { Button } from "@/components/ui/button"
+import { DIFFICULTY_LABELS } from "@/lib/utils"
 
 interface DestinationSearchFormProps {
   onSearch: (filters: { search: string; difficulty: string; maxPrice: string; minPrice: string }) => void
@@ -67,12 +68,7 @@ export function DestinationSearchForm({ onSearch, onReset, compact = false }: De
             <CustomSelect
               value={difficulty}
               onChange={(e) => setDifficulty(e.target.value)}
-              options={[
-                { value: "", label: "Toutes" },
-                { value: "easy", label: "🟢 Facile" },
-                { value: "moderate", label: "🟡 Moyen" },
-                { value: "hard", label: "🔴 Difficile" },
-              ]}
+              options={Object.entries(DIFFICULTY_LABELS).map(([key, label]) => ({ value: key, label }))}
               className="border-2 focus:border-[#40e0d0] transition-colors"
             />
           </div>
@@ -116,17 +112,6 @@ export function DestinationSearchForm({ onSearch, onReset, compact = false }: De
                 onChange={(e) => setMaxPrice(e.target.value)}
                 className="border-2 focus:border-[#40e0d0] transition-colors"
               />
-              {maxPrice && (
-                <div className="mt-2 h-1.5 bg-slate-200 rounded-full overflow-hidden">
-                  <div
-                    className="h-full transition-all"
-                    style={{
-                      backgroundColor: "#7ac243",
-                      width: `${Math.min((Number.parseFloat(maxPrice) / 5000) * 100, 100)}%`,
-                    }}
-                  />
-                </div>
-              )}
             </div>
           </div>
 
@@ -134,7 +119,7 @@ export function DestinationSearchForm({ onSearch, onReset, compact = false }: De
           <div className="flex gap-2">
             <Button
               onClick={handleSearch}
-              className="flex-1 text-white font-semibold hover:shadow-lg transition-all"
+              className="flex-1 text-white font-semibold hover:shadow-lg transition-all cursor-pointer"
               style={{ backgroundColor: "#7ac243" }}
             >
               <Search className="h-4 w-4 mr-2" />
@@ -142,7 +127,7 @@ export function DestinationSearchForm({ onSearch, onReset, compact = false }: De
             </Button>
             <Button
               onClick={handleReset}
-              className="border-2 bg-transparent font-semibold hover:bg-slate-50 transition-all"
+              className="border-2 bg-transparent font-semibold hover:bg-slate-50 transition-all cursor-pointer"
               style={{ borderColor: "#40e0d0", color: "#40e0d0" }}
               title="Réinitialiser"
             >

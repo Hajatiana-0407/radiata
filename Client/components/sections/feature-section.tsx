@@ -34,6 +34,7 @@ export function FeatureSection({ title, subtitle, description, features }: Featu
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-5 gap-4">
           {features.map((feature, idx) => (
             <div
+              key={idx}
               className={`relative overflow-hidden rounded-3xl bg-white p-6 border border-slate-200
     ${idx % 2 === 0 ? "lg:-translate-y-6" : "lg:translate-y-6"}
   `}

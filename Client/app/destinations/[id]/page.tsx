@@ -77,10 +77,10 @@ export default function DestinationDetailPage() {
 
         <div className="mx-auto max-w-4xl px-4 sm:px-6 lg:px-8 py-12">
           <div className="mb-6">
-            <Badge label={destination.difficulte} variant="primary" />
+            <Badge label={destination.difficulty} variant="primary" />
           </div>
 
-          <h1 className="text-4xl font-bold mb-4">{destination.titre}</h1>
+          <h1 className="text-4xl font-bold mb-4">{destination.title}</h1>
 
           <div className="flex flex-wrap gap-6 mb-8 text-muted-foreground">
             <div className="flex items-center gap-2">
@@ -89,7 +89,7 @@ export default function DestinationDetailPage() {
             </div>
             <div className="flex items-center gap-2">
               <Clock className="h-5 w-5" />
-              <span>{destination.duree_jours} hours</span>
+              <span>{destination.duration} hours</span>
             </div>
             <div className="flex items-center gap-2">
               <Users className="h-5 w-5" />
@@ -129,7 +129,7 @@ export default function DestinationDetailPage() {
                 <div className="mb-6">
                   <p className="text-sm text-muted-foreground mb-1">Starting from</p>
                   <p className="text-4xl font-bold text-primary">
-                    ${destination.prix_base}
+                    ${destination.price}
                   </p>
                 </div>
 
@@ -154,13 +154,13 @@ export default function DestinationDetailPage() {
                     <p className="flex justify-between">
                       <span className="text-muted-foreground">Difficulty:</span>
                       <span className="font-medium capitalize">
-                        {destination.difficulte}
+                        {destination.difficulty}
                       </span>
                     </p>
                     <p className="flex justify-between">
                       <span className="text-muted-foreground">Duration:</span>
                       <span className="font-medium">
-                        {destination.duree_jours}h
+                        {destination.duration}h
                       </span>
                     </p>
                   </div>
