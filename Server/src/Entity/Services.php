@@ -49,11 +49,18 @@ class Services
     #[ORM\ManyToMany(targetEntity: Reservations::class, mappedBy: 'Services')]
     private Collection $reservations;
 
+    /**
+     * @var Collection<int, Circuits>
+     */
+    #[ORM\ManyToMany(targetEntity: Circuits::class, mappedBy: 'services')]
+    private Collection $circuits;
+
     public function __construct()
     {
         $this->galerieMedias = new ArrayCollection();
         $this->devis = new ArrayCollection();
         $this->reservations = new ArrayCollection();
+        $this->circuits = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -209,5 +216,32 @@ class Services
     public function __tostring(): string
     {
         return $this->nom;
+    }
+
+    /**
+     * @return Collection<int, Circuits>
+     */
+    public function getCircuits(): Collection
+    {
+        return $this->circuits;
+    }
+
+    public function addCircuit(Circuits $circuit): static
+    {
+        if (!$this->circuits->contains($circuit)) {
+            $this->circuits->add($circuit);
+            $circuit->addService($this);
+        }
+
+        return $this;
+    }
+
+    public function removeCircuit(Circuits $circuit): static
+    {
+        if ($this->circuits->removeElement($circuit)) {
+            $circuit->removeService($this);
+        }
+
+        return $this;
     }
 }

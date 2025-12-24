@@ -49,7 +49,7 @@ export default function DestinationsPage() {
   return (
     <>
       <Navbar />
-      <main className="min-h-screen bg-gradient-to-b from-slate-50 to-white">
+      <main className="min-h-screen bg-linear-to-b from-slate-50 to-white">
 
         <HeadingSection title="Nos Destinations" description="Découvrez nos circuits inoubliables et préparez votre prochaine aventure">
           <DestinationSearchForm onSearch={handleSearch} onReset={handleReset} compact={true} />

@@ -10,7 +10,7 @@ use Doctrine\Migrations\AbstractMigration;
 /**
  * Auto-generated Migration: Please modify to your needs!
  */
-final class Version20251218092142 extends AbstractMigration
+final class Version20251223063033 extends AbstractMigration
 {
     public function getDescription(): string
     {
@@ -23,9 +23,10 @@ final class Version20251218092142 extends AbstractMigration
         $this->addSql('CREATE TABLE articles (id INT AUTO_INCREMENT NOT NULL, image_couverture VARCHAR(255) NOT NULL, titre VARCHAR(255) NOT NULL, slug VARCHAR(255) NOT NULL, contenu LONGTEXT NOT NULL, meto_titre VARCHAR(255) DEFAULT NULL, meta_description VARCHAR(255) DEFAULT NULL, date_publication DATETIME NOT NULL, actif TINYINT(1) NOT NULL, date_creation DATETIME NOT NULL, PRIMARY KEY(id)) DEFAULT CHARACTER SET utf8mb4');
         $this->addSql('CREATE TABLE avis (id INT AUTO_INCREMENT NOT NULL, note INT NOT NULL, commentaire LONGTEXT NOT NULL, date_publication DATETIME NOT NULL, statut VARCHAR(255) NOT NULL, client_id INT DEFAULT NULL, circuit_id INT DEFAULT NULL, UNIQUE INDEX UNIQ_8F91ABF019EB6921 (client_id), INDEX IDX_8F91ABF0CF2182C8 (circuit_id), PRIMARY KEY(id)) DEFAULT CHARACTER SET utf8mb4');
         $this->addSql('CREATE TABLE categories (id INT AUTO_INCREMENT NOT NULL, icone VARCHAR(255) NOT NULL, nom VARCHAR(255) NOT NULL, description VARCHAR(255) NOT NULL, couleur VARCHAR(255) NOT NULL, ordre_affichage INT NOT NULL, date_creation DATETIME NOT NULL, actif TINYINT(1) NOT NULL, PRIMARY KEY(id)) DEFAULT CHARACTER SET utf8mb4');
-        $this->addSql('CREATE TABLE circuits (id INT AUTO_INCREMENT NOT NULL, titre VARCHAR(255) NOT NULL, image VARCHAR(255) NOT NULL, slug VARCHAR(255) NOT NULL, description VARCHAR(255) NOT NULL, meto_titre VARCHAR(255) DEFAULT NULL, meta_description VARCHAR(255) DEFAULT NULL, duree_jours DOUBLE PRECISION NOT NULL, prix_base DOUBLE PRECISION NOT NULL, difficulte INT NOT NULL, score_ecotourisme DOUBLE PRECISION NOT NULL, actif TINYINT(1) NOT NULL, date_creation DATETIME NOT NULL, localisation VARCHAR(255) NOT NULL, is_populare TINYINT(1) NOT NULL, PRIMARY KEY(id)) DEFAULT CHARACTER SET utf8mb4');
+        $this->addSql('CREATE TABLE circuits (id INT AUTO_INCREMENT NOT NULL, titre VARCHAR(255) NOT NULL, image VARCHAR(255) NOT NULL, slug VARCHAR(255) NOT NULL, description VARCHAR(255) NOT NULL, meto_titre VARCHAR(255) DEFAULT NULL, meta_description VARCHAR(255) DEFAULT NULL, duree_jours DOUBLE PRECISION NOT NULL, prix_base DOUBLE PRECISION NOT NULL, difficulte INT NOT NULL, score_ecotourisme DOUBLE PRECISION NOT NULL, actif TINYINT(1) NOT NULL, date_creation DATETIME NOT NULL, localisation VARCHAR(255) NOT NULL, is_populare TINYINT(1) NOT NULL, conservation_contribution LONGTEXT DEFAULT NULL, point_fort JSON DEFAULT NULL, actions_durables JSON DEFAULT NULL, periode JSON DEFAULT NULL, range_min DOUBLE PRECISION NOT NULL, range_max DOUBLE PRECISION NOT NULL, PRIMARY KEY(id)) DEFAULT CHARACTER SET utf8mb4');
         $this->addSql('CREATE TABLE circuits_circuits (circuits_source INT NOT NULL, circuits_target INT NOT NULL, INDEX IDX_FE0884AE35BDB90C (circuits_source), INDEX IDX_FE0884AE2C58E983 (circuits_target), PRIMARY KEY(circuits_source, circuits_target)) DEFAULT CHARACTER SET utf8mb4');
         $this->addSql('CREATE TABLE circuits_categories (circuits_id INT NOT NULL, categories_id INT NOT NULL, INDEX IDX_A1ED34227201D625 (circuits_id), INDEX IDX_A1ED3422A21214B7 (categories_id), PRIMARY KEY(circuits_id, categories_id)) DEFAULT CHARACTER SET utf8mb4');
+        $this->addSql('CREATE TABLE circuits_services (circuits_id INT NOT NULL, services_id INT NOT NULL, INDEX IDX_A99289E27201D625 (circuits_id), INDEX IDX_A99289E2AEF5A6C1 (services_id), PRIMARY KEY(circuits_id, services_id)) DEFAULT CHARACTER SET utf8mb4');
         $this->addSql('CREATE TABLE clients (id INT AUTO_INCREMENT NOT NULL, nom VARCHAR(255) NOT NULL, prenom VARCHAR(255) NOT NULL, email VARCHAR(255) NOT NULL, mot_de_passe VARCHAR(255) NOT NULL, telephone INT NOT NULL, adresse VARCHAR(255) NOT NULL, ville VARCHAR(255) NOT NULL, pays VARCHAR(255) NOT NULL, date_creation DATETIME NOT NULL, actif TINYINT(1) DEFAULT NULL, PRIMARY KEY(id)) DEFAULT CHARACTER SET utf8mb4');
         $this->addSql('CREATE TABLE clients_tokens (id INT AUTO_INCREMENT NOT NULL, token VARCHAR(255) NOT NULL, expire_le VARCHAR(255) DEFAULT NULL, type VARCHAR(255) NOT NULL, client_id INT DEFAULT NULL, INDEX IDX_AF8DC56919EB6921 (client_id), PRIMARY KEY(id)) DEFAULT CHARACTER SET utf8mb4');
         $this->addSql('CREATE TABLE devis (id INT AUTO_INCREMENT NOT NULL, reference_devis VARCHAR(255) NOT NULL, nom_client VARCHAR(255) DEFAULT NULL, email VARCHAR(255) DEFAULT NULL, telephone VARCHAR(255) DEFAULT NULL, nombres_adultes INT NOT NULL, nombre_enfants INT NOT NULL, nombre_bebes INT NOT NULL, statut VARCHAR(255) NOT NULL, dates_souhaitees DATETIME NOT NULL, date_creation DATETIME NOT NULL, client_id INT DEFAULT NULL, UNIQUE INDEX UNIQ_8B27C52B5D86A53B (reference_devis), INDEX IDX_8B27C52B19EB6921 (client_id), PRIMARY KEY(id)) DEFAULT CHARACTER SET utf8mb4');
@@ -45,6 +46,8 @@ final class Version20251218092142 extends AbstractMigration
         $this->addSql('ALTER TABLE circuits_circuits ADD CONSTRAINT FK_FE0884AE2C58E983 FOREIGN KEY (circuits_target) REFERENCES circuits (id) ON DELETE CASCADE');
         $this->addSql('ALTER TABLE circuits_categories ADD CONSTRAINT FK_A1ED34227201D625 FOREIGN KEY (circuits_id) REFERENCES circuits (id) ON DELETE CASCADE');
         $this->addSql('ALTER TABLE circuits_categories ADD CONSTRAINT FK_A1ED3422A21214B7 FOREIGN KEY (categories_id) REFERENCES categories (id) ON DELETE CASCADE');
+        $this->addSql('ALTER TABLE circuits_services ADD CONSTRAINT FK_A99289E27201D625 FOREIGN KEY (circuits_id) REFERENCES circuits (id) ON DELETE CASCADE');
+        $this->addSql('ALTER TABLE circuits_services ADD CONSTRAINT FK_A99289E2AEF5A6C1 FOREIGN KEY (services_id) REFERENCES services (id) ON DELETE CASCADE');
         $this->addSql('ALTER TABLE clients_tokens ADD CONSTRAINT FK_AF8DC56919EB6921 FOREIGN KEY (client_id) REFERENCES clients (id)');
         $this->addSql('ALTER TABLE devis ADD CONSTRAINT FK_8B27C52B19EB6921 FOREIGN KEY (client_id) REFERENCES clients (id)');
         $this->addSql('ALTER TABLE devis_circuits ADD CONSTRAINT FK_46E71F6141DEFADA FOREIGN KEY (devis_id) REFERENCES devis (id) ON DELETE CASCADE');
@@ -71,6 +74,8 @@ final class Version20251218092142 extends AbstractMigration
         $this->addSql('ALTER TABLE circuits_circuits DROP FOREIGN KEY FK_FE0884AE2C58E983');
         $this->addSql('ALTER TABLE circuits_categories DROP FOREIGN KEY FK_A1ED34227201D625');
         $this->addSql('ALTER TABLE circuits_categories DROP FOREIGN KEY FK_A1ED3422A21214B7');
+        $this->addSql('ALTER TABLE circuits_services DROP FOREIGN KEY FK_A99289E27201D625');
+        $this->addSql('ALTER TABLE circuits_services DROP FOREIGN KEY FK_A99289E2AEF5A6C1');
         $this->addSql('ALTER TABLE clients_tokens DROP FOREIGN KEY FK_AF8DC56919EB6921');
         $this->addSql('ALTER TABLE devis DROP FOREIGN KEY FK_8B27C52B19EB6921');
         $this->addSql('ALTER TABLE devis_circuits DROP FOREIGN KEY FK_46E71F6141DEFADA');
@@ -92,6 +97,7 @@ final class Version20251218092142 extends AbstractMigration
         $this->addSql('DROP TABLE circuits');
         $this->addSql('DROP TABLE circuits_circuits');
         $this->addSql('DROP TABLE circuits_categories');
+        $this->addSql('DROP TABLE circuits_services');
         $this->addSql('DROP TABLE clients');
         $this->addSql('DROP TABLE clients_tokens');
         $this->addSql('DROP TABLE devis');

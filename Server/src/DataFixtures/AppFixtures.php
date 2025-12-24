@@ -14,6 +14,7 @@ use App\Entity\MessagesContact;
 use App\Entity\Reservations;
 use App\Entity\Services;
 use App\Entity\Users;
+use App\Entity\ValueObject\Range;
 use Doctrine\Bundle\FixturesBundle\Fixture;
 use Doctrine\Persistence\ObjectManager;
 use Symfony\Component\PasswordHasher\Hasher\UserPasswordHasherInterface;
@@ -68,29 +69,6 @@ class AppFixtures extends Fixture
             $categories[] = $cat;
         }
 
-        // --- Circuits ---
-        $circuits = [];
-        for ($i = 0; $i < 15; $i++) {
-            $circuit = new Circuits();
-            $circuit->setTitre($faker->sentence(3))
-                ->setLocalisation($faker->city)
-                ->setIsPopulare($faker->boolean(50))
-                ->setDescription($faker->paragraph)
-                ->setMetoTitre($faker->sentence(2))
-                ->setMetaDescription($faker->sentence(6))
-                ->setDureeJours($faker->numberBetween(2, 15))
-                ->setPrixBase($faker->randomFloat(2, 100, 2000))
-                ->setDifficulte($faker->numberBetween(1, 5))
-                ->setScoreEcotourisme($faker->randomFloat(1, 1, 5))
-                ->setActif($faker->boolean(90))
-                ->setDateCreation($faker->dateTimeBetween('-2 years', 'now'))
-                ->setImage($faker->imageUrl(640, 480, 'nature'));
-            
-
-            $manager->persist($circuit);
-            $circuits[] = $circuit;
-        }
-
         // --- Services ---
         $services = [];
         for ($i = 0; $i < 5; $i++) {
@@ -102,6 +80,58 @@ class AppFixtures extends Fixture
                 ->setOrdreAffichage($i + 1);
             $manager->persist($service);
             $services[] = $service;
+        }
+
+
+        // --- Circuits ---
+        $circuits = [];
+        for ($i = 0; $i < 15; $i++) {
+            $circuit = new Circuits();
+            $randomServices = $faker->randomElements(
+                $services,
+                $faker->numberBetween(1, 3)
+            );
+
+            $circuit->setTitre($faker->sentence(3))
+                ->setPointFort($faker->sentences(3))
+                ->setConservationContribution(conservation_contribution: $faker->sentence(6))
+                ->setLocalisation($faker->city)
+                ->setIsPopulare($faker->boolean(50))
+                ->setDescription($faker->paragraph)
+                ->setMetoTitre($faker->sentence(2))
+                ->setMetaDescription($faker->sentence(6))
+                ->setDureeJours($faker->numberBetween(2, 15))
+                ->setPrixBase($faker->randomFloat(2, 100, 2000))
+                ->setDifficulte($faker->numberBetween(1, 5))
+                ->setScoreEcotourisme($faker->randomFloat(1, 1, 5))
+                ->setActif($faker->boolean(90))
+                ->setDateCreation($faker->dateTimeBetween('-2 years', 'now'))
+                ->setImage($faker->imageUrl(640, 480, 'nature'))
+                ->setRange(new Range(
+                    min: $faker->numberBetween(100, 500),
+                    max: $faker->numberBetween(501, 2000)
+                ))
+                ->setPeriode($faker->randomElements([
+                    'Printemps',
+                    'Été',
+                    'Automne',
+                    'Hiver'
+                ], $faker->numberBetween(1, 4)))
+                ->setActionsDurables($faker->randomElements([
+                    'Soutien aux communautés locales',
+                    'Impact environnemental minimal',
+                    'Protection de la biodiversité',
+                    'Hébergements écologiques',
+                    'Gestion des déchets responsables'
+                ], count: $faker->numberBetween(1, 5)))
+                ->setSlug($faker->slug);
+
+            foreach ($randomServices as $service) {
+                $circuit->addService($service);
+            }
+
+            $manager->persist($circuit);
+            $circuits[] = $circuit;
         }
 
         // --- Articles ---

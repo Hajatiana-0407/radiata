@@ -1,6 +1,6 @@
 import { createSlice, createAsyncThunk } from '@reduxjs/toolkit';
 import apiClient from '@/lib/api/client';
-import { Destination } from '@/lib/types';
+import { ApiReturnType, Destination } from '@/lib/types';
 
 interface DestinationDetailState {
   destination: Destination | null;
@@ -18,10 +18,15 @@ export const fetchDestinationById = createAsyncThunk(
   'destinationDetail/fetchById',
   async (id: string, { rejectWithValue }) => {
     try {
-      const response = await apiClient.get(`/destinations/${id}`);
-      return response.data;
+      const response = await apiClient.get(`/circuits/${id}`);
+      const result: ApiReturnType = response.data;
+      if (result.success) {
+        return result;
+      } else {
+        return rejectWithValue(result.message || 'Failed to fetch destinations');
+      }
     } catch (error: any) {
-      return rejectWithValue(error.response?.data?.message || 'Failed to fetch destination');
+      return rejectWithValue(error.response?.data?.message || 'Failed to fetch destinations');
     }
   }
 );
@@ -36,9 +41,9 @@ const destinationDetailSlice = createSlice({
         state.loading = true;
         state.error = null;
       })
-      .addCase(fetchDestinationById.fulfilled, (state, action) => {
+      .addCase(fetchDestinationById.fulfilled, (state, action : { payload: ApiReturnType }) => {
         state.loading = false;
-        state.destination = action.payload;
+        state.destination = action.payload.data ;
       })
       .addCase(fetchDestinationById.rejected, (state, action) => {
         state.loading = false;

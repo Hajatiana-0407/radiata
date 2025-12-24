@@ -3,9 +3,11 @@
 namespace App\Entity;
 
 use ApiPlatform\Metadata\ApiResource;
+use App\Entity\ValueObject\Range;
 use App\Repository\CircuitsRepository;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
+use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\String\Slugger\AsciiSlugger;
 
@@ -50,6 +52,9 @@ class Circuits
 
     #[ORM\Column]
     private ?bool $actif = true;
+
+    #[ORM\Embedded(class: Range::class)]
+    private ?Range $range = null;
 
     #[ORM\Column]
     private ?\DateTime $date_creation = null;
@@ -97,6 +102,24 @@ class Circuits
     #[ORM\Column]
     private ?bool $is_populare = null;
 
+    #[ORM\Column(type: Types::TEXT, nullable: true)]
+    private ?string $conservation_contribution = null;
+
+    #[ORM\Column(nullable: true)]
+    private ?array $point_fort = null;
+
+    #[ORM\Column(nullable: true)]
+    private ?array $actionsDurables = null;
+
+    #[ORM\Column(nullable: true)]
+    private ?array $periode = null;
+
+    /**
+     * @var Collection<int, Services>
+     */
+    #[ORM\ManyToMany(targetEntity: Services::class, inversedBy: 'circuits')]
+    private Collection $services;
+
 
     public function __construct()
     {
@@ -107,6 +130,7 @@ class Circuits
         $this->avis = new ArrayCollection();
         $this->date_creation = new \DateTime();
         $this->categories = new ArrayCollection();
+        $this->services = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -448,6 +472,89 @@ class Circuits
     public function setIsPopulare(bool $is_populare): static
     {
         $this->is_populare = $is_populare;
+
+        return $this;
+    }
+
+    public function getConservationContribution(): ?string
+    {
+        return $this->conservation_contribution;
+    }
+
+    public function setConservationContribution(?string $conservation_contribution): static
+    {
+        $this->conservation_contribution = $conservation_contribution;
+
+        return $this;
+    }
+
+    public function getPointFort(): ?array
+    {
+        return $this->point_fort;
+    }
+
+    public function setPointFort(?array $point_fort): static
+    {
+        $this->point_fort = $point_fort;
+
+        return $this;
+    }
+
+
+    public function getRange(): ?Range
+    {
+        return $this->range;
+    }
+    public function setRange(Range $range): static
+    {
+        $this->range = $range;
+        return $this;
+    }
+
+    public function getActionsDurables(): ?array
+    {
+        return $this->actionsDurables;
+    }
+
+    public function setActionsDurables(?array $actionsDurables): static
+    {
+        $this->actionsDurables = $actionsDurables;
+
+        return $this;
+    }
+
+    public function getPeriode(): ?array
+    {
+        return $this->periode;
+    }
+
+    public function setPeriode(?array $periode): static
+    {
+        $this->periode = $periode;
+
+        return $this;
+    }
+
+    /**
+     * @return Collection<int, Services>
+     */
+    public function getServices(): Collection
+    {
+        return $this->services;
+    }
+
+    public function addService(Services $service): static
+    {
+        if (!$this->services->contains($service)) {
+            $this->services->add($service);
+        }
+
+        return $this;
+    }
+
+    public function removeService(Services $service): static
+    {
+        $this->services->removeElement($service);
 
         return $this;
     }

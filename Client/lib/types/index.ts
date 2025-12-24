@@ -29,7 +29,15 @@ export interface Destination {
   updatedAt: string;
   ecotourism_score?: number;
   active?: boolean;
-  isPopular?: boolean
+  isPopular?: boolean,
+  group_size?: {
+    min: number;
+    max: number;
+  };
+  conservation_contribution?: string;
+  sustainability_features?: string[];
+  recommended_season?: string[];
+  included_services?: Servicetype[];
 }
 
 export interface Reservation {
@@ -48,6 +56,13 @@ export interface Reservation {
   totalPrice: number;
   createdAt: string;
   updatedAt: string;
+
+}
+
+export type Servicetype = { 
+  id ?: number ; 
+  name : string ; 
+  description : string ; 
 }
 
 export interface Contact {

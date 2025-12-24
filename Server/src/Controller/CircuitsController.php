@@ -15,10 +15,8 @@ use Symfony\Component\Routing\Attribute\Route;
 final class CircuitsController extends AbstractController
 {
     #[Route('/', name: 'app_circuits_index', methods: ['GET'])]
-    public function index(
-        Request $request,
-        CircuitsRepository $circuitsRepository,
-    ): Response {
+    public function index(Request $request, CircuitsRepository $circuitsRepository, ): Response
+    {
         // Récupération des paramètres de requête
         $page = $request->query->getInt('page', 1);
         $search = $request->query->get('search', '');
@@ -120,60 +118,47 @@ final class CircuitsController extends AbstractController
         return $this->json($response);
     }
 
-    #[Route('/new', name: 'app_circuits_new', methods: ['GET', 'POST'])]
-    public function new(Request $request, EntityManagerInterface $entityManager): Response
-    {
-        $circuit = new Circuits();
-        $form = $this->createForm(CircuitsType::class, $circuit);
-        $form->handleRequest($request);
-
-        if ($form->isSubmitted() && $form->isValid()) {
-            $entityManager->persist($circuit);
-            $entityManager->flush();
-
-            return $this->redirectToRoute('app_circuits_index', [], Response::HTTP_SEE_OTHER);
-        }
-
-        return $this->render('circuits/new.html.twig', [
-            'circuit' => $circuit,
-            'form' => $form,
-        ]);
-    }
-
-    #[Route('/{id}', name: 'app_circuits_show', methods: ['GET'])]
+    #[Route('/{slug}', name: 'app_circuits_show', methods: ['GET'])]
     public function show(Circuits $circuit): Response
     {
-        return $this->render('circuits/show.html.twig', [
-            'circuit' => $circuit,
-        ]);
-    }
+        $servicesIncluded = $circuit->getServices()->toArray();
 
-    #[Route('/{id}/edit', name: 'app_circuits_edit', methods: ['GET', 'POST'])]
-    public function edit(Request $request, Circuits $circuit, EntityManagerInterface $entityManager): Response
-    {
-        $form = $this->createForm(CircuitsType::class, $circuit);
-        $form->handleRequest($request);
+        $circuitData = [
+            'id' => $circuit->getId(),
+            'title' => $circuit->getTitre(),
+            'description' => $circuit->getDescription(),
+            'image' => $circuit->getImage(),
+            'price' => $circuit->getPrixBase(),
+            'difficulty' => $circuit->getDifficulte(),
+            'duration' => $circuit->getDureeJours(),
+            'slug' => $circuit->getSlug(),
+            'ecotourism_score' => $circuit->getScoreEcotourisme(),
+            'createdAt' => $circuit->getDateCreation()?->format('Y-m-d H:i:s'),
+            'active' => $circuit->isActif(),
+            'location' => $circuit->getLocalisation(),
+            'isPopular' => $circuit->isPopulare(),
+            'group_size' => [
+                'min' => $circuit->getRange()->getMin(),
+                'max' => $circuit->getRange()->getMax(),
+            ],
+            'conservation_contribution' => $circuit->getConservationContribution(),
+            'highlights' => $circuit->getPointFort(),
+            'sustainability_features' => $circuit->getActionsDurables(),
+            'recommended_season' => $circuit->getPeriode(),
+            'included_services' => array_map(function ( $servicesIncluded ) { return [
+                'name' => $servicesIncluded->getNom() ,
+                'description' =>  $servicesIncluded->getDescription(), 
+                'id' => $servicesIncluded->getId() 
+            ] ; 
+         }, $servicesIncluded),
+        ];
 
-        if ($form->isSubmitted() && $form->isValid()) {
-            $entityManager->flush();
+        $response = [
+            'success' => true,
+            'message' => 'Détails du circuit récupérés avec succès',
+            'data' => $circuitData,
+        ];
 
-            return $this->redirectToRoute('app_circuits_index', [], Response::HTTP_SEE_OTHER);
-        }
-
-        return $this->render('circuits/edit.html.twig', [
-            'circuit' => $circuit,
-            'form' => $form,
-        ]);
-    }
-
-    #[Route('/{id}', name: 'app_circuits_delete', methods: ['POST'])]
-    public function delete(Request $request, Circuits $circuit, EntityManagerInterface $entityManager): Response
-    {
-        if ($this->isCsrfTokenValid('delete' . $circuit->getId(), $request->getPayload()->getString('_token'))) {
-            $entityManager->remove($circuit);
-            $entityManager->flush();
-        }
-
-        return $this->redirectToRoute('app_circuits_index', [], Response::HTTP_SEE_OTHER);
+        return $this->json($response);
     }
 }
