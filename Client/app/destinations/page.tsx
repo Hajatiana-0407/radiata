@@ -11,6 +11,7 @@ import { SkeletonCard } from "@/components/ui/skeleton"
 import { Button } from "@/components/ui/button"
 import { ChevronLeft, ChevronRight } from "lucide-react"
 import HeadingSection from "@/components/sections/heading-section"
+import Pagination from "@/components/ui/pagination"
 
 export default function DestinationsPage() {
   const dispatch = useAppDispatch()
@@ -45,7 +46,7 @@ export default function DestinationsPage() {
     dispatch(setPage(1) as any)
   }
 
-  
+
   return (
     <>
       <Navbar />
@@ -77,29 +78,12 @@ export default function DestinationsPage() {
                 ))}
               </div>
 
-              {totalPages > 1 && (
-                <div className="flex items-center justify-center gap-2">
-                  <Button
-                    onClick={() => dispatch(setPage(page - 1) as any)}
-                    disabled={page === 1}
-                    variant="outline"
-                    size="sm"
-                  >
-                    <ChevronLeft className="h-4 w-4" />
-                  </Button>
-                  <span className="text-sm font-medium">
-                    Page {page} de {totalPages}
-                  </span>
-                  <Button
-                    onClick={() => dispatch(setPage(page + 1) as any)}
-                    disabled={page === totalPages}
-                    variant="outline"
-                    size="sm"
-                  >
-                    <ChevronRight className="h-4 w-4" />
-                  </Button>
-                </div>
-              )}
+              {/* Pagination  */}
+              <Pagination
+                page={page}
+                totalPages={totalPages}
+                setPage={setPage}
+              />
             </>
           )}
         </div>

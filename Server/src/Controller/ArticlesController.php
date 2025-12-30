@@ -3,25 +3,63 @@
 namespace App\Controller;
 
 use App\Entity\Articles;
-use App\Form\ArticlesType;
 use App\Repository\ArticlesRepository;
-use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Attribute\Route;
 
-#[Route('/articles')]
+#[Route('/api/articles')]
 final class ArticlesController extends AbstractController
 {
     #[Route(name: 'app_articles_index', methods: ['GET'])]
-    public function index(ArticlesRepository $articlesRepository): Response
+    public function index(ArticlesRepository $articlesRepository, Request $request): Response
     {
-        dd($articlesRepository->findAll());
+        // Récupération des paramètres de requête
+        $page = $request->query->getInt('page', 1);
+        $search = $request->query->getString('search', '');
+        $paginator = $articlesRepository->findArticlesPaginated($search, $page, 10);
+        $articles = [];
+        foreach ($paginator['data'] as $article) {
+            $articles[] = [
+                'id' => $article->getId(),
+                'title' => $article->getTitre(),
+                'slug' => $article->getSlug(),
+                'image' => $article->getImageCouverture(),
+                'content' => $article->getContenu(),
+                'author' => $article->getAutheur(),
+                'date' => $article->getDatePublication()?->format('Y-m-d H:i:s'),
+                'date_creation' => $article->getDateCreation()?->format('Y-m-d H:i:s'),
+                'category' => array_map(function ($category) {
+                    return [
+                        'id' => $category->getId(),
+                        'name' => $category->getNom(),
+                        'description' => $category->getDescription(),
+                    ];
+                }, $article->getCategories()->toArray()),
+                'meta_title' => $article->getMetoTitre(),
+                'meta_description' => $article->getMetaDescription(),
+            ];
+        }
+        ;
+
+
+        $response = [
+            'success' => true,
+            'message' => 'Liste des articles récupérée avec succès',
+            'data' => $articles,
+            'pagination' => [
+                'page' => $page,
+                'total' => $paginator['total'],
+                'totalPages' => $paginator['totalPages'],
+            ],
+        ];
+
+        return $this->json($response);
     }
 
 
-    #[Route('/{id}', name: 'app_articles_show', methods: ['GET'])]
+    #[Route('/{slug}', name: 'app_articles_show', methods: ['GET'])]
     public function show(Articles $article): Response
     {
         return $this->render('articles/show.html.twig', [

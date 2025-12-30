@@ -40,6 +40,26 @@ export interface Destination {
   included_services?: Servicetype[];
 }
 
+
+export interface ArticleType {
+  id: string;
+  title: string;
+  slug: string;
+  image: string;
+  content: string;
+  author: string;
+  date: string;
+  category: CategoryType[];
+  meta_title?: string;
+  meta_description?: string;
+}
+
+export interface CategoryType {
+  id: string;
+  name: string;
+  description: string;
+}
+
 export interface Reservation {
   id: string;
   destinationId: string;
@@ -59,10 +79,10 @@ export interface Reservation {
 
 }
 
-export type Servicetype = { 
-  id ?: number ; 
-  name : string ; 
-  description : string ; 
+export type Servicetype = {
+  id?: number;
+  name: string;
+  description: string;
 }
 
 export interface Contact {

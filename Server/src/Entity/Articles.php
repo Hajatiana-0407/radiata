@@ -3,6 +3,8 @@
 namespace App\Entity;
 
 use App\Repository\ArticlesRepository;
+use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 use Doctrine\DBAL\Types\Types;
 
@@ -42,10 +44,20 @@ class Articles
     #[ORM\Column]
     private ?\DateTime $date_creation = null;
 
+    /**
+     * @var Collection<int, Categories>
+     */
+    #[ORM\ManyToMany(targetEntity: Categories::class, inversedBy: 'articles')]
+    private Collection $categories;
+
+    #[ORM\Column(length: 255, nullable: true)]
+    private ?string $autheur = null;
+
 
     public function __construct()
     {
         $this->date_creation = new \DateTime();
+        $this->categories = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -158,6 +170,42 @@ class Articles
     public function setSlug(string $slug): static
     {
         $this->slug = $slug;
+
+        return $this;
+    }
+
+    /**
+     * @return Collection<int, Categories>
+     */
+    public function getCategories(): Collection
+    {
+        return $this->categories;
+    }
+
+    public function addCategory(Categories $category): static
+    {
+        if (!$this->categories->contains($category)) {
+            $this->categories->add($category);
+        }
+
+        return $this;
+    }
+
+    public function removeCategory(Categories $category): static
+    {
+        $this->categories->removeElement($category);
+
+        return $this;
+    }
+
+    public function getAutheur(): ?string
+    {
+        return $this->autheur;
+    }
+
+    public function setAutheur(?string $autheur): static
+    {
+        $this->autheur = $autheur;
 
         return $this;
     }

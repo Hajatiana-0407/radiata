@@ -43,11 +43,18 @@ class Categories
     #[ORM\ManyToMany(targetEntity: Circuits::class, mappedBy: 'categories')]
     private Collection $circuits;
 
+    /**
+     * @var Collection<int, Articles>
+     */
+    #[ORM\ManyToMany(targetEntity: Articles::class, mappedBy: 'categories')]
+    private Collection $articles;
+
 
     public function __construct()
     {
         $this->date_creation = new \DateTime();
         $this->circuits = new ArrayCollection();
+        $this->articles = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -170,5 +177,32 @@ class Categories
     public function __toString(): string
     {
         return $this->getNom(); 
+    }
+
+    /**
+     * @return Collection<int, Articles>
+     */
+    public function getArticles(): Collection
+    {
+        return $this->articles;
+    }
+
+    public function addArticle(Articles $article): static
+    {
+        if (!$this->articles->contains($article)) {
+            $this->articles->add($article);
+            $article->addCategory($this);
+        }
+
+        return $this;
+    }
+
+    public function removeArticle(Articles $article): static
+    {
+        if ($this->articles->removeElement($article)) {
+            $article->removeCategory($this);
+        }
+
+        return $this;
     }
 }

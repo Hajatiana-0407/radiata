@@ -8,6 +8,7 @@ use EasyCorp\Bundle\EasyAdminBundle\Config\Crud;
 use EasyCorp\Bundle\EasyAdminBundle\Config\Actions;
 use EasyCorp\Bundle\EasyAdminBundle\Config\Action;
 use EasyCorp\Bundle\EasyAdminBundle\Field\{
+    AssociationField,
     IdField,
     TextField,
     TextareaField,
@@ -30,9 +31,9 @@ class ArticlesCrudController extends AbstractCrudController
         return $crud
             ->setEntityLabelInSingular('Article')
             ->setEntityLabelInPlural('Articles')
-            ->setDefaultSort(['date_publication' => 'DESC', 'date_creation' => 'DESC'])
+            ->setDefaultSort(['id' => 'DESC', 'date_creation' => 'DESC'])
             ->setSearchFields(['titre', 'contenu', 'meto_titre'])
-            ->setPaginatorPageSize(20)
+            ->setPaginatorPageSize(10)
             ->showEntityActionsInlined()
             ->setHelp('index', 'Gérez vos articles de blog et actualités');
     }
@@ -77,8 +78,12 @@ class ArticlesCrudController extends AbstractCrudController
             ->setBasePath($basePath)
             ->setUploadDir($uploadDir)
             ->setUploadedFileNamePattern('[slug]-[timestamp].[extension]')
-            ->setRequired(false)
+            ->setRequired(true )
             ->setHelp('Format recommandé: 1200x630px (ratio 16:9)');
+
+        $autheur = TextField::new('autheur', 'Auteur de l\'article')
+            ->setRequired(false)
+            ->setHelp('Nom de l\'auteur de l\'article');
 
         $titre = TextField::new('titre', 'Titre de l\'article')
             ->setRequired(true)
@@ -119,6 +124,11 @@ class ArticlesCrudController extends AbstractCrudController
             ->onlyOnIndex()
             ->setFormTypeOption('disabled', 'disabled');
 
+        $categories = AssociationField::new('categories', 'Catégories')
+            ->setFormTypeOption('by_reference', false)
+            ->setHelp('Catégories associées au circuit')
+            ->autocomplete();
+
         // =========================
         // PAGE INDEX (liste)
         // =========================
@@ -138,9 +148,11 @@ class ArticlesCrudController extends AbstractCrudController
         if ($pageName === Crud::PAGE_NEW) {
             return [
                 FormField::addPanel('Contenu principal')->setIcon('fa-file-alt'),
+                $autheur,
                 $titre,
                 $slug,
                 $contenu,
+                $categories,
 
                 FormField::addPanel('Image de couverture')->setIcon('fa-image'),
                 $imageCouverture,
@@ -161,9 +173,11 @@ class ArticlesCrudController extends AbstractCrudController
         if ($pageName === Crud::PAGE_EDIT) {
             return [
                 FormField::addPanel('Contenu principal')->setIcon('fa-file-alt'),
+                $autheur,
                 $titre,
                 $slug,
                 $contenu,
+                $categories,
 
                 FormField::addPanel('Image de couverture')->setIcon('fa-image'),
                 $imageCouverture,
@@ -186,11 +200,13 @@ class ArticlesCrudController extends AbstractCrudController
         // =========================
         return [
             FormField::addPanel('Contenu'),
+            $autheur,
             $id,
             $imageCouverture,
             $titre,
             $slug,
             $contenu,
+            $categories,
 
             FormField::addPanel('Publication'),
             $datePublication,

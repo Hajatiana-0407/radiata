@@ -135,10 +135,17 @@ class AppFixtures extends Fixture
         }
 
         // --- Articles ---
-        for ($i = 0; $i < 3; $i++) {
+        for ($i = 0; $i < 15; $i++) {
             $article = new Articles();
+
+            $randomCategorie = $faker->randomElements(
+                $categories,
+                $faker->numberBetween(1, 3)
+            );
+
             $article->setImageCouverture($faker->imageUrl(640, 480, 'nature'))
                 ->setTitre($faker->sentence(3))
+                ->setAutheur($faker->name())
                 ->setSlug($faker->slug)
                 ->setContenu($faker->paragraph(5))
                 ->setMetoTitre($faker->sentence(2))
@@ -146,6 +153,10 @@ class AppFixtures extends Fixture
                 ->setDatePublication($faker->dateTimeBetween('-1 years', 'now'))
                 ->setActif($faker->boolean(90))
                 ->setDateCreation($faker->dateTimeBetween('-2 years', 'now'));
+
+            foreach ($randomCategorie as $categorie) {
+                $article->addCategory($categorie);
+            }
             $manager->persist($article);
         }
 
