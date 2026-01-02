@@ -12,6 +12,11 @@ import { Button } from '@/components/ui/button';
 import { getDificultyLabel } from '@/lib/utils';
 import { API_BASE_URL } from '@/lib/api/client';
 import { MapPin, Clock, Users, Leaf, Shield, Heart, Star, Share2, Calendar, CheckCircle, Trees, AlertCircle, BadgeCheck, ChevronRight } from 'lucide-react';
+
+export async function generateStaticParams() {
+  return [];
+}
+
 export default function DestinationDetailPage() {
   const params = useParams();
   const router = useRouter();
