@@ -45,7 +45,7 @@ jobs:
       - name: Build frontend (Next.js)
         run: |
           cd Client
-          npm ci
+          npm install --legacy-peer-deps
           npm run build
           npm run export
 
