@@ -11,6 +11,11 @@ import { API_BASE_URL } from '@/lib/api/client';
 import { AlertCircle, MapPin, Calendar, User } from 'lucide-react';
 import Link from 'next/link';
 
+
+export async function generateStaticParams() {
+  return [];
+}
+
 export default function ArticleDetailPage() {
   const params = useParams();
   const router = useRouter();
