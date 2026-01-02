@@ -47,7 +47,6 @@ jobs:
           cd Client
           npm install --legacy-peer-deps
           npm run build
-          npm run export
 
       # 7️⃣ Déploiement backend Symfony
       - name: Deploy backend (Symfony)
