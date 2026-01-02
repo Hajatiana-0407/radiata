@@ -14,7 +14,7 @@ jobs:
       - name: Checkout code
         uses: actions/checkout@v4
 
-      # 2️⃣ Installer PHP + Composer
+      # 2️⃣ Setup PHP + Composer
       - name: Setup PHP
         uses: shivammathur/setup-php@v2
         with:
@@ -22,21 +22,26 @@ jobs:
           extensions: mbstring, intl, pdo_mysql
           tools: composer
 
-      # 3️⃣ Installer les dépendances Symfony
+      # 3️⃣ Installer dépendances Symfony (SANS auto-scripts)
       - name: Install backend dependencies (Symfony)
         run: |
           cd Server
-          composer install --no-dev --optimize-autoloader
-          php bin/console cache:clear --env=prod
+          composer install --no-dev --no-scripts --optimize-autoloader
+
+      # 4️⃣ Nettoyage et warmup cache Symfony (PROD)
+      - name: Symfony cache (prod)
+        run: |
+          cd Server
+          php bin/console cache:clear --env=prod --no-debug
           php bin/console cache:warmup --env=prod
 
-      # 4️⃣ Installer Node.js
+      # 5️⃣ Setup Node.js
       - name: Setup Node.js
         uses: actions/setup-node@v4
         with:
           node-version: 18
 
-      # 5️⃣ Build du frontend Next.js (export statique)
+      # 6️⃣ Build frontend Next.js (export statique)
       - name: Build frontend (Next.js)
         run: |
           cd Client
@@ -44,7 +49,7 @@ jobs:
           npm run build
           npm run export
 
-      # 6️⃣ Déploiement du backend Symfony
+      # 7️⃣ Déploiement backend Symfony
       - name: Deploy backend (Symfony)
         uses: SamKirkland/FTP-Deploy-Action@v4.3.4
         with:
@@ -62,8 +67,8 @@ jobs:
             **/var/cache/**
             **/var/log/**
 
-      # 7️⃣ Déploiement du frontend Next.js (build statique)
-      - name: Deploy frontend (Next.js static)
+      # 8️⃣ Déploiement frontend Next.js (statique)
+      - name: Deploy frontend (Next.js)
         uses: SamKirkland/FTP-Deploy-Action@v4.3.4
         with:
           server: ${{ secrets.FTP_HOST }}
