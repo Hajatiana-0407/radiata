@@ -17,10 +17,6 @@ class Reservations
 
     #[ORM\ManyToOne(inversedBy: 'reservations')]
     #[ORM\JoinColumn(nullable: false)]
-    private ?Clients $client = null;
-
-    #[ORM\ManyToOne(inversedBy: 'reservations')]
-    #[ORM\JoinColumn(nullable: false)]
     private ?Circuits $circuit = null;
 
     #[ORM\Column]
@@ -30,13 +26,13 @@ class Reservations
     private ?\DateTime $date_fin = null;
 
     #[ORM\Column]
-    private ?int $nombre_adultes = null;
+    private ?int $nombre_adultes = 1;
 
     #[ORM\Column]
-    private ?int $nombre_enfants = null;
+    private ?int $nombre_enfants = 0;
 
     #[ORM\Column]
-    private ?int $nombre_bebes = null;
+    private ?int $nombre_bebes = 0;
 
     #[ORM\Column]
     private ?bool $statut = null;
@@ -50,6 +46,9 @@ class Reservations
     #[ORM\ManyToMany(targetEntity: Services::class, inversedBy: 'reservations')]
     private Collection $Services;
 
+    #[ORM\ManyToOne(inversedBy: 'reservations')]
+    private ?Clients $client = null;
+
     public function __construct()
     {
         $this->Services = new ArrayCollection();
@@ -61,17 +60,6 @@ class Reservations
         return $this->id;
     }
 
-    public function getClient(): ?Clients
-    {
-        return $this->client;
-    }
-
-    public function setClient(?Clients $client): static
-    {
-        $this->client = $client;
-
-        return $this;
-    }
 
     public function getCircuit(): ?Circuits
     {
@@ -191,5 +179,47 @@ class Reservations
         $this->Services->removeElement($service);
 
         return $this;
+    }
+
+    public function getClient(): ?Clients
+    {
+        return $this->client;
+    }
+
+    public function setClient(?Clients $client): static
+    {
+        $this->client = $client;
+
+        return $this;
+    }
+
+
+
+    public function getDureeJours(): ?int
+    {
+        if ($this->date_debut && $this->getDateFin()) {
+            return $this->date_debut->diff($this->getDateFin())->days;
+        }
+
+        return $this->circuit ? $this->circuit->getDureeJours() : null;
+    }
+
+    public function getPrixTotal(): float
+    {
+        $total = 0;
+
+        if ($this->circuit) {
+            $prixBase = $this->circuit->getPrixBase();
+            $total += $prixBase * $this->nombre_adultes;
+            $total += $prixBase * $this->nombre_enfants * 0.7; // 30% réduction enfants
+            // Bébés gratuits
+        }
+
+        foreach ($this->getServices() as $service) {
+            // Ajouter le prix des services si disponible
+            // $total += $service->getPrix();
+        }
+
+        return $total;
     }
 }

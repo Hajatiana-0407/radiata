@@ -1,0 +1,33 @@
+<?php
+
+namespace App\Form;
+
+use App\Entity\Articles;
+use Symfony\Component\Form\AbstractType;
+use Symfony\Component\Form\FormBuilderInterface;
+use Symfony\Component\OptionsResolver\OptionsResolver;
+
+class ArticlesType extends AbstractType
+{
+    public function buildForm(FormBuilderInterface $builder, array $options): void
+    {
+        $builder
+            ->add('image_couverture')
+            ->add('titre')
+            ->add('slug')
+            ->add('contenu')
+            ->add('meto_titre')
+            ->add('meta_description')
+            ->add('date_publication')
+            ->add('actif')
+            ->add('date_creation')
+        ;
+    }
+
+    public function configureOptions(OptionsResolver $resolver): void
+    {
+        $resolver->setDefaults([
+            'data_class' => Articles::class,
+        ]);
+    }
+}

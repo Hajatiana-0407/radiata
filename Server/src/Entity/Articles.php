@@ -6,6 +6,7 @@ use App\Repository\ArticlesRepository;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
+use Doctrine\DBAL\Types\Types;
 
 #[ORM\Entity(repositoryClass: ArticlesRepository::class)]
 class Articles
@@ -19,25 +20,44 @@ class Articles
     #[ORM\Column(length: 255)]
     private ?string $image_couverture = null;
 
+    #[ORM\Column(length: 255)]
+    private ?string $titre = null;
+
+    #[ORM\Column(length: 255)]
+    private ?string $slug = null;
+
+    #[ORM\Column(type: Types::TEXT)]
+    private ?string $contenu = null;
+
+    #[ORM\Column(length: 255 , nullable: true )]
+    private ?string $meto_titre = '';
+
+    #[ORM\Column(length: 255 , nullable: true )]
+    private ?string $meta_description = '';
+
     #[ORM\Column]
     private ?\DateTime $date_publication = null;
 
     #[ORM\Column]
-    private ?bool $actif = null;
+    private ?bool $actif = true ;
 
     #[ORM\Column]
     private ?\DateTime $date_creation = null;
 
     /**
-     * @var Collection<int, ArticlesTraductions>
+     * @var Collection<int, Categories>
      */
-    #[ORM\OneToMany(targetEntity: ArticlesTraductions::class, mappedBy: 'article', orphanRemoval: true)]
-    private Collection $articlesTraductions;
+    #[ORM\ManyToMany(targetEntity: Categories::class, inversedBy: 'articles')]
+    private Collection $categories;
+
+    #[ORM\Column(length: 255, nullable: true)]
+    private ?string $autheur = null;
+
 
     public function __construct()
     {
-        $this->articlesTraductions = new ArrayCollection();
         $this->date_creation = new \DateTime();
+        $this->categories = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -53,6 +73,55 @@ class Articles
     public function setImageCouverture(string $image_couverture): static
     {
         $this->image_couverture = $image_couverture;
+
+        return $this;
+    }
+
+
+    public function getTitre(): ?string
+    {
+        return $this->titre;
+    }
+
+    public function setTitre(string $titre): static
+    {
+        $this->titre = $titre;
+
+        return $this;
+    }
+
+    public function getContenu(): ?string
+    {
+        return $this->contenu;
+    }
+
+    public function setContenu(string $contenu): static
+    {
+        $this->contenu = $contenu;
+
+        return $this;
+    }
+
+    public function getMetoTitre(): ?string
+    {
+        return $this->meto_titre;
+    }
+
+    public function setMetoTitre(string $meto_titre): static
+    {
+        $this->meto_titre = $meto_titre;
+
+        return $this;
+    }
+
+    public function getMetaDescription(): ?string
+    {
+        return $this->meta_description;
+    }
+
+    public function setMetaDescription(string $meta_description): static
+    {
+        $this->meta_description = $meta_description;
 
         return $this;
     }
@@ -93,32 +162,50 @@ class Articles
         return $this;
     }
 
-    /**
-     * @return Collection<int, ArticlesTraductions>
-     */
-    public function getArticlesTraductions(): Collection
+    public function getSlug(): ?string
     {
-        return $this->articlesTraductions;
+        return $this->slug;
     }
 
-    public function addArticlesTraduction(ArticlesTraductions $articlesTraduction): static
+    public function setSlug(string $slug): static
     {
-        if (!$this->articlesTraductions->contains($articlesTraduction)) {
-            $this->articlesTraductions->add($articlesTraduction);
-            $articlesTraduction->setArticle($this);
+        $this->slug = $slug;
+
+        return $this;
+    }
+
+    /**
+     * @return Collection<int, Categories>
+     */
+    public function getCategories(): Collection
+    {
+        return $this->categories;
+    }
+
+    public function addCategory(Categories $category): static
+    {
+        if (!$this->categories->contains($category)) {
+            $this->categories->add($category);
         }
 
         return $this;
     }
 
-    public function removeArticlesTraduction(ArticlesTraductions $articlesTraduction): static
+    public function removeCategory(Categories $category): static
     {
-        if ($this->articlesTraductions->removeElement($articlesTraduction)) {
-            // set the owning side to null (unless already changed)
-            if ($articlesTraduction->getArticle() === $this) {
-                $articlesTraduction->setArticle(null);
-            }
-        }
+        $this->categories->removeElement($category);
+
+        return $this;
+    }
+
+    public function getAutheur(): ?string
+    {
+        return $this->autheur;
+    }
+
+    public function setAutheur(?string $autheur): static
+    {
+        $this->autheur = $autheur;
 
         return $this;
     }

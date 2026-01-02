@@ -1,0 +1,18 @@
+# config/packages/easy_admin.yaml
+easy_admin:
+    site_name: 'Administration'
+    favicon_path: 'favicon.ico'
+    
+    design:
+        brand_color: '#1976D2'
+        form_theme:
+            - '@EasyAdmin/crud/form_theme.html.twig'
+    
+    # Désactiver le login par défaut
+    security:
+        enable_login: false
+    
+    # Configuration de base
+    list:
+        max_results: 20
+    

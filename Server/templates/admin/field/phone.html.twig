@@ -1,0 +1,13 @@
+{# templates/admin/field/phone.html.twig #}
+{% if field.value %}
+    {% set phone = field.value|replace({' ': ''}) %}
+    {% if phone|length == 10 %}
+        <a href="tel:+33{{ phone|slice(1) }}" class="text-nowrap">
+            +33 {{ phone|slice(1, 1) }} {{ phone|slice(2, 2) }} {{ phone|slice(4, 2) }} {{ phone|slice(6, 2) }} {{ phone|slice(8, 2) }}
+        </a>
+    {% else %}
+        {{ field.value }}
+    {% endif %}
+{% else %}
+    <span class="text-muted">Non renseigné</span>
+{% endif %}

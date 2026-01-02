@@ -18,8 +18,8 @@ class Devis
     #[ORM\ManyToOne(inversedBy: 'devis')]
     private ?Clients $client = null;
 
-    #[ORM\Column(length: 255)]
-    private ?string $reference_devis = null;
+    #[ORM\Column(length: 255, unique: true)]
+    private ?string $reference_devis = '';
 
     #[ORM\Column(length: 255, nullable: true)]
     private ?string $nom_client = null;
@@ -30,20 +30,21 @@ class Devis
     #[ORM\Column(length: 255, nullable: true)]
     private ?string $telephone = null;
 
-    #[ORM\Column]
-    private ?\DateTime $dates_souhaitees = null;
 
     #[ORM\Column]
-    private ?int $nombres_adultes = null;
+    private ?int $nombres_adultes = 1;
 
     #[ORM\Column]
-    private ?int $nombre_enfants = null;
+    private ?int $nombre_enfants = 0;
 
     #[ORM\Column]
-    private ?int $nombre_bebes = null;
+    private ?int $nombre_bebes = 0;
 
     #[ORM\Column(length: 255)]
     private ?string $statut = null;
+
+    #[ORM\Column]
+    private ?\DateTime $dates_souhaitees = null;
 
     #[ORM\Column]
     private ?\DateTime $date_creation = null;
@@ -64,7 +65,8 @@ class Devis
     {
         $this->circuits = new ArrayCollection();
         $this->services = new ArrayCollection();
-        $this->date_creation = new \DateTime() ; 
+        $this->date_creation = new \DateTime();
+        $this->generateReference();
     }
 
     public function getId(): ?int
@@ -250,5 +252,18 @@ class Devis
         $this->services->removeElement($service);
 
         return $this;
+    }
+
+    public function generateReference(): void
+    {
+        if ($this->reference_devis) {
+            return;
+        }
+
+        $this->reference_devis = sprintf(
+            'REF-%s-%04d',
+            date('Y'),
+            random_int(1000, 9999)
+        );
     }
 }

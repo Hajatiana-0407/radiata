@@ -1,0 +1,94 @@
+"use client"
+
+import { useEffect } from "react"
+import { useAppDispatch, useAppSelector } from "@/hooks/use-app-selector"
+import { fetchDestinations, setFilters, setPage } from "@/store/slices/destinationsSlice"
+import { Navbar } from "@/components/layout/navbar"
+import { Footer } from "@/components/layout/footer"
+import { DestinationCard } from "@/components/cards/destination-card"
+import { DestinationSearchForm } from "@/components/forms/destination-search-form"
+import { SkeletonCard } from "@/components/ui/skeleton"
+import { Button } from "@/components/ui/button"
+import { ChevronLeft, ChevronRight } from "lucide-react"
+import HeadingSection from "@/components/sections/heading-section"
+import Pagination from "@/components/ui/pagination"
+
+export default function DestinationsPage() {
+  const dispatch = useAppDispatch()
+  const { items, loading, error, page, totalPages, filters } = useAppSelector((state) => state.destinations)
+
+  useEffect(() => {
+    dispatch(
+      fetchDestinations({
+        page,
+        search: filters.search,
+        difficulty: filters.difficulty,
+        minPrice: filters.minPrice,
+        maxPrice: filters.maxPrice,
+      }) as any,
+    )
+  }, [dispatch, page, filters])
+
+  const handleSearch = (filterData: { search: string; difficulty: string; minPrice: string; maxPrice: string }) => {
+    dispatch(
+      setFilters({
+        search: filterData.search,
+        difficulty: filterData.difficulty,
+        minPrice: filterData.minPrice ? Number.parseFloat(filterData.minPrice) : null,
+        maxPrice: filterData.maxPrice ? Number.parseFloat(filterData.maxPrice) : null,
+      }) as any,
+    )
+    dispatch(setPage(1) as any)
+  }
+
+  const handleReset = () => {
+    dispatch(setFilters({ search: "", difficulty: null, minPrice: null, maxPrice: null }) as any)
+    dispatch(setPage(1) as any)
+  }
+
+
+  return (
+    <>
+      <Navbar />
+      <main className="min-h-screen bg-linear-to-b from-slate-50 to-white">
+
+        <HeadingSection title="Nos Destinations" description="Découvrez nos circuits inoubliables et préparez votre prochaine aventure">
+          <DestinationSearchForm onSearch={handleSearch} onReset={handleReset} compact={true} />
+        </HeadingSection>
+
+        <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 py-12">
+          {loading && items?.length === 0 ? (
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 mt-12">
+              {[...Array(6)].map((_, i) => (
+                <SkeletonCard key={i} />
+              ))}
+            </div>
+          ) : error ? (
+            <p className="text-center text-destructive py-12">{error}</p>
+          ) : items?.length === 0 ? (
+            <div className="text-center py-12">
+              <p className="text-muted-foreground mb-4">Aucune destination trouvée selon vos critères</p>
+              <Button onClick={handleReset}>Effacer les filtres</Button>
+            </div>
+          ) : (
+            <>
+              <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 mb-8 mt-8">
+                {items?.map((destination) => (
+                  <DestinationCard key={destination.id} destination={destination} />
+                ))}
+              </div>
+
+              {/* Pagination  */}
+              <Pagination
+                page={page}
+                totalPages={totalPages}
+                setPage={setPage}
+              />
+            </>
+          )}
+        </div>
+      </main>
+      <Footer />
+    </>
+  )
+}

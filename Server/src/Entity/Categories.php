@@ -5,6 +5,7 @@ namespace App\Entity;
 use App\Repository\CategoriesRepository;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
+use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
 
 #[ORM\Entity(repositoryClass: CategoriesRepository::class)]
@@ -19,28 +20,71 @@ class Categories
     private ?string $icone = null;
 
     #[ORM\Column(length: 255)]
+    private ?string $nom = null;
+
+    #[ORM\Column(length: 255)]
+    private ?string $description = null;
+
+    #[ORM\Column(length: 255)]
     private ?string $couleur = null;
 
     #[ORM\Column(length: 255)]
     private ?int $ordre_affichage = null;
 
     #[ORM\Column]
-    private ?bool $actif = null;
-
-    #[ORM\Column]
     private ?\DateTime $date_creation = null;
 
-    #[ORM\OneToOne(mappedBy: 'categorie', cascade: ['persist', 'remove'])]
-    private ?CategoriesTraductions $categoriesTraductions = null;
+    #[ORM\Column]
+    private ?bool $actif = true;
+
+    /**
+     * @var Collection<int, Circuits>
+     */
+    #[ORM\ManyToMany(targetEntity: Circuits::class, mappedBy: 'categories')]
+    private Collection $circuits;
+
+    /**
+     * @var Collection<int, Articles>
+     */
+    #[ORM\ManyToMany(targetEntity: Articles::class, mappedBy: 'categories')]
+    private Collection $articles;
+
 
     public function __construct()
-    { 
+    {
         $this->date_creation = new \DateTime();
+        $this->circuits = new ArrayCollection();
+        $this->articles = new ArrayCollection();
     }
 
     public function getId(): ?int
     {
         return $this->id;
+    }
+
+
+    public function getNom(): ?string
+    {
+        return $this->nom;
+    }
+
+    public function setNom(string $nom): static
+    {
+        $this->nom = $nom;
+
+        return $this;
+    }
+
+    public function getDescription(): ?string
+    {
+        return $this->description;
+    }
+
+    public function setDescription(string $description): static
+    {
+        $this->description = $description;
+
+        return $this;
     }
 
     public function getIcone(): ?string
@@ -104,22 +148,60 @@ class Categories
     }
 
     /**
-     * @return Collection<int, CategoriesTraductions>
+     * @return Collection<int, Circuits>
      */
-
-    public function getCategoriesTraductions(): ?CategoriesTraductions
+    public function getCircuits(): Collection
     {
-        return $this->categoriesTraductions;
+        return $this->circuits;
     }
 
-    public function setCategoriesTraductions(CategoriesTraductions $categoriesTraductions): static
+    public function addCircuit(Circuits $circuit): static
     {
-        // set the owning side of the relation if necessary
-        if ($categoriesTraductions->getCategorie() !== $this) {
-            $categoriesTraductions->setCategorie($this);
+        if (!$this->circuits->contains($circuit)) {
+            $this->circuits->add($circuit);
+            $circuit->addCategory($this);
         }
 
-        $this->categoriesTraductions = $categoriesTraductions;
+        return $this;
+    }
+
+    public function removeCircuit(Circuits $circuit): static
+    {
+        if ($this->circuits->removeElement($circuit)) {
+            $circuit->removeCategory($this);
+        }
+
+        return $this;
+    }
+
+    public function __toString(): string
+    {
+        return $this->getNom(); 
+    }
+
+    /**
+     * @return Collection<int, Articles>
+     */
+    public function getArticles(): Collection
+    {
+        return $this->articles;
+    }
+
+    public function addArticle(Articles $article): static
+    {
+        if (!$this->articles->contains($article)) {
+            $this->articles->add($article);
+            $article->addCategory($this);
+        }
+
+        return $this;
+    }
+
+    public function removeArticle(Articles $article): static
+    {
+        if ($this->articles->removeElement($article)) {
+            $article->removeCategory($this);
+        }
 
         return $this;
     }

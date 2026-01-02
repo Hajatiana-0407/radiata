@@ -57,11 +57,7 @@ class Clients
     #[ORM\OneToMany(targetEntity: Devis::class, mappedBy: 'client')]
     private Collection $devis;
 
-    /**
-     * @var Collection<int, Reservations>
-     */
-    #[ORM\OneToMany(targetEntity: Reservations::class, mappedBy: 'client', orphanRemoval: true)]
-    private Collection $reservations;
+
 
     /**
      * @var Collection<int, Favoris>
@@ -78,14 +74,20 @@ class Clients
     #[ORM\OneToMany(targetEntity: MessagesContact::class, mappedBy: 'client')]
     private Collection $messagesContacts;
 
+    /**
+     * @var Collection<int, Reservations>
+     */
+    #[ORM\OneToMany(targetEntity: Reservations::class, mappedBy: 'client')]
+    private Collection $reservations;
+
     public function __construct()
     {
         $this->clientsTokens = new ArrayCollection();
         $this->devis = new ArrayCollection();
-        $this->reservations = new ArrayCollection();
         $this->favoris = new ArrayCollection();
         $this->messagesContacts = new ArrayCollection();
-        $this->date_creation = new \DateTime() ; 
+        $this->date_creation = new \DateTime();
+        $this->reservations = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -273,35 +275,6 @@ class Clients
         return $this;
     }
 
-    /**
-     * @return Collection<int, Reservations>
-     */
-    public function getReservations(): Collection
-    {
-        return $this->reservations;
-    }
-
-    public function addReservation(Reservations $reservation): static
-    {
-        if (!$this->reservations->contains($reservation)) {
-            $this->reservations->add($reservation);
-            $reservation->setClient($this);
-        }
-
-        return $this;
-    }
-
-    public function removeReservation(Reservations $reservation): static
-    {
-        if ($this->reservations->removeElement($reservation)) {
-            // set the owning side to null (unless already changed)
-            if ($reservation->getClient() === $this) {
-                $reservation->setClient(null);
-            }
-        }
-
-        return $this;
-    }
 
     /**
      * @return Collection<int, Favoris>
@@ -382,6 +355,50 @@ class Clients
             }
         }
 
+        return $this;
+    }
+
+    public function __toString(): string
+    {
+        return $this->nom . ' ' . $this->prenom;
+    }
+
+    /**
+     * @return Collection<int, Reservations>
+     */
+    public function getReservations(): Collection
+    {
+        return $this->reservations;
+    }
+
+    public function addReservation(Reservations $reservation): static
+    {
+        if (!$this->reservations->contains($reservation)) {
+            $this->reservations->add($reservation);
+            $reservation->setClient($this);
+        }
+
+        return $this;
+    }
+
+    public function removeReservation(Reservations $reservation): static
+    {
+        if ($this->reservations->removeElement($reservation)) {
+            // set the owning side to null (unless already changed)
+            if ($reservation->getClient() === $this) {
+                $reservation->setClient(null);
+            }
+        }
+
+        return $this;
+    }
+
+    public function setPlainPassword(?string $plainPassword): self
+    {
+        if ($plainPassword) {
+            // Hasher le mot de passe ici
+            $this->mot_de_passe = password_hash($plainPassword, PASSWORD_DEFAULT);
+        }
         return $this;
     }
 }

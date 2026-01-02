@@ -1,0 +1,58 @@
+{# templates/admin/field/media_preview.html.twig #}
+{% set mediaType = entity.typeMedia %}
+{% set filePath = entity.cheminFichier %}
+{% set titre = entity.titre %}
+
+<div class="media-preview d-flex align-items-center gap-2">
+    {% if mediaType == 'image' and filePath %}
+        {# Aperçu image - chemin relatif #}
+        <img src="/uploads/galerie/images/{{ filePath }}" 
+             alt="{{ titre }}"
+             style="width: 60px; height: 40px; object-fit: cover; border-radius: 4px;"
+             onerror="this.onerror=null; this.style.display='none'; this.parentNode.innerHTML='<i class=\'fas fa-image fa-2x text-muted\'></i>';">
+        <div class="small">
+            <div class="text-truncate" style="max-width: 150px;">{{ filePath }}</div>
+            <div class="text-muted">Image</div>
+        </div>
+    {% elseif mediaType == 'video' and filePath %}
+        {# Icône vidéo #}
+        <div class="text-center">
+            <i class="fas fa-video fa-2x text-danger"></i>
+            <div class="small text-muted mt-1">Vidéo</div>
+        </div>
+    {% elseif mediaType == 'pdf' and filePath %}
+        {# Icône PDF #}
+        <div class="text-center">
+            <i class="fas fa-file-pdf fa-2x text-danger"></i>
+            <div class="small text-muted mt-1">PDF</div>
+        </div>
+    {% elseif mediaType == 'document' and filePath %}
+        {# Icône document #}
+        <div class="text-center">
+            <i class="fas fa-file-word fa-2x text-primary"></i>
+            <div class="small text-muted mt-1">Document</div>
+        </div>
+    {% elseif mediaType == 'audio' and filePath %}
+        {# Icône audio #}
+        <div class="text-center">
+            <i class="fas fa-file-audio fa-2x text-warning"></i>
+            <div class="small text-muted mt-1">Audio</div>
+        </div>
+    {% elseif mediaType == 'archive' and filePath %}
+        {# Icône archive #}
+        <div class="text-center">
+            <i class="fas fa-file-archive fa-2x text-secondary"></i>
+            <div class="small text-muted mt-1">Archive</div>
+        </div>
+    {% else %}
+        {# Icône par défaut #}
+        <div class="text-center">
+            {% if mediaType == 'image' %}
+                <i class="fas fa-image fa-2x text-muted"></i>
+            {% else %}
+                <i class="fas fa-file fa-2x text-muted"></i>
+            {% endif %}
+            <div class="small text-muted mt-1">{{ mediaType|default('Fichier') }}</div>
+        </div>
+    {% endif %}
+</div>

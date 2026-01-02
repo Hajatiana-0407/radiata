@@ -1,0 +1,77 @@
+{# templates/admin/profile/simple_form.html.twig #}
+{% extends '@EasyAdmin/page/content.html.twig' %}
+
+{% block page_title %}Mon Profil{% endblock %}
+
+{% block page_content %}
+<div class="container py-4">
+    <div class="row">
+        <div class="col-md-5">
+            <div class="">
+                <div class="card-body">
+                    <!-- Messages -->
+                    {% for flash in app.flashes('success') %}
+                        <div class="alert alert-success mb-3">
+                            {{ flash }}
+                        </div>
+                    {% endfor %}
+                    
+                    {% for flash in app.flashes('error') %}
+                        <div class="alert alert-danger mb-3">
+                            {{ flash }}
+                        </div>
+                    {% endfor %}
+                    
+                    <!-- Formulaire -->
+                    <form method="post">
+                        <!-- Email -->
+                        <div class="mb-3">
+                            <label class="form-label">Email</label>
+                            <input type="email" 
+                                   name="email" 
+                                   value="{{ user.email }}" 
+                                   class="form-control" 
+                                   required>
+                        </div>
+                        
+                        <!-- Mot de passe actuel -->
+                        <div class="mb-3">
+                            <label class="form-label">Mot de passe actuel *</label>
+                            <input type="password" 
+                                   name="current_password" 
+                                   class="form-control" 
+                                   required>
+                        </div>
+                        
+                        <!-- Nouveau mot de passe -->
+                        <div class="mb-3">
+                            <label class="form-label">Nouveau mot de passe</label>
+                            <input type="password" 
+                                   name="new_password" 
+                                   class="form-control">
+                        </div>
+                        
+                        <!-- Confirmation -->
+                        <div class="mb-4">
+                            <label class="form-label">Confirmer le nouveau mot de passe</label>
+                            <input type="password" 
+                                   name="confirm_password" 
+                                   class="form-control">
+                        </div>
+                        
+                        <!-- Boutons -->
+                        <div class="d-flex gap-2">
+                            <a href="{{ path('admin') }}" class="btn btn-secondary flex-grow-1">
+                                Annuler
+                            </a>
+                            <button type="submit" class="btn btn-primary flex-grow-1">
+                                Enregistrer
+                            </button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
