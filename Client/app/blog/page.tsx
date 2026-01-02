@@ -10,6 +10,7 @@ import { Loader } from '@/components/ui/loader';
 import HeadingSection from '@/components/sections/heading-section';
 import { API_BASE_URL } from '@/lib/api/client';
 import Pagination from '@/components/ui/pagination';
+import Link from 'next/link';
 
 export default function BlogPage() {
   const { items: articles, page, filters, loading, totalPages } = useAppSelector(state => state.articles);
@@ -24,7 +25,7 @@ export default function BlogPage() {
   }, [dispatch, page, filters])
 
 
-  if (loading && articles.length == 0 ) {
+  if (loading && articles.length == 0) {
     return (
       <>
         <Navbar />
@@ -82,9 +83,13 @@ export default function BlogPage() {
                   <p className="text-slate-600 mb-6">{articles[0].content}</p>
                   <div className="flex items-center justify-between">
                     <span className="text-sm font-semibold text-slate-700">Par {articles[0].author}</span>
-                    <a href="#" className="text-[#40e0d0] font-bold hover:underline">
-                      Lire plus →
-                    </a>
+                    <Link
+                      href={`/blog/${articles[0].slug}`}
+                    >
+                      <button className="text-[#40e0d0] font-bold hover:underline">
+                        Lire plus →
+                      </button>
+                    </Link>
                   </div>
                 </div>
               </div>
@@ -124,9 +129,13 @@ export default function BlogPage() {
                   <p className="text-sm text-slate-600 mb-4 line-clamp-2">{article.content}</p>
                   <div className="flex items-center justify-between">
                     <span className="text-xs text-slate-600">{article.author}</span>
-                    <a href="#" className="text-[#7ac243] text-sm font-semibold hover:underline">
-                      Lire →
-                    </a>
+                    <Link
+                      href={`/blog/${article.slug}`}
+                    >
+                      <button className="text-[#7ac243] text-sm font-semibold hover:underline">
+                        Lire →
+                      </button>
+                    </Link >
                   </div>
                 </div>
               </article>

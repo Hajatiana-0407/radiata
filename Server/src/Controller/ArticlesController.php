@@ -62,9 +62,35 @@ final class ArticlesController extends AbstractController
     #[Route('/{slug}', name: 'app_articles_show', methods: ['GET'])]
     public function show(Articles $article): Response
     {
-        return $this->render('articles/show.html.twig', [
-            'article' => $article,
-        ]);
+
+        $article = [
+            'id' => $article->getId(),
+            'title' => $article->getTitre(),
+            'slug' => $article->getSlug(),
+            'image' => $article->getImageCouverture(),
+            'content' => $article->getContenu(),
+            'author' => $article->getAutheur(),
+            'date' => $article->getDatePublication()?->format('Y-m-d H:i:s'),
+            'date_creation' => $article->getDateCreation()?->format('Y-m-d H:i:s'),
+            'category' => array_map(function ($category) {
+                return [
+                    'id' => $category->getId(),
+                    'name' => $category->getNom(),
+                    'description' => $category->getDescription(),
+                ];
+            }, $article->getCategories()->toArray()),
+            'meta_title' => $article->getMetoTitre(),
+            'meta_description' => $article->getMetaDescription(),
+        ];
+
+
+        $response = [
+            'success' => true,
+            'message' => 'Détails de \'erticle récupérés avec succès',
+            'data' => $article,
+        ];
+
+        return $this->json($response);
     }
 
 

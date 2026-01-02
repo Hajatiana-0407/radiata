@@ -9,6 +9,7 @@ import dashboardReducer from './slices/dashboardSlice';
 import adminDestinationsReducer from './slices/adminDestinationsSlice';
 import adminReservationsReducer from './slices/adminReservationsSlice';
 import articlesReducer from './slices/articlesSlice';
+import articlesDetailsReducer from './slices/articleDetailSlice'
 
 export const store = configureStore({
   reducer: {
@@ -21,7 +22,8 @@ export const store = configureStore({
     dashboard: dashboardReducer,
     adminDestinations: adminDestinationsReducer,
     adminReservations: adminReservationsReducer,
-    articles : articlesReducer
+    articles: articlesReducer,
+    articlesDetails: articlesDetailsReducer
   },
 });
 
