@@ -14,8 +14,8 @@ export function Navbar() {
     { label: "Accueil", href: "/" },
     { label: "Destinations", href: "/destinations" },
     { label: "Services", href: "/services" },
-    { label: "À Propos", href: "/about" },
     { label: "Gallerie", href: "/gallery" },
+    { label: "À Propos", href: "/about" },
     { label: "Blog", href: "/blog" },
     { label: "Contact", href: "/contact" },
   ]
