@@ -1,0 +1,76 @@
+name: Deploy Symfony & Next.js
+
+on:
+  push:
+    branches:
+      - main
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+
+    steps:
+      # 1️⃣ Récupérer le code
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      # 2️⃣ Installer PHP + Composer
+      - name: Setup PHP
+        uses: shivammathur/setup-php@v2
+        with:
+          php-version: '8.2'
+          extensions: mbstring, intl, pdo_mysql
+          tools: composer
+
+      # 3️⃣ Installer les dépendances Symfony
+      - name: Install backend dependencies (Symfony)
+        run: |
+          cd Server
+          composer install --no-dev --optimize-autoloader
+          php bin/console cache:clear
+          php bin/console cache:warmup
+
+      # 4️⃣ Installer Node.js
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: 18
+
+      # 5️⃣ Build du frontend Next.js (export statique)
+      - name: Build frontend (Next.js)
+        run: |
+          cd Client
+          npm ci
+          npm run build
+          npm run export
+
+      # 6️⃣ Déploiement du backend Symfony
+      - name: Deploy backend (Symfony)
+        uses: SamKirkland/FTP-Deploy-Action@v4.3.4
+        with:
+          server: ${{ secrets.FTP_HOST }}
+          username: ${{ secrets.FTP_USER }}
+          password: ${{ secrets.FTP_PASSWORD }}
+          protocol: ftp
+          local-dir: ./Server/
+          server-dir: /Server/
+          exclude: |
+            **/.git/**
+            **/.github/**
+            **/node_modules/**
+            **/.env*
+            **/var/cache/**
+            **/var/log/**
+
+      # 7️⃣ Déploiement du frontend Next.js (build statique)
+      - name: Deploy frontend (Next.js static)
+        uses: SamKirkland/FTP-Deploy-Action@v4.3.4
+        with:
+          server: ${{ secrets.FTP_HOST }}
+          username: ${{ secrets.FTP_USER }}
+          password: ${{ secrets.FTP_PASSWORD }}
+          protocol: ftp
+          local-dir: ./Client/out/
+          server-dir: /
+          exclude: |
+            **/Server/**
