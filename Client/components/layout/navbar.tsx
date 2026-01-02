@@ -15,6 +15,7 @@ export function Navbar() {
     { label: "Destinations", href: "/destinations" },
     { label: "Services", href: "/services" },
     { label: "À Propos", href: "/about" },
+    { label: "Gallerie", href: "/gallery" },
     { label: "Blog", href: "/blog" },
     { label: "Contact", href: "/contact" },
   ]
