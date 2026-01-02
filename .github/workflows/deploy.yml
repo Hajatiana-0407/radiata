@@ -27,8 +27,8 @@ jobs:
         run: |
           cd Server
           composer install --no-dev --optimize-autoloader
-          php bin/console cache:clear
-          php bin/console cache:warmup
+          php bin/console cache:clear --env=prod
+          php bin/console cache:warmup --env=prod
 
       # 4️⃣ Installer Node.js
       - name: Setup Node.js
