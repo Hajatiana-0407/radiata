@@ -84,7 +84,7 @@ export default function BlogPage() {
                   <div className="flex items-center justify-between">
                     <span className="text-sm font-semibold text-slate-700">Par {articles[0].author}</span>
                     <Link
-                      href={`/blog/${articles[0].slug}`}
+                      href={`/blog/article?id=${articles[0].slug}`}
                     >
                       <button className="text-[#40e0d0] font-bold hover:underline">
                         Lire plus →
@@ -130,7 +130,7 @@ export default function BlogPage() {
                   <div className="flex items-center justify-between">
                     <span className="text-xs text-slate-600">{article.author}</span>
                     <Link
-                      href={`/blog/${article.slug}`}
+                      href={`/blog/article?id=${article.slug}`}
                     >
                       <button className="text-[#7ac243] text-sm font-semibold hover:underline">
                         Lire →

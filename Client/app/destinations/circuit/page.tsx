@@ -1,7 +1,7 @@
 'use client';
 
-import { useEffect, useState } from 'react';
-import { useParams, useRouter } from 'next/navigation';
+import { Suspense, useEffect, useState } from 'react';
+import { useParams, useRouter, useSearchParams } from 'next/navigation';
 import { useAppDispatch, useAppSelector } from '@/hooks/use-app-selector';
 import { fetchDestinationById } from '@/store/slices/destinationDetailSlice';
 import { Navbar } from '@/components/layout/navbar';
@@ -13,19 +13,15 @@ import { getDificultyLabel } from '@/lib/utils';
 import { API_BASE_URL } from '@/lib/api/client';
 import { MapPin, Clock, Users, Leaf, Shield, Heart, Star, Share2, Calendar, CheckCircle, Trees, AlertCircle, BadgeCheck, ChevronRight } from 'lucide-react';
 
-export async function generateStaticParams() {
-  return [];
-}
-
-export default function DestinationDetailPage() {
-  const params = useParams();
+ function DestinationDetailPage() {
+  const params = useSearchParams();
   const router = useRouter();
   const dispatch = useAppDispatch();
   const { destination, loading, error } = useAppSelector(
     (state) => state.destinationDetail
   );
 
-  const id = params.id as string;
+  const id = params.get('id');
   // **************************** //
   const [activeImage, setActiveImage] = useState(0);
 
@@ -83,11 +79,9 @@ export default function DestinationDetailPage() {
   if (loading) {
     return (
       <>
-        <Navbar />
         <main className="flex items-center justify-center min-h-screen">
           <Loader />
         </main>
-        <Footer />
       </>
     );
   }
@@ -95,7 +89,6 @@ export default function DestinationDetailPage() {
   if (error || !destination) {
     return (
       <>
-        <Navbar />
         <main className="min-h-screen px-4 py-12">
           <div className="mx-auto max-w-4xl">
             <div className="flex gap-3 items-start p-4 rounded-lg bg-destructive/10 border border-destructive/20 mb-6">
@@ -108,14 +101,12 @@ export default function DestinationDetailPage() {
             <Button onClick={() => router.back()}>Revenir</Button>
           </div>
         </main>
-        <Footer />
       </>
     );
   }
 
   return (
     <>
-      <Navbar />
       <main className="min-h-screen bg-linear-to-b from-emerald-50 to-white">
         {/* Section Hero avec galerie */}
         <div className="relative h-[70vh] w-full ">
@@ -454,6 +445,23 @@ export default function DestinationDetailPage() {
           </div>
         </div>
       </main>
+    </>
+  );
+}
+
+
+// Page principale avec Suspense
+export default function BlogArticlePage() {
+  return (
+    <>
+      <Navbar />
+      <Suspense fallback={
+        <main className="flex items-center justify-center min-h-screen">
+          <Loader />
+        </main>
+      }>
+        <DestinationDetailPage />
+      </Suspense>
       <Footer />
     </>
   );
