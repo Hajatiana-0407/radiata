@@ -40,7 +40,14 @@ jobs:
         uses: actions/setup-node@v4
         with:
           node-version: 20
-
+          
+      #  Créer .env Next.js
+      - name: Create .env for Next.js
+        run: |
+          cd Client
+          echo "NEXT_PUBLIC_API_URL=${{ secrets.NEXT_PUBLIC_API_URL }}" >> .env
+          echo "NEXT_PUBLIC_APP_NAME=MyApp" >> .env
+          
       # 6️⃣ Build frontend Next.js (export statique)
       - name: Build frontend (Next.js)
         run: |
