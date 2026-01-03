@@ -91,7 +91,7 @@ export function DestinationCard({ destination, link = true }: DestinationCardPro
   )
 
   if (link) {
-    return <Link href={`/destinations/${destination.slug}`}>{content}</Link>
+    return <Link href={`/destinations/circuit?id=${destination.slug}`}>{content}</Link>
   }
 
   return content
