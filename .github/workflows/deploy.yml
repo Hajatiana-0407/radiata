@@ -28,36 +28,41 @@ jobs:
           cd Server
           composer install --no-dev --no-scripts --optimize-autoloader
 
-      # 4️⃣ Nettoyage et warmup cache Symfony (PROD)
+      # 4️⃣ Setup Node.js ✅ (OBLIGATOIRE AVANT npm)
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: 20
+
+      # 5️⃣ Build assets Symfony (Encore)
+      - name: Build Symfony assets
+        run: |
+          cd Server
+          npm install
+          npm run build
+
+      # 6️⃣ Nettoyage et warmup cache Symfony (PROD)
       - name: Symfony cache (prod)
         run: |
           cd Server
           php bin/console cache:clear --env=prod --no-debug
           php bin/console cache:warmup --env=prod
-          npm install
-          npm run build
 
-      # 5️⃣ Setup Node.js
-      - name: Setup Node.js
-        uses: actions/setup-node@v4
-        with:
-          node-version: 20
-          
       #  Créer .env Next.js
       - name: Create .env for Next.js
         run: |
           cd Client
           echo "NEXT_PUBLIC_API_URL=${{ secrets.NEXT_PUBLIC_API_URL }}" >> .env
           echo "NEXT_PUBLIC_APP_NAME=MyApp" >> .env
-          
-      # 6️⃣ Build frontend Next.js (export statique)
+
+      # 7️⃣ Build frontend Next.js (export statique)
       - name: Build frontend (Next.js)
         run: |
           cd Client
           npm install --legacy-peer-deps
           npm run build
 
-      # 7️⃣ Déploiement backend Symfony
+      # 8️⃣ Déploiement backend Symfony
       - name: Deploy backend (Symfony)
         uses: SamKirkland/FTP-Deploy-Action@v4.3.4
         with:
@@ -75,7 +80,7 @@ jobs:
             **/var/cache/**
             **/var/log/**
 
-      # 8️⃣ Déploiement frontend Next.js (statique)
+      # 9️⃣ Déploiement frontend Next.js (statique)
       - name: Deploy frontend (Next.js)
         uses: SamKirkland/FTP-Deploy-Action@v4.3.4
         with:
