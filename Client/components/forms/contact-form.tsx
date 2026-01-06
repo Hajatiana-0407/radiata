@@ -7,11 +7,6 @@ import { CustomInput } from '@/components/ui/custom-input';
 import { CustomTextarea } from '@/components/ui/custom-textarea';
 import {
   InputGroup,
-  InputGroupAddon,
-  InputGroupButton,
-  InputGroupText,
-  InputGroupInput,
-  InputGroupTextarea
 } from '@/components/ui/input-group';
 import { Button } from '@/components/ui/button';
 import { LoaderSmall } from '@/components/ui/loader';
@@ -68,9 +63,9 @@ export function ContactForm() {
     <form onSubmit={handleSubmit} className="space-y-6 max-w-2xl">
       {error && <ErrorMessage message={error} />}
 
-      <InputGroup label="Name" required error={fieldErrors.name}>
+      <InputGroup label="Nom" required error={fieldErrors.name}>
         <CustomInput
-          placeholder="Your name"
+          placeholder="Votre nom"
           value={formData.name}
           onChange={(e) => setFormData({ ...formData, name: e.target.value })}
           error={!!fieldErrors.name}
@@ -80,7 +75,7 @@ export function ContactForm() {
       <InputGroup label="Email" required error={fieldErrors.email}>
         <CustomInput
           type="email"
-          placeholder="your@email.com"
+          placeholder="votreemail@email.com"
           value={formData.email}
           onChange={(e) =>
             setFormData({ ...formData, email: e.target.value })
@@ -89,9 +84,9 @@ export function ContactForm() {
         />
       </InputGroup>
 
-      <InputGroup label="Subject" required error={fieldErrors.subject}>
+      <InputGroup label="Sujet" required error={fieldErrors.subject}>
         <CustomInput
-          placeholder="What's this about?"
+          placeholder="Quel est l'objet de votre message ?"
           value={formData.subject}
           onChange={(e) =>
             setFormData({ ...formData, subject: e.target.value })
@@ -102,7 +97,7 @@ export function ContactForm() {
 
       <InputGroup label="Message" required error={fieldErrors.message}>
         <CustomTextarea
-          placeholder="Tell us what you'd like to know..."
+          placeholder="Écrivez votre message ici..."
           value={formData.message}
           onChange={(e) =>
             setFormData({ ...formData, message: e.target.value })
@@ -114,10 +109,10 @@ export function ContactForm() {
       <Button type="submit" disabled={loading} className="w-full">
         {loading ? (
           <>
-            <LoaderSmall /> Sending...
+            <LoaderSmall /> Envoi en cours...
           </>
         ) : (
-          'Send Message'
+          'Envoyer le message'
         )}
       </Button>
     </form>

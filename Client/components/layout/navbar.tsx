@@ -24,7 +24,7 @@ export function Navbar() {
     <>
       <div className="bg-[#7ac243]">
         <div className="flex items-center justify-end flex-wrap gap-4">
-          <div className="flex items-center gap-6 flex-wrap md:bg-[#40e0d0] px-15 py-2 pr-6 sm:pr-10 md:pr-16 lg:pr-24 xl:pr-32 rounded-l-full">
+          <div className="flex items-center gap-6 flex-wrap md:bg-[#40e0d0] px-15 py-2 pr-6 sm:pr-10 md:pr-16 lg:pr-24 xl:pr-32 rounded-l-xl">
             <a
               href="tel:+33123456789"
               className="flex items-center gap-2 text-white hover:text-white hover:scale-105 transition-transform font-medium"
