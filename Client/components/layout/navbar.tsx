@@ -17,6 +17,7 @@ export function Navbar() {
     { label: "Gallerie", href: "/gallery" },
     { label: "À Propos", href: "/about" },
     { label: "Blog", href: "/blog" },
+    { label: "faq", href: "/faq" },
     { label: "Contact", href: "/contact" },
   ]
 
