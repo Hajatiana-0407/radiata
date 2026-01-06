@@ -4,7 +4,7 @@ import { useState } from "react"
 import Link from "next/link"
 import { useAppSelector } from "@/hooks/use-app-selector"
 import { Button } from "@/components/ui/button"
-import { Phone, Mail } from "lucide-react"
+import { Phone, Mail, Calendar } from "lucide-react"
 
 export function Navbar() {
   const { user } = useAppSelector((state) => state.auth)
@@ -57,7 +57,7 @@ export function Navbar() {
       {/* Main Navbar */}
       <nav className="sticky top-0 z-50" style={{ backgroundColor: "white" }}>
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="flex h-24 items-center justify-between">
+          <div className="flex h-[5.1rem] items-center justify-between">
             <Link href="/" className="flex items-center gap-3 font-bold text-xl hover:opacity-80 transition-opacity h-full">
               <img src="./logo-no-bg.png" alt="" className="h-40" />
             </Link>
@@ -83,6 +83,9 @@ export function Navbar() {
                     className="font-semibold shadow-lg hover:shadow-xl transition-shadow cursor-pointer"
                     style={{ backgroundColor: "#40e0d0", color: "#333" }}
                   >
+                    <span>
+                      <Calendar className="h-5 w-5" />
+                    </span>
                     Réserver Maintenant
                   </Button>
                 </Link>
