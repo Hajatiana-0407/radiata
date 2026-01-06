@@ -2,6 +2,7 @@
 
 import { Navbar } from '@/components/layout/navbar';
 import { Footer } from '@/components/layout/footer';
+import HeadingSection from '@/components/sections/heading-section';
 
 export default function AboutPage() {
   return (
@@ -9,14 +10,7 @@ export default function AboutPage() {
       <Navbar />
 
       {/* Hero Section */}
-      <section className="py-16 px-4 bg-gradient-to-r from-[#7ac243] to-[#40e0d0]">
-        <div className="max-w-4xl mx-auto text-center text-white">
-          <h1 className="text-4xl md:text-5xl font-bold mb-4">À Propos de Radiata</h1>
-          <p className="text-lg opacity-90">
-            Découvrez notre histoire et notre mission de rendre l'exploration accessible à tous
-          </p>
-        </div>
-      </section>
+      <HeadingSection title="À Propos de Radiata" description="Découvrez notre histoire et notre mission de rendre l'exploration accessible à tous" />
 
       {/* Our Story */}
       <section className="py-16 px-4">

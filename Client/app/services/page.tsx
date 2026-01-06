@@ -2,6 +2,7 @@
 
 import { Navbar } from '@/components/layout/navbar';
 import { Footer } from '@/components/layout/footer';
+import HeadingSection from '@/components/sections/heading-section';
 
 export default function ServicesPage() {
   const services = [
@@ -64,14 +65,7 @@ export default function ServicesPage() {
       <Navbar />
 
       {/* Hero Section */}
-      <section className="py-16 px-4 bg-gradient-to-r from-[#7ac243] to-[#40e0d0]">
-        <div className="max-w-4xl mx-auto text-center text-white">
-          <h1 className="text-4xl md:text-5xl font-bold mb-4">Nos Services</h1>
-          <p className="text-lg opacity-90">
-            Une gamme complète de services pour une aventure sur mesure
-          </p>
-        </div>
-      </section>
+      <HeadingSection title="Nos Services" description="Une gamme complète de services pour une aventure sur mesure" />
 
       {/* Services Grid */}
       <section className="py-16 px-4">
@@ -104,11 +98,10 @@ export default function ServicesPage() {
             {packages.map((pkg) => (
               <div
                 key={pkg.name}
-                className={`rounded-lg p-8 transition-all ${
-                  pkg.highlight
+                className={`rounded-lg p-8 transition-all ${pkg.highlight
                     ? 'bg-gradient-to-br from-[#7ac243] to-[#40e0d0] text-white shadow-xl scale-105'
                     : 'bg-white border-2 border-slate-200 text-slate-900'
-                }`}
+                  }`}
               >
                 {pkg.highlight && (
                   <div className="text-center mb-4 bg-white bg-opacity-20 px-3 py-1 rounded-full inline-block">
@@ -129,11 +122,10 @@ export default function ServicesPage() {
                   ))}
                 </ul>
                 <button
-                  className={`w-full py-3 rounded-lg font-bold transition-all ${
-                    pkg.highlight
+                  className={`w-full py-3 rounded-lg font-bold transition-all ${pkg.highlight
                       ? 'bg-white text-[#7ac243] hover:bg-slate-100'
                       : 'bg-[#7ac243] text-white hover:bg-[#6ab12d]'
-                  }`}
+                    }`}
                 >
                   Choisir ce forfait
                 </button>
