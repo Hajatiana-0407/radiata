@@ -50,14 +50,12 @@ function ArticleDetailPage() {
             <button onClick={() => router.back()} className="text-[#40e0d0] font-semibold">Retour</button>
           </div>
         </main>
-        <Footer />
       </>
     );
   }
 
   return (
     <>
-      <Navbar />
       <main className="min-h-screen bg-white">
         {/* Hero */}
         <section className="relative h-96 w-full">
