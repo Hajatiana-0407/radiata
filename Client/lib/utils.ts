@@ -31,3 +31,15 @@ export const DIFFICULTY_LABELS: Record<number, string> = {
   4: 'Expert',
   5: 'Extrême',
 };
+
+
+export const navItems = [
+  { label: "Accueil", href: "/" },
+  { label: "Destinations", href: "/destinations" },
+  { label: "Services", href: "/services" },
+  { label: "Gallerie", href: "/gallery" },
+  { label: "À Propos", href: "/about" },
+  { label: "Blog", href: "/blog" },
+  { label: "faq", href: "/faq" },
+  { label: "Contact", href: "/contact" },
+]
