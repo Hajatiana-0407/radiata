@@ -29,6 +29,9 @@ class Circuits
     #[ORM\Column(length: 255)]
     private ?string $slug = null;
 
+    #[ORM\Column(nullable: true)]
+    private ?array $tags = null;
+
     #[ORM\Column(length: 255)]
     private ?string $description = null;
 
@@ -182,6 +185,18 @@ class Circuits
     public function setScoreEcotourisme(float $score_ecotourisme): static
     {
         $this->score_ecotourisme = $score_ecotourisme;
+
+        return $this;
+    }
+
+    public function getTags(): ?array
+    {
+        return $this->tags;
+    }
+
+    public function setTags(?array $tags): static
+    {
+        $this->tags = $tags;
 
         return $this;
     }

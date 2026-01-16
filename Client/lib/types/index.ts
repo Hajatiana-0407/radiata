@@ -38,6 +38,8 @@ export interface Destination {
   sustainability_features?: string[];
   recommended_season?: string[];
   included_services?: Servicetype[];
+  tags?: string[];
+  categories?: CategoryType[]
 }
 
 

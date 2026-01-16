@@ -81,8 +81,16 @@ class CircuitsCrudController extends AbstractCrudController
             ->setBasePath($basePath)
             ->setUploadDir($uploadDir)
             ->setUploadedFileNamePattern('[slug]-[timestamp].[extension]')
+            ->setRequired(true)
+            ->setHelp('Image de couverture du circuit (format recommandé: 16:9)');
+
+        $imageUpate = ImageField::new('image', 'Image principale')
+            ->setBasePath($basePath)
+            ->setUploadDir($uploadDir)
+            ->setUploadedFileNamePattern('[slug]-[timestamp].[extension]')
             ->setRequired(false)
             ->setHelp('Image de couverture du circuit (format recommandé: 16:9)');
+
 
         $point_fort = ArrayField::new('point_fort', 'Points forts')
             ->setRequired(false)
@@ -181,9 +189,15 @@ class CircuitsCrudController extends AbstractCrudController
             ->setHelp('Circuits liés ou similaires')
             ->autocomplete();
 
+        $tags = ArrayField::new('tags', 'Tags')
+            ->setRequired(false)
+            ->hideOnIndex()
+            ->setHelp('Tags pour catégoriser le média (séparés par des virgules)');
+
         $categories = AssociationField::new('categories', 'Catégories')
             ->setFormTypeOption('by_reference', false)
             ->setHelp('Catégories associées au circuit')
+            ->setRequired(true)
             ->autocomplete();
 
         // Collections (affichées uniquement en détail)
@@ -224,9 +238,9 @@ class CircuitsCrudController extends AbstractCrudController
             return [
                 FormField::addPanel('Informations principales')->setIcon('fa-info-circle'),
                 $titre,
-                $slug,
                 $description,
                 $image,
+                $tags,
 
                 FormField::addPanel('Caractéristiques')->setIcon('fa-cogs'),
                 $dureeJours,
@@ -259,9 +273,9 @@ class CircuitsCrudController extends AbstractCrudController
             return [
                 FormField::addPanel('Informations principales')->setIcon('fa-info-circle'),
                 $titre,
-                $slug,
                 $description,
-                $image,
+                $imageUpate,
+                $tags,
 
                 FormField::addPanel('Caractéristiques')->setIcon('fa-cogs'),
                 $dureeJours,
@@ -298,8 +312,8 @@ class CircuitsCrudController extends AbstractCrudController
             $id,
             $image,
             $titre,
-            $slug,
             $description,
+            $tags,
 
             FormField::addPanel('Caractéristiques'),
             $dureeJours,

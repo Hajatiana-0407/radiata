@@ -107,10 +107,21 @@ class AppFixtures extends Fixture
                 ->setActif($faker->boolean(90))
                 ->setDateCreation($faker->dateTimeBetween('-2 years', 'now'))
                 ->setImage($faker->imageUrl(640, 480, 'nature'))
+                ->setTags($faker->randomElements([
+                    'aventure',
+                    'culture',
+                    'nature',
+                    'famille',
+                    'luxe',
+                    'écotourisme',
+                    'randonnée',
+                    'plage'
+                ], $faker->numberBetween(1, 4)))
                 ->setRange(new Range(
                     min: $faker->numberBetween(100, 500),
                     max: $faker->numberBetween(501, 2000)
                 ))
+                ->addCategory($categories[$faker->numberBetween(0, (count($categories) - 1))])
                 ->setPeriode($faker->randomElements([
                     'Printemps',
                     'Été',

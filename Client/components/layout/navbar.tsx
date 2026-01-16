@@ -5,21 +5,12 @@ import Link from "next/link"
 import { useAppSelector } from "@/hooks/use-app-selector"
 import { Button } from "@/components/ui/button"
 import { Phone, Mail, Calendar } from "lucide-react"
+import { navItems } from "@/lib/utils"
 
 export function Navbar() {
   const { user } = useAppSelector((state) => state.auth)
   const [isMenuOpen, setIsMenuOpen] = useState(false)
 
-  const navItems = [
-    { label: "Accueil", href: "/" },
-    { label: "Destinations", href: "/destinations" },
-    { label: "Services", href: "/services" },
-    { label: "Gallerie", href: "/gallery" },
-    { label: "À Propos", href: "/about" },
-    { label: "Blog", href: "/blog" },
-    { label: "faq", href: "/faq" },
-    { label: "Contact", href: "/contact" },
-  ]
 
   return (
     <>

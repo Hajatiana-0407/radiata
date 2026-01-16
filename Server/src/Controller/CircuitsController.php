@@ -4,6 +4,7 @@ namespace App\Controller;
 
 use App\Entity\Circuits;
 use App\Form\CircuitsType;
+use App\Repository\CategoriesRepository;
 use App\Repository\CircuitsRepository;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
@@ -15,7 +16,7 @@ use Symfony\Component\Routing\Attribute\Route;
 final class CircuitsController extends AbstractController
 {
     #[Route('/', name: 'app_circuits_index', methods: ['GET'])]
-    public function index(Request $request, CircuitsRepository $circuitsRepository, ): Response
+    public function index(Request $request, CircuitsRepository $circuitsRepository, CategoriesRepository $categoriesRepository): Response
     {
         // Récupération des paramètres de requête
         $page = $request->query->getInt('page', 1);
@@ -23,7 +24,6 @@ final class CircuitsController extends AbstractController
         $difficulty = $request->query->get('difficulty', '');
         $minPrice = $request->query->getInt('minPrice', 0);
         $maxPrice = $request->query->getInt('maxPrice', 10000);
-        $popularOnly = $request->query->getBoolean('popularOnly', false);
 
         // Récupération des données paginées
         $paginator = $circuitsRepository->findCircuitsPaginated(
@@ -52,6 +52,14 @@ final class CircuitsController extends AbstractController
                 'active' => $circuit->isActif(),
                 'location' => $circuit->getLocalisation(),
                 'isPopular' => $circuit->isPopulare(),
+                'tags' => $circuit->getTags(),
+                'categories' => array_map(function ($category) {
+                    return [
+                        'id' => $category->getId(),
+                        'name' => $category->getNom(),
+                        'description' => $category->getDescription(),
+                    ];
+                }, $circuit->getCategories()->toArray()),
             ];
         }
 
@@ -101,6 +109,7 @@ final class CircuitsController extends AbstractController
                 'active' => $circuit->isActif(),
                 'location' => $circuit->getLocalisation(),
                 'isPopular' => $circuit->isPopulare(),
+                'tags' => $circuit->getTags(),
             ];
         }
 
@@ -145,12 +154,14 @@ final class CircuitsController extends AbstractController
             'highlights' => $circuit->getPointFort(),
             'sustainability_features' => $circuit->getActionsDurables(),
             'recommended_season' => $circuit->getPeriode(),
-            'included_services' => array_map(function ( $servicesIncluded ) { return [
-                'name' => $servicesIncluded->getNom() ,
-                'description' =>  $servicesIncluded->getDescription(), 
-                'id' => $servicesIncluded->getId() 
-            ] ; 
-         }, $servicesIncluded),
+            'tags' => $circuit->getTags(),
+            'included_services' => array_map(function ($servicesIncluded) {
+                return [
+                    'name' => $servicesIncluded->getNom(),
+                    'description' => $servicesIncluded->getDescription(),
+                    'id' => $servicesIncluded->getId()
+                ];
+            }, $servicesIncluded),
         ];
 
         $response = [

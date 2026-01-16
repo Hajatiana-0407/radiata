@@ -1,3 +1,4 @@
+import { navItems } from "@/lib/utils"
 import { Leaf, Facebook, Instagram, Twitter, Youtube, MapPin, Phone, Mail } from "lucide-react"
 
 export function Footer() {
@@ -12,9 +13,9 @@ export function Footer() {
         }}
       ></div>
 
-      <div className="relative bg-gradient-to-br from-slate-800 via-slate-700 to-slate-900 text-white">
+      <div className="relative bg-linear-to-br from-slate-800 via-slate-700 to-slate-900 text-white">
         {/* Top section with green accent */}
-        <div className="h-2 bg-gradient-to-r from-[#7ac243] to-[#40e0d0]"></div>
+        <div className="h-2 bg-linear-to-r from-[#7ac243] to-[#40e0d0]"></div>
 
         <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 py-16">
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-12">
@@ -68,37 +69,15 @@ export function Footer() {
                 <div className="h-1 w-8 rounded" style={{ backgroundColor: "#7ac243" }}></div>
                 Liens Rapides
               </h4>
+
               <ul className="space-y-3 text-sm">
-                <li>
-                  <a href="/" className="text-slate-300 hover:text-[#40e0d0] transition-colors">
-                    Accueil
-                  </a>
-                </li>
-                <li>
-                  <a href="/about" className="text-slate-300 hover:text-[#40e0d0] transition-colors">
-                    À Propos
-                  </a>
-                </li>
-                <li>
-                  <a href="/destinations" className="text-slate-300 hover:text-[#40e0d0] transition-colors">
-                    Destinations
-                  </a>
-                </li>
-                <li>
-                  <a href="/services" className="text-slate-300 hover:text-[#40e0d0] transition-colors">
-                    Services
-                  </a>
-                </li>
-                <li>
-                  <a href="/blog" className="text-slate-300 hover:text-[#40e0d0] transition-colors">
-                    Blog
-                  </a>
-                </li>
-                <li>
-                  <a href="/faq" className="text-slate-300 hover:text-[#40e0d0] transition-colors">
-                    FAQ
-                  </a>
-                </li>
+                {navItems.map((item, idx) => (
+                  <li key={`${idx}-${item.href}`}>
+                    <a href={item.href} className="text-slate-300 hover:text-[#40e0d0] transition-colors">
+                      {item.label}
+                    </a>
+                  </li>
+                ))}
               </ul>
             </div>
 
