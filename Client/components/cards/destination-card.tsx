@@ -1,6 +1,6 @@
 import Link from "next/link"
 import type { Destination } from "@/lib/types"
-import { MapPin, Clock, Star } from "lucide-react"
+import { MapPin, Clock, Star, Tag } from "lucide-react"
 import { API_BASE_URL } from "@/lib/api/client"
 import { getDificultyLabel } from "@/lib/utils"
 
@@ -21,14 +21,17 @@ export function DestinationCard({ destination, link = true }: DestinationCardPro
         }}
       >
         <div className="absolute inset-0 bg-black/20 group-hover:bg-black/30 transition-all"></div>
-
-        <div className="absolute top-4 right-4">
-          <div
-            className="px-4 py-1 rounded-full text-sm font-bold text-white shadow-lg"
-            style={{ backgroundColor: "#7ac243" }}
-          >
-            {getDificultyLabel(destination.difficulty)}
-          </div>
+        <div className="absolute top-4 right-4 flex gap-1">
+          {destination.tags?.map((tag, idx) => (
+            <div
+              className="px-4 py-1 rounded-full text-xs font-bold text-white shadow-lg flex gap-1"
+              style={{ backgroundColor: "#7ac243" }}
+              key={`${tag}-${idx}`}
+            >
+              <Tag  className="w-3 h-3"/>
+              {tag}
+            </div>
+          ))}
         </div>
 
         {/* Rating */}

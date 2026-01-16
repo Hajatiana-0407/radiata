@@ -25,7 +25,10 @@ class CircuitsRepository extends ServiceEntityRepository
         int $page = 1,
         ?int $limit = 10
     ): array {
-        $qb = $this->createQueryBuilder('c');
+        $qb = $this->createQueryBuilder('c')
+            ->join('c.categories' , 'cat')
+            ->addSelect('cat')
+        ;
 
         //  Recherche texte
         if (!empty($search)) {
@@ -53,6 +56,7 @@ class CircuitsRepository extends ServiceEntityRepository
 
         $qb->andWhere('c.actif = true ');
 
+        $qb->orderBy('cat.nom', 'DESC');
         $qb->orderBy('c.id', 'DESC');
 
         // Pagination

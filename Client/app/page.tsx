@@ -3,7 +3,7 @@
 import { useEffect } from "react"
 import { useAppDispatch } from "@/hooks/use-app-dispatch"
 import { useAppSelector } from "@/hooks/use-app-selector"
-import {  fetchPopularDestinations } from "@/store/slices/homeSlice"
+import { fetchPopularDestinations } from "@/store/slices/homeSlice"
 import { Navbar } from "@/components/layout/navbar"
 import { Footer } from "@/components/layout/footer"
 import { HeroSection } from "@/components/sections/hero-section"
@@ -48,6 +48,7 @@ export default function Home() {
     <>
       <Navbar />
       <main>
+
         <HeroSection
           title={content?.heroTitle || "Explorez la nature avec un objectif"}
           description={
@@ -57,6 +58,7 @@ export default function Home() {
           backgroundVideo="/hero_video.mp4"
           backgroundImage="/beautiful-nature-landscape.jpg"
           cta={{ text: "Commencer l'exploration", href: "/destinations" }}
+          secondaryCta={{ text: "En savoir plus", href: "/a-propos" }}
           showSearchBar={true}
         />
 
@@ -92,7 +94,7 @@ export default function Home() {
               </p>
             </div>
 
-            {loading && popularDestinations.length == 0  ? (
+            {loading && popularDestinations.length == 0 ? (
               <div className="py-12">
                 <Loader />
               </div>

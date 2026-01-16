@@ -1,6 +1,6 @@
 "use client"
 
-import { useEffect } from "react"
+import { useEffect, useState } from "react"
 import { useAppDispatch, useAppSelector } from "@/hooks/use-app-selector"
 import { fetchDestinations, setFilters, setPage } from "@/store/slices/destinationsSlice"
 import { Navbar } from "@/components/layout/navbar"
@@ -9,13 +9,24 @@ import { DestinationCard } from "@/components/cards/destination-card"
 import { DestinationSearchForm } from "@/components/forms/destination-search-form"
 import { SkeletonCard } from "@/components/ui/skeleton"
 import { Button } from "@/components/ui/button"
-import { ChevronLeft, ChevronRight } from "lucide-react"
+import { ChevronLeft, ChevronRight, Mountain, Tag } from "lucide-react"
 import HeadingSection from "@/components/sections/heading-section"
-import Pagination from "@/components/ui/pagination"
+import Pagination from "@/components/ui/pagination";
+import { CategoryType, Destination } from "@/lib/types"
+
+
+type DestinationsByCategory = Record<
+  number,
+  {
+    category: CategoryType
+    destinations: Destination[]
+  }
+>
 
 export default function DestinationsPage() {
   const dispatch = useAppDispatch()
-  const { items, loading, error, page, totalPages, filters } = useAppSelector((state) => state.destinations)
+  const { items, loading, error, page, totalPages, filters } = useAppSelector((state) => state.destinations);
+  const [categorie, setCategorie] = useState('');
 
   useEffect(() => {
     dispatch(
@@ -47,6 +58,24 @@ export default function DestinationsPage() {
   }
 
 
+  const destinationsByCategory = items?.reduce<DestinationsByCategory>(
+    (acc, destination) => {
+      destination?.categories?.forEach((category) => {
+        if (!acc[parseInt(category.id)]) {
+          acc[parseInt(category.id)] = {
+            category,
+            destinations: []
+          }
+        }
+
+        acc[parseInt(category.id)].destinations.push(destination)
+      })
+      return acc
+    },
+    {}
+  )
+
+
   return (
     <>
       <Navbar />
@@ -72,11 +101,33 @@ export default function DestinationsPage() {
             </div>
           ) : (
             <>
-              <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 mb-8 mt-8">
-                {items?.map((destination) => (
-                  <DestinationCard key={destination.id} destination={destination} />
+              <div className="mt-8 space-y-12">
+                {Object.values(destinationsByCategory || {}).map(({ category, destinations }) => (
+                  <section key={category.id}>
+                    <div className="flex flex-col gap-4 mb-8 group">
+                      <div className="flex items-center gap-4">
+                        <div className="flex items-center gap-2">
+                          <Mountain  />
+                          <h2 className="text-2xl md:text-3xl font-bold text-slate-900 relative">
+                            {category.name}
+                          </h2>
+                        </div>
+                      </div>
+                      <span className="h-0.5 w-1/4 bg-linear-to-r from-[#7ac243] to-[#40e0d0] rounded-full" />
+                    </div>
+
+                    <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+                      {destinations.map((destination) => (
+                        <DestinationCard
+                          key={`${category.id}-${destination.id}`}
+                          destination={destination}
+                        />
+                      ))}
+                    </div>
+                  </section>
                 ))}
               </div>
+
 
               {/* Pagination  */}
               <Pagination
