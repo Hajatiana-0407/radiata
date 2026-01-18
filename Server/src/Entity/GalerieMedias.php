@@ -22,13 +22,7 @@ class GalerieMedias
     private ?string $description = null;
 
     #[ORM\Column(length: 255)]
-    private ?string $nom_ficher = null;
-
-    #[ORM\Column(length: 255)]
-    private ?string $chemin_fichier = null;
-
-    #[ORM\Column(length: 100)]
-    private ?string $type_media = null;
+    private ?string $ficher = null;
 
     #[ORM\Column(nullable: true)]
     private ?array $tags = null;
@@ -55,38 +49,14 @@ class GalerieMedias
         return $this->id;
     }
 
-    public function getNomFicher(): ?string
+    public function getFichier(): ?string
     {
-        return $this->nom_ficher;
+        return $this->ficher;
     }
 
-    public function setNomFicher(string $nom_ficher): static
+    public function setFichier(string $ficher): static
     {
-        $this->nom_ficher = $nom_ficher;
-
-        return $this;
-    }
-
-    public function getCheminFichier(): ?string
-    {
-        return $this->chemin_fichier;
-    }
-
-    public function setCheminFichier(string $chemin_fichier): static
-    {
-        $this->chemin_fichier = $chemin_fichier;
-
-        return $this;
-    }
-
-    public function getTypeMedia(): ?string
-    {
-        return $this->type_media;
-    }
-
-    public function setTypeMedia(string $type_media): static
-    {
-        $this->type_media = $type_media;
+        $this->ficher = $ficher;
 
         return $this;
     }

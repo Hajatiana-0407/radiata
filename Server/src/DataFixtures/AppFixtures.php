@@ -214,9 +214,7 @@ class AppFixtures extends Fixture
             $galerie = new GalerieMedias();
             $galerie->setTitre($faker->sentence(2))
                 ->setDescription($faker->sentence(8))
-                ->setNomFicher($faker->word . '.jpg')
-                ->setCheminFichier('/uploads/' . $faker->word . '.jpg')
-                ->setTypeMedia($faker->randomElement(['image', 'video']))
+                ->setFichier($faker->word . '.jpg')
                 ->setTags([$faker->word, $faker->word])
                 ->setCircuit($faker->randomElement($circuits))
                 ->setService($faker->randomElement($services))
