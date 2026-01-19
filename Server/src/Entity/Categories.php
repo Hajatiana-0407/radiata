@@ -49,12 +49,19 @@ class Categories
     #[ORM\ManyToMany(targetEntity: Articles::class, mappedBy: 'categories')]
     private Collection $articles;
 
+    /**
+     * @var Collection<int, GalerieMedias>
+     */
+    #[ORM\ManyToMany(targetEntity: GalerieMedias::class, mappedBy: 'categories')]
+    private Collection $galerieMedias;
+
 
     public function __construct()
     {
         $this->date_creation = new \DateTime();
         $this->circuits = new ArrayCollection();
         $this->articles = new ArrayCollection();
+        $this->galerieMedias = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -201,6 +208,33 @@ class Categories
     {
         if ($this->articles->removeElement($article)) {
             $article->removeCategory($this);
+        }
+
+        return $this;
+    }
+
+    /**
+     * @return Collection<int, GalerieMedias>
+     */
+    public function getGalerieMedias(): Collection
+    {
+        return $this->galerieMedias;
+    }
+
+    public function addGalerieMedia(GalerieMedias $galerieMedia): static
+    {
+        if (!$this->galerieMedias->contains($galerieMedia)) {
+            $this->galerieMedias->add($galerieMedia);
+            $galerieMedia->addCategory($this);
+        }
+
+        return $this;
+    }
+
+    public function removeGalerieMedia(GalerieMedias $galerieMedia): static
+    {
+        if ($this->galerieMedias->removeElement($galerieMedia)) {
+            $galerieMedia->removeCategory($this);
         }
 
         return $this;

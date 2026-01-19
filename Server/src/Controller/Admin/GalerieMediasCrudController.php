@@ -35,7 +35,7 @@ class GalerieMediasCrudController extends AbstractCrudController
             ->setEntityLabelInPlural('Galerie Médias')
             ->setDefaultSort(['ordre_affichage' => 'ASC'])
             ->setSearchFields(['titre', 'description', 'nom_ficher'])
-            ->setPaginatorPageSize(20)
+            ->setPaginatorPageSize(10)
             ->showEntityActionsInlined()
             ->setHelp('index', 'Gestion de la galerie médias (images, vidéos, documents)');
     }

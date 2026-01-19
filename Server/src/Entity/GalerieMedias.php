@@ -4,6 +4,8 @@ namespace App\Entity;
 
 use App\Repository\GalerieMediasRepository;
 use DateTime;
+use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
 use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
 
@@ -42,6 +44,17 @@ class GalerieMedias
 
     #[ORM\Column]
     private ?bool $actif = null;
+
+    /**
+     * @var Collection<int, Categories>
+     */
+    #[ORM\ManyToMany(targetEntity: Categories::class, inversedBy: 'galerieMedias')]
+    private Collection $categories;
+
+    public function __construct()
+    {
+        $this->categories = new ArrayCollection();
+    }
 
 
     public function getId(): ?int
@@ -161,5 +174,29 @@ class GalerieMedias
     public function __toString(): string
     {
         return $this->titre;
+    }
+
+    /**
+     * @return Collection<int, Categories>
+     */
+    public function getCategories(): Collection
+    {
+        return $this->categories;
+    }
+
+    public function addCategory(Categories $category): static
+    {
+        if (!$this->categories->contains($category)) {
+            $this->categories->add($category);
+        }
+
+        return $this;
+    }
+
+    public function removeCategory(Categories $category): static
+    {
+        $this->categories->removeElement($category);
+
+        return $this;
     }
 }

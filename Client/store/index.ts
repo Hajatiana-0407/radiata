@@ -10,6 +10,8 @@ import adminDestinationsReducer from './slices/adminDestinationsSlice';
 import adminReservationsReducer from './slices/adminReservationsSlice';
 import articlesReducer from './slices/articlesSlice';
 import articlesDetailsReducer from './slices/articleDetailSlice'
+import GalerieMediaReducer from './slices/galerieSlice'
+import CategorieReducer from './slices/categorieSlice'
 
 export const store = configureStore({
   reducer: {
@@ -23,7 +25,9 @@ export const store = configureStore({
     adminDestinations: adminDestinationsReducer,
     adminReservations: adminReservationsReducer,
     articles: articlesReducer,
-    articlesDetails: articlesDetailsReducer
+    articlesDetails: articlesDetailsReducer,
+    galerieMedias: GalerieMediaReducer,
+    categories: CategorieReducer
   },
 });
 

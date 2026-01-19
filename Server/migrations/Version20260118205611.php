@@ -10,7 +10,7 @@ use Doctrine\Migrations\AbstractMigration;
 /**
  * Auto-generated Migration: Please modify to your needs!
  */
-final class Version20260118201507 extends AbstractMigration
+final class Version20260118205611 extends AbstractMigration
 {
     public function getDescription(): string
     {
@@ -35,6 +35,7 @@ final class Version20260118201507 extends AbstractMigration
         $this->addSql('CREATE TABLE devis_services (devis_id INT NOT NULL, services_id INT NOT NULL, INDEX IDX_117D122D41DEFADA (devis_id), INDEX IDX_117D122DAEF5A6C1 (services_id), PRIMARY KEY(devis_id, services_id)) DEFAULT CHARACTER SET utf8mb4');
         $this->addSql('CREATE TABLE favoris (id INT AUTO_INCREMENT NOT NULL, date_ajout DATETIME NOT NULL, client_id INT NOT NULL, circuit_id INT NOT NULL, INDEX IDX_8933C43219EB6921 (client_id), INDEX IDX_8933C432CF2182C8 (circuit_id), PRIMARY KEY(id)) DEFAULT CHARACTER SET utf8mb4');
         $this->addSql('CREATE TABLE galerie_medias (id INT AUTO_INCREMENT NOT NULL, titre VARCHAR(255) NOT NULL, description LONGTEXT NOT NULL, ficher VARCHAR(255) NOT NULL, tags JSON DEFAULT NULL, ordre_affichage INT NOT NULL, date_upload DATETIME DEFAULT NULL, actif TINYINT(1) NOT NULL, circuit_id INT NOT NULL, service_id INT DEFAULT NULL, INDEX IDX_BEF1FFFCF2182C8 (circuit_id), INDEX IDX_BEF1FFFED5CA9E6 (service_id), PRIMARY KEY(id)) DEFAULT CHARACTER SET utf8mb4');
+        $this->addSql('CREATE TABLE galerie_medias_categories (galerie_medias_id INT NOT NULL, categories_id INT NOT NULL, INDEX IDX_2DC3ADB3253600A1 (galerie_medias_id), INDEX IDX_2DC3ADB3A21214B7 (categories_id), PRIMARY KEY(galerie_medias_id, categories_id)) DEFAULT CHARACTER SET utf8mb4');
         $this->addSql('CREATE TABLE messages_contact (id INT AUTO_INCREMENT NOT NULL, nom VARCHAR(255) NOT NULL, email VARCHAR(255) NOT NULL, telephone VARCHAR(255) NOT NULL, message LONGTEXT NOT NULL, date_envoi DATETIME NOT NULL, statut VARCHAR(255) NOT NULL, client_id INT DEFAULT NULL, INDEX IDX_55C9B2E319EB6921 (client_id), PRIMARY KEY(id)) DEFAULT CHARACTER SET utf8mb4');
         $this->addSql('CREATE TABLE reservations (id INT AUTO_INCREMENT NOT NULL, date_debut DATETIME NOT NULL, date_fin DATETIME DEFAULT NULL, nombre_adultes INT NOT NULL, nombre_enfants INT NOT NULL, nombre_bebes INT NOT NULL, statut TINYINT(1) NOT NULL, date_creation DATETIME NOT NULL, circuit_id INT NOT NULL, client_id INT DEFAULT NULL, INDEX IDX_4DA239CF2182C8 (circuit_id), INDEX IDX_4DA23919EB6921 (client_id), PRIMARY KEY(id)) DEFAULT CHARACTER SET utf8mb4');
         $this->addSql('CREATE TABLE reservations_services (reservations_id INT NOT NULL, services_id INT NOT NULL, INDEX IDX_12D426C8D9A7F869 (reservations_id), INDEX IDX_12D426C8AEF5A6C1 (services_id), PRIMARY KEY(reservations_id, services_id)) DEFAULT CHARACTER SET utf8mb4');
@@ -61,6 +62,8 @@ final class Version20260118201507 extends AbstractMigration
         $this->addSql('ALTER TABLE favoris ADD CONSTRAINT FK_8933C432CF2182C8 FOREIGN KEY (circuit_id) REFERENCES circuits (id)');
         $this->addSql('ALTER TABLE galerie_medias ADD CONSTRAINT FK_BEF1FFFCF2182C8 FOREIGN KEY (circuit_id) REFERENCES circuits (id)');
         $this->addSql('ALTER TABLE galerie_medias ADD CONSTRAINT FK_BEF1FFFED5CA9E6 FOREIGN KEY (service_id) REFERENCES services (id)');
+        $this->addSql('ALTER TABLE galerie_medias_categories ADD CONSTRAINT FK_2DC3ADB3253600A1 FOREIGN KEY (galerie_medias_id) REFERENCES galerie_medias (id) ON DELETE CASCADE');
+        $this->addSql('ALTER TABLE galerie_medias_categories ADD CONSTRAINT FK_2DC3ADB3A21214B7 FOREIGN KEY (categories_id) REFERENCES categories (id) ON DELETE CASCADE');
         $this->addSql('ALTER TABLE messages_contact ADD CONSTRAINT FK_55C9B2E319EB6921 FOREIGN KEY (client_id) REFERENCES clients (id)');
         $this->addSql('ALTER TABLE reservations ADD CONSTRAINT FK_4DA239CF2182C8 FOREIGN KEY (circuit_id) REFERENCES circuits (id)');
         $this->addSql('ALTER TABLE reservations ADD CONSTRAINT FK_4DA23919EB6921 FOREIGN KEY (client_id) REFERENCES clients (id)');
@@ -91,6 +94,8 @@ final class Version20260118201507 extends AbstractMigration
         $this->addSql('ALTER TABLE favoris DROP FOREIGN KEY FK_8933C432CF2182C8');
         $this->addSql('ALTER TABLE galerie_medias DROP FOREIGN KEY FK_BEF1FFFCF2182C8');
         $this->addSql('ALTER TABLE galerie_medias DROP FOREIGN KEY FK_BEF1FFFED5CA9E6');
+        $this->addSql('ALTER TABLE galerie_medias_categories DROP FOREIGN KEY FK_2DC3ADB3253600A1');
+        $this->addSql('ALTER TABLE galerie_medias_categories DROP FOREIGN KEY FK_2DC3ADB3A21214B7');
         $this->addSql('ALTER TABLE messages_contact DROP FOREIGN KEY FK_55C9B2E319EB6921');
         $this->addSql('ALTER TABLE reservations DROP FOREIGN KEY FK_4DA239CF2182C8');
         $this->addSql('ALTER TABLE reservations DROP FOREIGN KEY FK_4DA23919EB6921');
@@ -111,6 +116,7 @@ final class Version20260118201507 extends AbstractMigration
         $this->addSql('DROP TABLE devis_services');
         $this->addSql('DROP TABLE favoris');
         $this->addSql('DROP TABLE galerie_medias');
+        $this->addSql('DROP TABLE galerie_medias_categories');
         $this->addSql('DROP TABLE messages_contact');
         $this->addSql('DROP TABLE reservations');
         $this->addSql('DROP TABLE reservations_services');
