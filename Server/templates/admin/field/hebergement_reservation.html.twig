@@ -1,0 +1,26 @@
+{% if field.value == 'standard' %}
+    <span class="badge bg-info text-secondary">
+        <i class="fas fa-bed me-1"></i>
+        Standard
+    </span>
+{% elseif field.value == 'comfort' %}
+    <span class="badge bg-primary text-secondary">
+        <i class="fas fa-bed me-1"></i>
+        Confort
+    </span>
+{% elseif field.value == 'luxe' %}
+    <span class="badge bg-warning text-secondary">
+        <i class="fas fa-crown me-1"></i>
+        Luxe
+    </span>
+{% elseif field.value == 'villa' %}
+    <span class="badge bg-success text-secondary">
+        <i class="fas fa-swimming-pool me-1"></i>
+        Villa Privée
+    </span>
+{% else %}
+    <span class="badge bg-secondary">
+        <i class="fas fa-question-circle me-1"></i>
+        Aucun Hébergement
+    </span>
+{% endif %}

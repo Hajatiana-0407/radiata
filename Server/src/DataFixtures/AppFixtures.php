@@ -210,19 +210,18 @@ class AppFixtures extends Fixture
         }
 
         // --- GalerieMedias ---
-        for ($i = 0; $i < 6; $i++) {
+        for ($i = 0; $i < 20; $i++) {
             $galerie = new GalerieMedias();
             $galerie->setTitre($faker->sentence(2))
                 ->setDescription($faker->sentence(8))
-                ->setNomFicher($faker->word . '.jpg')
-                ->setCheminFichier('/uploads/' . $faker->word . '.jpg')
-                ->setTypeMedia($faker->randomElement(['image', 'video']))
+                ->setFichier($faker->word . '.jpg')
                 ->setTags([$faker->word, $faker->word])
                 ->setCircuit($faker->randomElement($circuits))
                 ->setService($faker->randomElement($services))
                 ->setOrdreAffichage($i + 1)
                 ->setDateUpload($faker->dateTimeBetween('-1 years', 'now'))
-                ->setActif($faker->boolean(90));
+                ->setActif($faker->boolean(90))
+                ->addCategory($faker->randomElement($categories));
             $manager->persist($galerie);
         }
 

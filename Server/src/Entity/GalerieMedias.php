@@ -4,6 +4,8 @@ namespace App\Entity;
 
 use App\Repository\GalerieMediasRepository;
 use DateTime;
+use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
 use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
 
@@ -22,13 +24,7 @@ class GalerieMedias
     private ?string $description = null;
 
     #[ORM\Column(length: 255)]
-    private ?string $nom_ficher = null;
-
-    #[ORM\Column(length: 255)]
-    private ?string $chemin_fichier = null;
-
-    #[ORM\Column(length: 100)]
-    private ?string $type_media = null;
+    private ?string $ficher = null;
 
     #[ORM\Column(nullable: true)]
     private ?array $tags = null;
@@ -49,44 +45,31 @@ class GalerieMedias
     #[ORM\Column]
     private ?bool $actif = null;
 
+    /**
+     * @var Collection<int, Categories>
+     */
+    #[ORM\ManyToMany(targetEntity: Categories::class, inversedBy: 'galerieMedias')]
+    private Collection $categories;
+
+    public function __construct()
+    {
+        $this->categories = new ArrayCollection();
+    }
+
 
     public function getId(): ?int
     {
         return $this->id;
     }
 
-    public function getNomFicher(): ?string
+    public function getFichier(): ?string
     {
-        return $this->nom_ficher;
+        return $this->ficher;
     }
 
-    public function setNomFicher(string $nom_ficher): static
+    public function setFichier(string $ficher): static
     {
-        $this->nom_ficher = $nom_ficher;
-
-        return $this;
-    }
-
-    public function getCheminFichier(): ?string
-    {
-        return $this->chemin_fichier;
-    }
-
-    public function setCheminFichier(string $chemin_fichier): static
-    {
-        $this->chemin_fichier = $chemin_fichier;
-
-        return $this;
-    }
-
-    public function getTypeMedia(): ?string
-    {
-        return $this->type_media;
-    }
-
-    public function setTypeMedia(string $type_media): static
-    {
-        $this->type_media = $type_media;
+        $this->ficher = $ficher;
 
         return $this;
     }
@@ -191,5 +174,29 @@ class GalerieMedias
     public function __toString(): string
     {
         return $this->titre;
+    }
+
+    /**
+     * @return Collection<int, Categories>
+     */
+    public function getCategories(): Collection
+    {
+        return $this->categories;
+    }
+
+    public function addCategory(Categories $category): static
+    {
+        if (!$this->categories->contains($category)) {
+            $this->categories->add($category);
+        }
+
+        return $this;
+    }
+
+    public function removeCategory(Categories $category): static
+    {
+        $this->categories->removeElement($category);
+
+        return $this;
     }
 }

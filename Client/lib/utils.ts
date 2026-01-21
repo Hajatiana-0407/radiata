@@ -43,3 +43,11 @@ export const navItems = [
   { label: "faq", href: "/faq" },
   { label: "Contact", href: "/contact" },
 ]
+
+
+export const accommodationTypes = [
+  { id: 'standard', label: 'Standard', description: 'Chambre basique avec services essentiels' },
+  { id: 'comfort', label: 'Confort', description: 'Chambre spacieuse avec plus de commodités' },
+  { id: 'luxe', label: 'Luxe', description: 'Suite haut de gamme avec services premium' },
+  { id: 'villa', label: 'Villa Privée', description: 'Villa entière avec piscine privée' },
+];

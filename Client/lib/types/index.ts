@@ -60,6 +60,18 @@ export interface CategoryType {
   id: string;
   name: string;
   description: string;
+  date:string 
+}
+
+
+export interface GalerieMediaType {
+  id: string;
+  title: string;
+  file: string;
+  description: string;
+  date: string;
+  tags: string[];
+  categories: CategoryType[];
 }
 
 export interface Reservation {

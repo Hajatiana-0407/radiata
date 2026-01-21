@@ -49,6 +49,9 @@ class Reservations
     #[ORM\ManyToOne(inversedBy: 'reservations')]
     private ?Clients $client = null;
 
+    #[ORM\Column(length: 255, nullable: true)]
+    private ?string $hebergement = null;
+
     public function __construct()
     {
         $this->Services = new ArrayCollection();
@@ -221,5 +224,17 @@ class Reservations
         }
 
         return $total;
+    }
+
+    public function getHebergement(): ?string
+    {
+        return $this->hebergement;
+    }
+
+    public function setHebergement(?string $hebergement): static
+    {
+        $this->hebergement = $hebergement;
+
+        return $this;
     }
 }

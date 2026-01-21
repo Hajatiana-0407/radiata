@@ -11,71 +11,42 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Attribute\Route;
 
-#[Route('/galerie/medias')]
+#[Route('/api/galerie/medias')]
 final class GalerieMediasController extends AbstractController
 {
     #[Route(name: 'app_galerie_medias_index', methods: ['GET'])]
-    public function index(GalerieMediasRepository $galerieMediasRepository): Response
+    public function index(GalerieMediasRepository $galerieMediasRepository, Request $request): Response
     {
-        return $this->render('galerie_medias/index.html.twig', [
-            'galerie_medias' => $galerieMediasRepository->findAll(),
-        ]);
-    }
+        $page = $request->query->getInt('page', 1);
+        $search = $request->query->getString('search', '');
+        $categorie_id = $request->query->getInt('categorie', 0);
 
-    #[Route('/new', name: 'app_galerie_medias_new', methods: ['GET', 'POST'])]
-    public function new(Request $request, EntityManagerInterface $entityManager): Response
-    {
-        $galerieMedia = new GalerieMedias();
-        $form = $this->createForm(GalerieMediasType::class, $galerieMedia);
-        $form->handleRequest($request);
 
-        if ($form->isSubmitted() && $form->isValid()) {
-            $entityManager->persist($galerieMedia);
-            $entityManager->flush();
+        $galeriesMedias = $galerieMediasRepository->getGallerieMediasByCategorie($categorie_id, $search, $page, 10);
 
-            return $this->redirectToRoute('app_galerie_medias_index', [], Response::HTTP_SEE_OTHER);
+        $galeriesMediasArray = [];
+        foreach ($galeriesMedias['data'] as $key => $galerie) {
+            $galeriesMediasArray[] = [
+                'title' => $galerie->getTitre(),
+                'file' => $galerie->getFichier(),
+                'description' => $galerie->getDescription(),
+                'date' => $galerie->getDateUpload()?->format('Y-m-d H:i:s'),
+                'tags' => $galerie->getTags(),
+                'categories' => array_map(fn($cat) => $cat->getNom(), $galerie->getCategories()->toArray()),
+            ];
         }
 
-        return $this->render('galerie_medias/new.html.twig', [
-            'galerie_media' => $galerieMedia,
-            'form' => $form,
-        ]);
-    }
 
-    #[Route('/{id}', name: 'app_galerie_medias_show', methods: ['GET'])]
-    public function show(GalerieMedias $galerieMedia): Response
-    {
-        return $this->render('galerie_medias/show.html.twig', [
-            'galerie_media' => $galerieMedia,
-        ]);
-    }
-
-    #[Route('/{id}/edit', name: 'app_galerie_medias_edit', methods: ['GET', 'POST'])]
-    public function edit(Request $request, GalerieMedias $galerieMedia, EntityManagerInterface $entityManager): Response
-    {
-        $form = $this->createForm(GalerieMediasType::class, $galerieMedia);
-        $form->handleRequest($request);
-
-        if ($form->isSubmitted() && $form->isValid()) {
-            $entityManager->flush();
-
-            return $this->redirectToRoute('app_galerie_medias_index', [], Response::HTTP_SEE_OTHER);
-        }
-
-        return $this->render('galerie_medias/edit.html.twig', [
-            'galerie_media' => $galerieMedia,
-            'form' => $form,
-        ]);
-    }
-
-    #[Route('/{id}', name: 'app_galerie_medias_delete', methods: ['POST'])]
-    public function delete(Request $request, GalerieMedias $galerieMedia, EntityManagerInterface $entityManager): Response
-    {
-        if ($this->isCsrfTokenValid('delete'.$galerieMedia->getId(), $request->getPayload()->getString('_token'))) {
-            $entityManager->remove($galerieMedia);
-            $entityManager->flush();
-        }
-
-        return $this->redirectToRoute('app_galerie_medias_index', [], Response::HTTP_SEE_OTHER);
+        $response = [
+            'success' => true,
+            'message' => 'Liste des circuits récupérée avec succès',
+            'data' => $galeriesMediasArray,
+            'pagination' => [
+                'page' => $page,
+                'total' => $galeriesMedias['total'],
+                'totalPages' => $galeriesMedias['totalPages'],
+            ],
+        ];
+        return $this->json($response);
     }
 }
