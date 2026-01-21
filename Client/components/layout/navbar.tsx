@@ -5,7 +5,7 @@ import Link from "next/link"
 import { useAppSelector } from "@/hooks/use-app-selector"
 import { Button } from "@/components/ui/button"
 import { Phone, Mail, Calendar } from "lucide-react"
-import { navItems } from "@/lib/utils"
+import { BaseURL, navItems } from "@/lib/utils"
 
 export function Navbar() {
   const { user } = useAppSelector((state) => state.auth)
@@ -51,7 +51,7 @@ export function Navbar() {
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="flex h-[5.1rem] items-center justify-between">
             <Link href="/" className="flex items-center gap-3 font-bold text-xl hover:opacity-80 transition-opacity h-full">
-              <img src="./logo-no-bg.png" alt="" className="h-40" />
+              <img src={BaseURL + '/logo-no-bg.png'} alt="" className="h-40" />
             </Link>
 
             <div className="flex items-center gap-2">

@@ -51,3 +51,6 @@ export const accommodationTypes = [
   { id: 'luxe', label: 'Luxe', description: 'Suite haut de gamme avec services premium' },
   { id: 'villa', label: 'Villa Privée', description: 'Villa entière avec piscine privée' },
 ];
+
+
+export const BaseURL = process.env.NEXT_PUBLIC_BASE_URL || 'http://localhost:3000';
