@@ -10,11 +10,11 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-      # 1️⃣ Récupérer le code
+      # 1️⃣ Checkout
       - name: Checkout code
         uses: actions/checkout@v4
 
-      # 2️⃣ Setup PHP + Composer
+      # 2️⃣ PHP + Composer
       - name: Setup PHP
         uses: shivammathur/setup-php@v2
         with:
@@ -22,48 +22,32 @@ jobs:
           extensions: mbstring, intl, pdo_mysql
           tools: composer
 
-      # 3️⃣ Installer dépendances Symfony (SANS auto-scripts)
+      # 3️⃣ Installer dépendances Symfony (PROD)
       - name: Install backend dependencies (Symfony)
         run: |
           cd Server
-          composer install --no-dev --no-scripts --optimize-autoloader
+          composer install --no-dev --optimize-autoloader
 
-      # 4️⃣ Setup Node.js ✅ (OBLIGATOIRE AVANT npm)
+      # 4️⃣ Compiler l’environnement PROD Symfony
+      - name: Build Symfony prod env
+        run: |
+          cd Server
+          composer dump-env prod
+
+      # 5️⃣ Setup Node.js (NE PAS TOUCHER)
       - name: Setup Node.js
         uses: actions/setup-node@v4
         with:
           node-version: 20
 
-      # 5️⃣ Build assets Symfony (Encore)
+      # 6️⃣ Build assets Symfony (Encore)
       - name: Build Symfony assets
         run: |
           cd Server
           npm install
           npm run build
 
-      # 6️⃣ Nettoyage et warmup cache Symfony (PROD)
-      - name: Symfony cache (prod)
-        run: |
-          cd Server
-          php bin/console cache:clear --env=prod --no-debug
-          php bin/console cache:warmup --env=prod
-
-      #  Créer .env Next.js
-      - name: Create .env for Next.js
-        run: |
-          cd Client
-          echo "NEXT_PUBLIC_API_URL=${{ secrets.NEXT_PUBLIC_API_URL }}" >> .env
-          echo "NEXT_PUBLIC_APP_NAME=MyApp" >> .env
-          echo "NEXT_PUBLIC_BASE_URL=${{ secrets.NEXT_PUBLIC_BASE_URL }}" >> .env
-
-      # 7️⃣ Build frontend Next.js (export statique)
-      - name: Build frontend (Next.js)
-        run: |
-          cd Client
-          npm install --legacy-peer-deps
-          npm run build
-
-      # 8️⃣ Déploiement backend Symfony
+      # 7️⃣ Déploiement backend Symfony (FTP)
       - name: Deploy backend (Symfony)
         uses: SamKirkland/FTP-Deploy-Action@v4.3.4
         with:
@@ -81,7 +65,23 @@ jobs:
             **/var/cache/**
             **/var/log/**
 
-      # 9️⃣ Déploiement frontend Next.js (statique)
+      # ======================
+      # FRONTEND (INCHANGÉ)
+      # ======================
+
+      - name: Create .env for Next.js
+        run: |
+          cd Client
+          echo "NEXT_PUBLIC_API_URL=${{ secrets.NEXT_PUBLIC_API_URL }}" >> .env
+          echo "NEXT_PUBLIC_APP_NAME=MyApp" >> .env
+          echo "NEXT_PUBLIC_BASE_URL=${{ secrets.NEXT_PUBLIC_BASE_URL }}" >> .env
+
+      - name: Build frontend (Next.js)
+        run: |
+          cd Client
+          npm install --legacy-peer-deps
+          npm run build
+
       - name: Deploy frontend (Next.js)
         uses: SamKirkland/FTP-Deploy-Action@v4.3.4
         with:
