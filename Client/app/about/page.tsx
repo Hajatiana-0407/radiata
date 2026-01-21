@@ -3,6 +3,7 @@
 import { Navbar } from '@/components/layout/navbar';
 import { Footer } from '@/components/layout/footer';
 import HeadingSection from '@/components/sections/heading-section';
+import Map from '@/components/Map';
 
 export default function AboutPage() {
   return (
@@ -28,12 +29,12 @@ export default function AboutPage() {
                 Aujourd'hui, nous avons aidé plus de 10 000 voyageurs à découvrir les merveilles de notre planète. Notre communauté grandit chaque jour, et nous sommes fiers de faire partie de votre voyage.
               </p>
             </div>
-            <div className="bg-gradient-to-br from-[#7ac243]/10 to-[#40e0d0]/10 rounded-lg p-8 flex items-center justify-center">
-              <div className="text-center">
-                <div className="text-5xl font-bold text-[#7ac243] mb-2">10K+</div>
-                <p className="text-slate-700">Voyageurs satisfaits</p>
-              </div>
+
+            {/* Localisation  */}
+            <div className="bg-linear-to-br from-[#7ac243]/10 to-[#40e0d0]/10 rounded-lg overflow-hidden flex items-center justify-center">
+              <Map/>
             </div>
+
           </div>
         </div>
       </section>
@@ -77,7 +78,7 @@ export default function AboutPage() {
               { name: 'Marie Laurent', role: 'Responsable Destinations' }
             ].map((member) => (
               <div key={member.name} className="text-center">
-                <div className="h-32 w-32 rounded-full bg-gradient-to-br from-[#7ac243] to-[#40e0d0] mx-auto mb-4 flex items-center justify-center text-white text-4xl font-bold">
+                <div className="h-32 w-32 rounded-full bg-linear-to-br from-[#7ac243] to-[#40e0d0] mx-auto mb-4 flex items-center justify-center text-white text-4xl font-bold">
                   {member.name.charAt(0)}
                 </div>
                 <h3 className="font-bold text-lg text-slate-900">{member.name}</h3>
@@ -89,7 +90,7 @@ export default function AboutPage() {
       </section>
 
       {/* CTA */}
-      <section className="py-16 px-4 bg-gradient-to-r from-[#7ac243] to-[#40e0d0]">
+      <section className="py-16 px-4 bg-linear-to-r from-[#7ac243] to-[#40e0d0]">
         <div className="max-w-2xl mx-auto text-center text-white">
           <h2 className="text-3xl font-bold mb-4">Rejoignez notre communauté</h2>
           <p className="mb-8 text-lg opacity-90">

@@ -8,7 +8,6 @@ import { Phone, Mail, Calendar } from "lucide-react"
 import { BaseURL, navItems } from "@/lib/utils"
 
 export function Navbar() {
-  const { user } = useAppSelector((state) => state.auth)
   const [isMenuOpen, setIsMenuOpen] = useState(false)
 
 
