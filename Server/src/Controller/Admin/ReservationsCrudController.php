@@ -108,6 +108,23 @@ class ReservationsCrudController extends AbstractCrudController
                 return $value ? '✅ Confirmée' : '⏳ En attente';
             });
 
+
+        $hebergement = ChoiceField::new('hebergement', 'Type d\'hébergement')
+            ->setChoices([
+                'Standard - Chambre basique avec services essentiels' => 'standard',
+                'Confort - Chambre spacieuse avec plus de commodités' => 'comfort',
+                'Luxe - Suite haut de gamme avec services premium' => 'luxe',
+                'Villa Privée - Villa entière avec piscine privée' => 'villa',
+            ])
+            ->renderExpanded() 
+            ->renderAsBadges([
+                'standard' => 'info',
+                'comfort' => 'primary',
+                'luxe' => 'warning',
+                'villa' => 'success',
+            ]);
+
+
         $dateCreation = DateTimeField::new('date_creation', 'Date création')
             ->setFormat('dd/MM/yyyy HH:mm')
             ->onlyOnIndex()
@@ -118,39 +135,17 @@ class ReservationsCrudController extends AbstractCrudController
             ->autocomplete()
             ->setHelp('Services optionnels');
 
-        // Durée du séjour
-        $duree = TextField::new('duree', 'Durée')
-            ->onlyOnIndex()
-            ->formatValue(function ($value, $entity) {
-                $debut = $entity->getDateDebut();
-                $fin = $entity->getDateFin();
-
-                if (!$fin) {
-                    if ($circuit = $entity->getCircuit()) {
-                        $fin = clone $debut;
-                        $fin->modify('+' . $circuit->getDureeJours() . ' days');
-                    } else {
-                        return 'N/A';
-                    }
-                }
-
-                $diff = $debut->diff($fin);
-                return $diff->days . ' jour(s)';
-            });
 
         // =========================
         // PAGE INDEX (liste)
         // =========================
         if ($pageName === Crud::PAGE_INDEX) {
             return [
-                $id,
-                // $client,
-                // $circuit,
                 $dateDebut->setFormat('dd/MM/yyyy'),
-                $duree,
                 $adultes,
                 $enfants,
                 $bebes,
+                $hebergement->setTemplatePath('admin/field/hebergement_reservation.html.twig'),
                 $statut->setTemplatePath('admin/field/reservation_status.html.twig'),
                 $dateCreation,
             ];

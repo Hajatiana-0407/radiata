@@ -19,8 +19,10 @@ const initialState: ReservationState = {
 export const createReservation = createAsyncThunk(
   'reservation/create',
   async (data: Omit<Reservation, 'id' | 'createdAt' | 'updatedAt' | 'status'>, { rejectWithValue }) => {
+
     try {
-      const response = await apiClient.post('/reservations', { ...data, status: 'pending' });
+      const response = await apiClient.post('/reservations/new', { ...data, status: 'pending' });
+      console.log(response.data);
       return response.data;
     } catch (error: any) {
       return rejectWithValue(error.response?.data?.message || 'Failed to create reservation');
@@ -46,7 +48,7 @@ const reservationSlice = createSlice({
       })
       .addCase(createReservation.fulfilled, (state, action) => {
         state.loading = false;
-        state.current = action.payload;
+        // state.current = action.payload;
         state.success = true;
       })
       .addCase(createReservation.rejected, (state, action) => {

@@ -12,7 +12,9 @@ export default function ReservationClient() {
     return (
         <>
             <Navbar />
-            <ReservationForm destinationId={destinationId} />
+            <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 py-12">
+                <ReservationForm destinationId={destinationId} />
+            </div>
             <Footer />
         </>
     );
