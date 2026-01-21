@@ -54,6 +54,7 @@ jobs:
           cd Client
           echo "NEXT_PUBLIC_API_URL=${{ secrets.NEXT_PUBLIC_API_URL }}" >> .env
           echo "NEXT_PUBLIC_APP_NAME=MyApp" >> .env
+          echo "NEXT_PUBLIC_BASE_URL=${{ secrets.NEXT_PUBLIC_BASE_URL }}" >> .env
 
       # 7️⃣ Build frontend Next.js (export statique)
       - name: Build frontend (Next.js)
