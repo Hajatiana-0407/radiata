@@ -26,7 +26,7 @@ jobs:
       - name: Install backend dependencies (Symfony)
         run: |
           cd Server
-          composer install --no-dev --optimize-autoloader
+          APP_ENV=prod composer install --no-dev --no-scripts --optimize-autoloader
 
       # 4️⃣ Compiler l’environnement PROD Symfony
       - name: Build Symfony prod env
