@@ -15,7 +15,7 @@ export function Navbar() {
     <>
       <div className="bg-[#7ac243]">
         <div className="flex items-center justify-end flex-wrap gap-4">
-          <div className="flex items-center gap-6 flex-wrap md:bg-[#40e0d0] px-15 py-2 pr-6 sm:pr-10 md:pr-16 lg:pr-24 xl:pr-32 rounded-l-xl">
+          <div className="flex items-center gap-6 flex-wrap px-15 py-2 pr-6 sm:pr-10 md:pr-16 lg:pr-24 xl:pr-32 rounded-l-xl">
             <a
               href="tel:+33123456789"
               className="flex items-center gap-2 text-white hover:text-white hover:scale-105 transition-transform font-medium"
@@ -50,7 +50,7 @@ export function Navbar() {
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="flex h-[5.1rem] items-center justify-between">
             <Link href="/" className="flex items-center gap-3 font-bold text-xl hover:opacity-80 transition-opacity h-full">
-              <img src={BaseURL + '/logo-no-bg.png'} alt="" className="h-40" />
+              <img src={BaseURL + '/logo-no-bg.png'} alt="" className="h-36" />
             </Link>
 
             <div className="flex items-center gap-2">
