@@ -12,6 +12,7 @@ import articlesReducer from './slices/articlesSlice';
 import articlesDetailsReducer from './slices/articleDetailSlice'
 import GalerieMediaReducer from './slices/galerieSlice'
 import CategorieReducer from './slices/categorieSlice'
+import ServiceReducer from './slices/serviceSlice';
 
 export const store = configureStore({
   reducer: {
@@ -27,7 +28,8 @@ export const store = configureStore({
     articles: articlesReducer,
     articlesDetails: articlesDetailsReducer,
     galerieMedias: GalerieMediaReducer,
-    categories: CategorieReducer
+    categories: CategorieReducer,
+    services: ServiceReducer
   },
 });
 

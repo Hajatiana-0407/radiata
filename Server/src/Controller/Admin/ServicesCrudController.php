@@ -8,7 +8,7 @@ use EasyCorp\Bundle\EasyAdminBundle\Config\Crud;
 use EasyCorp\Bundle\EasyAdminBundle\Config\Actions;
 use EasyCorp\Bundle\EasyAdminBundle\Config\Action;
 use EasyCorp\Bundle\EasyAdminBundle\Field\{
-    IdField,
+    ArrayField, IdField,
     TextField,
     TextareaField,
     IntegerField,
@@ -41,7 +41,7 @@ class ServicesCrudController extends AbstractCrudController
         return $actions
             ->add(Crud::PAGE_INDEX, Action::DETAIL)
             ->add(Crud::PAGE_EDIT, Action::SAVE_AND_ADD_ANOTHER)
-            ->update(Crud::PAGE_INDEX, Action::NEW, function (Action $action) {
+            ->update(Crud::PAGE_INDEX, Action::NEW , function (Action $action) {
                 return $action->setIcon('fa fa-plus')->setLabel('Nouveau service');
             })
             ->update(Crud::PAGE_INDEX, Action::EDIT, function (Action $action) {
@@ -58,49 +58,25 @@ class ServicesCrudController extends AbstractCrudController
         // Champs réutilisables
         // =========================
         $id = IdField::new('id')->onlyOnIndex();
-        
-        // Champ icône avec sélection d'icônes FontAwesome
-        $icone = ChoiceField::new('icone', 'Icône')
-            ->setChoices([
-                '🔧 Réparation' => 'fas fa-tools',
-                '🔩 Installation' => 'fas fa-wrench',
-                '⚡ Électricité' => 'fas fa-bolt',
-                '💧 Plomberie' => 'fas fa-faucet',
-                '🏠 Construction' => 'fas fa-hammer',
-                '🎨 Peinture' => 'fas fa-paint-roller',
-                '🔨 Menuiserie' => 'fas fa-hammer',
-                '🛠️ Dépannage' => 'fas fa-screwdriver',
-                '🧹 Nettoyage' => 'fas fa-broom',
-                '🔒 Sécurité' => 'fas fa-lock',
-                '🌿 Jardinage' => 'fas fa-leaf',
-                '🔧 Maintenance' => 'fas fa-cogs',
-                '🏗️ Rénovation' => 'fas fa-home',
-                '📐 Planification' => 'fas fa-ruler-combined',
-                '🔍 Diagnostic' => 'fas fa-search',
-                '📞 Support' => 'fas fa-headset',
-                '🚚 Déménagement' => 'fas fa-truck-moving',
-                '🪟 Fenêtres' => 'fas fa-window-maximize',
-                '🚪 Portes' => 'fas fa-door-closed',
-                '🔌 Prise électrique' => 'fas fa-plug',
-            ])
-            ->setRequired(true)
-            ->renderAsBadges(false)
-            ->setHelp('Sélectionnez une icône ou entrez une classe FontAwesome (ex: fas fa-tools)');
-        
+
         $nom = TextField::new('nom', 'Nom du service')
             ->setRequired(true)
             ->setHelp('Nom du service tel qu\'il apparaîtra sur le site');
-        
+
         $description = TextareaField::new('description', 'Description')
             ->setRequired(true)
             ->setNumOfRows(4)
             ->hideOnIndex()
             ->setHelp('Description détaillée du service');
-        
+
         $ordreAffichage = IntegerField::new('ordre_affichage', 'Ordre d\'affichage')
             ->setRequired(true)
             ->setHelp('Détermine l\'ordre d\'affichage sur le site (plus petit = premier)');
-        
+
+        $avantages = ArrayField::new('avantages', 'Avantage(s)')
+            ->setRequired(false)
+            ->hideOnIndex() ; 
+
         $actif = BooleanField::new('actif', 'Actif')
             ->renderAsSwitch(true)
             ->setFormTypeOption('data', true) // Valeur par défaut
@@ -112,7 +88,6 @@ class ServicesCrudController extends AbstractCrudController
         if ($pageName === Crud::PAGE_INDEX) {
             return [
                 $id,
-                // $icone->setTemplatePath('admin/field/icon.html.twig'), 
                 $nom,
                 $ordreAffichage,
                 $actif,
@@ -126,9 +101,9 @@ class ServicesCrudController extends AbstractCrudController
             return [
                 FormField::addPanel('Informations principales')->setIcon('fa-info-circle'),
                 $nom,
-                $icone,
                 $description,
-                
+                $avantages,
+
                 FormField::addPanel('Configuration')->setIcon('fa-cog'),
                 $ordreAffichage,
                 $actif,
@@ -142,9 +117,9 @@ class ServicesCrudController extends AbstractCrudController
             return [
                 FormField::addPanel('Informations principales')->setIcon('fa-info-circle'),
                 $nom,
-                $icone,
                 $description,
-                
+                $avantages,
+
                 FormField::addPanel('Configuration')->setIcon('fa-cog'),
                 $ordreAffichage,
                 $actif,
@@ -157,10 +132,10 @@ class ServicesCrudController extends AbstractCrudController
         return [
             FormField::addPanel('Informations du service'),
             $id,
-            $icone,
             $nom,
             $description,
-            
+            $avantages,
+
             FormField::addPanel('Configuration'),
             $ordreAffichage,
             $actif,

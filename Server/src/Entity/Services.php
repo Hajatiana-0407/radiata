@@ -17,13 +17,13 @@ class Services
     private ?int $id = null;
 
     #[ORM\Column(length: 255)]
-    private ?string $icone = null;
-
-    #[ORM\Column(length: 255)]
     private ?string $nom = null;
 
     #[ORM\Column(type: Types::TEXT)]
     private ?string $description = null;
+
+    #[ORM\Column(type: Types::JSON, nullable: true)]
+    private ?array $avantages = null;
 
     #[ORM\Column]
     private ?int $ordre_affichage = null;
@@ -89,18 +89,6 @@ class Services
     public function setDescription(string $description): static
     {
         $this->description = $description;
-
-        return $this;
-    }
-
-    public function getIcone(): ?string
-    {
-        return $this->icone;
-    }
-
-    public function setIcone(string $icone): static
-    {
-        $this->icone = $icone;
 
         return $this;
     }
@@ -211,6 +199,16 @@ class Services
         }
 
         return $this;
+    }
+
+    public function getAvantages(): ?array
+    {
+        return $this->avantages;
+    }
+
+    public function setAvantages(array $avantages): void
+    {
+        $this->avantages = $avantages;
     }
 
     public function __tostring(): string
