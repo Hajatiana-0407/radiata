@@ -241,7 +241,8 @@ class AppFixtures extends Fixture
             $msg = new MessagesContact();
             $msg->setClient($client)
                 ->setNom($client->getNom())
-                ->setEmail($client->getEmail())
+                ->setSujet($faker->sentence(4))
+                ->setEmail(email: $client->getEmail())
                 ->setTelephone((string) $client->getTelephone())
                 ->setMessage($faker->sentence(15))
                 ->setDateEnvoi($faker->dateTimeBetween('-1 years', 'now'))

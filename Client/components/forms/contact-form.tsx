@@ -1,6 +1,6 @@
 'use client';
 
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { useAppDispatch, useAppSelector } from '@/hooks/use-app-selector';
 import { sendContactMessage, resetContact } from '@/store/slices/contactSlice';
 import { CustomInput } from '@/components/ui/custom-input';
@@ -12,27 +12,32 @@ import { Button } from '@/components/ui/button';
 import { LoaderSmall } from '@/components/ui/loader';
 import { ErrorMessage } from '@/components/ui/error-message';
 import { SuccessMessage } from '@/components/ui/success-message';
+import { Send } from 'lucide-react';
+
+const initalData = {
+  name: '',
+  email: '',
+  phone: '',
+  subject: '',
+  message: '',
+}
 
 export function ContactForm() {
   const dispatch = useAppDispatch();
   const { loading, error, success } = useAppSelector((state) => state.contact);
 
-  const [formData, setFormData] = useState({
-    name: '',
-    email: '',
-    subject: '',
-    message: '',
-  });
+  const [formData, setFormData] = useState(initalData);
 
   const [fieldErrors, setFieldErrors] = useState<Record<string, string>>({});
 
   const validateForm = () => {
     const errors: Record<string, string> = {};
-    if (!formData.name.trim()) errors.name = 'Name is required';
+    if (!formData.name.trim()) errors.name = 'Le nom est requis';
     if (!formData.email.match(/^[^\s@]+@[^\s@]+\.[^\s@]+$/))
-      errors.email = 'Valid email is required';
-    if (!formData.subject.trim()) errors.subject = 'Subject is required';
-    if (!formData.message.trim()) errors.message = 'Message is required';
+      errors.email = 'L\'email est invalide';
+    if (!formData.phone.trim()) errors.phone = 'Le téléphone est requis';
+    if (!formData.subject.trim()) errors.subject = 'Le sujet est requis';
+    if (!formData.message.trim()) errors.message = 'Le message est requis';
 
     setFieldErrors(errors);
     return Object.keys(errors).length === 0;
@@ -47,21 +52,25 @@ export function ContactForm() {
 
   const handleDismissSuccess = () => {
     dispatch(resetContact());
-    setFormData({ name: '', email: '', subject: '', message: '' });
+    setFormData({ name: '', email: '', phone: '', subject: '', message: '' });
   };
 
-  if (success) {
-    return (
-      <SuccessMessage
-        message="Message sent successfully! We'll get back to you as soon as possible."
-        onDismiss={handleDismissSuccess}
-      />
-    );
-  }
+  useEffect(() => {
+    if (success && formData.email !== '') {
+      setFormData(initalData);
+    }
+  }, [success])
 
   return (
     <form onSubmit={handleSubmit} className="space-y-6 max-w-2xl">
       {error && <ErrorMessage message={error} />}
+
+      {success &&
+        <SuccessMessage
+          message="Le message a été envoyé avec succès ! Nous vous répondrons dans les plus brefs délais.."
+          onDismiss={handleDismissSuccess}
+        />
+      }
 
       <InputGroup label="Nom" required error={fieldErrors.name}>
         <CustomInput
@@ -81,6 +90,18 @@ export function ContactForm() {
             setFormData({ ...formData, email: e.target.value })
           }
           error={!!fieldErrors.email}
+        />
+      </InputGroup>
+
+      <InputGroup label="Numéro de téléphone" required error={fieldErrors.phone}>
+        <CustomInput
+          type="tel"
+          placeholder="Votre numéro de téléphone"
+          value={formData.phone}
+          onChange={(e) =>
+            setFormData({ ...formData, phone: e.target.value })
+          }
+          error={!!fieldErrors.phone}
         />
       </InputGroup>
 
@@ -106,13 +127,15 @@ export function ContactForm() {
         />
       </InputGroup>
 
-      <Button type="submit" disabled={loading} className="w-full">
+      <Button type="submit" disabled={loading} className="w-full cursor-pointer">
         {loading ? (
           <>
             <LoaderSmall /> Envoi en cours...
           </>
         ) : (
-          'Envoyer le message'
+          <>
+            <Send /> Envoyer le message
+          </>
         )}
       </Button>
     </form>
