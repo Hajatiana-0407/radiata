@@ -60,7 +60,7 @@ export interface CategoryType {
   id: string;
   name: string;
   description: string;
-  date:string 
+  date: string
 }
 
 
@@ -97,6 +97,7 @@ export type Servicetype = {
   id?: number;
   name: string;
   description: string;
+  avantages?: string[];
 }
 
 export interface Contact {

@@ -42,7 +42,7 @@ export function DestinationCard({ destination, link = true }: DestinationCardPro
       </div>
 
       <div className="p-6 space-y-3">
-        <h3 className="font-bold text-xl group-hover:translate-x-1 transition-transform" style={{ color: "#7ac243" }}>
+        <h3 className="font-bold text-xl group-hover:translate-x-1 transition-transform line-clamp-1 leading-relaxed" style={{ color: "#7ac243" }}>
           {destination.title}
         </h3>
         <div className="flex items-center gap-2  rounded-lg">

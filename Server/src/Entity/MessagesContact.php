@@ -27,6 +27,9 @@ class MessagesContact
     private ?string $telephone = null;
 
     #[ORM\Column(type: Types::TEXT)]
+    private ?string $sujet = null;
+
+    #[ORM\Column(type: Types::TEXT)]
     private ?string $message = null;
 
     #[ORM\Column]
@@ -36,7 +39,8 @@ class MessagesContact
     private ?string $statut = null;
 
 
-    public function __construct(){
+    public function __construct()
+    {
         $this->date_envoi = new \DateTime();
     }
 
@@ -101,6 +105,18 @@ class MessagesContact
     public function setMessage(string $message): static
     {
         $this->message = $message;
+
+        return $this;
+    }
+
+    public function getSujet(): ?string
+    {
+        return $this->sujet;
+    }
+
+    public function setSujet(string $sujet): static
+    {
+        $this->sujet = $sujet;
 
         return $this;
     }

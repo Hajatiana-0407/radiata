@@ -16,7 +16,7 @@ class Reservations
     private ?int $id = null;
 
     #[ORM\ManyToOne(inversedBy: 'reservations')]
-    #[ORM\JoinColumn(nullable: false)]
+    #[ORM\JoinColumn(nullable: true)]
     private ?Circuits $circuit = null;
 
     #[ORM\Column]

@@ -77,6 +77,10 @@ class MessagesContactCrudController extends AbstractCrudController
             ->setRequired(true)
             ->setHelp('Nom de l\'expéditeur');
 
+        $sujet = TextField::new('sujet', 'Sujet')
+            ->setRequired(true)
+            ->setHelp('Objet du message');
+
         $email = EmailField::new('email', 'Email')
             ->setRequired(true)
             ->setHelp('Adresse email de contact');
@@ -121,6 +125,7 @@ class MessagesContactCrudController extends AbstractCrudController
         if ($pageName === Crud::PAGE_INDEX) {
             return [
                 $id,
+                $sujet , 
                 $nom,
                 $email,
                 $telephone,
@@ -136,6 +141,7 @@ class MessagesContactCrudController extends AbstractCrudController
             return [
                 FormField::addPanel('Expéditeur')->setIcon('fa-user'),
                 $client,
+                $sujet , 
                 $nom,
                 $email,
                 $telephone,
@@ -158,6 +164,7 @@ class MessagesContactCrudController extends AbstractCrudController
             return [
                 FormField::addPanel('Expéditeur')->setIcon('fa-user'),
                 $client,
+                $sujet , 
                 $nom,
                 $email,
                 $telephone,
@@ -180,6 +187,7 @@ class MessagesContactCrudController extends AbstractCrudController
             FormField::addPanel('Informations expéditeur'),
             $id,
             $client,
+            $sujet , 
             $nom,
             $email,
             $telephone,
@@ -194,18 +202,4 @@ class MessagesContactCrudController extends AbstractCrudController
             $dateEnvoi,
         ];
     }
-
-    // Action pour marquer comme lu
-    // public function markAsRead(MessagesContact $message)
-    // {
-    //     $message->setStatut('lu');
-    //     $this->getDoctrine()->getManager()->flush();
-
-    //     $this->addFlash('success', 'Message marqué comme lu');
-
-    //     return $this->redirectToRoute('admin', [
-    //         'crudAction' => 'index',
-    //         'crudControllerFqcn' => self::class,
-    //     ]);
-    // }
 }

@@ -20,7 +20,7 @@ export const sendContactMessage = createAsyncThunk(
     { rejectWithValue }
   ) => {
     try {
-      const response = await apiClient.post('/contacts', data);
+      const response = await apiClient.post('messages/contact/new', data);
       return response.data;
     } catch (error: any) {
       return rejectWithValue(error.response?.data?.message || 'Failed to send message');
