@@ -4,7 +4,7 @@ import { useState } from "react"
 import Link from "next/link"
 import { useAppSelector } from "@/hooks/use-app-selector"
 import { Button } from "@/components/ui/button"
-import { Phone, Mail, Calendar } from "lucide-react"
+import { Phone, Mail, Calendar, Calculator } from "lucide-react"
 import { BaseURL, navItems } from "@/lib/utils"
 
 export function Navbar() {
@@ -75,9 +75,9 @@ export function Navbar() {
                     style={{ backgroundColor: "#40e0d0", color: "#333" }}
                   >
                     <span>
-                      <Calendar className="h-5 w-5" />
+                      <Calculator className="h-5 w-5" />
                     </span>
-                    Réserver Maintenant
+                    Demander un devis
                   </Button>
                 </Link>
 
