@@ -21,7 +21,17 @@ jobs:
           php-version: '8.2'
           extensions: mbstring, intl, pdo_mysql
           tools: composer
-
+          
+       # Creation of env file 
+      - name: Create prod env
+        run: |
+          cd Server
+          echo "APP_ENV=prod" > .env.prod.local
+          echo "APP_DEBUG=0" >> .env.local
+          echo "APP_SECRET=${{ secrets.APP_SECRET }}" >> .env.prod.local
+          echo "DATABASE_URL=mysql://${{ secrets.DATABASE_USER }}:${{ secrets.DB_PASS }}@127.0.0.1:3306/${{ secrets.DATABASE_USER }}?serverVersion=8.0&charset=utf8mb4" >> .env.prod.local
+          echo "CORS_ALLOW_ORIGIN='^https://radiata\-explorer\.com$'" >> .env.prod.local
+          
       # 3️⃣ Installer dépendances Symfony (PROD)
       - name: Install backend dependencies (Symfony)
         run: |
