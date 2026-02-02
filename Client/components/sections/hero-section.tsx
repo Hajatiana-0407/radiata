@@ -2,6 +2,9 @@
 
 import { ArrowRight } from "lucide-react"
 import { DestinationSearchForm } from "@/components/forms/destination-search-form"
+import { useAppDispatch } from "@/hooks/use-app-dispatch"
+import { setFilters, setPage } from "@/store/slices/destinationsSlice"
+import { useRouter } from "next/navigation"
 
 interface HeroSectionProps {
   title: string
@@ -28,12 +31,24 @@ export function HeroSection({
   secondaryCta,
   showSearchBar,
 }: HeroSectionProps) {
-  const handleSearch = (filters: any) => {
-    console.log("Search filters:", filters)
+  const dispatch = useAppDispatch();
+  const routeur = useRouter();
+  const handleSearch = (filterData: { search: string; tag: string; minPrice: string; maxPrice: string }) => {
+    dispatch(
+      setFilters({
+        search: filterData.search,
+        tag: filterData.tag,
+        minPrice: filterData.minPrice ? Number.parseFloat(filterData.minPrice) : null,
+        maxPrice: filterData.maxPrice ? Number.parseFloat(filterData.maxPrice) : null,
+      }) as any,
+    )
+    dispatch(setPage(1) as any);
+    routeur.push('/destinations');
   }
 
   const handleReset = () => {
-    console.log("Reset filters")
+    dispatch(setFilters({ search: "", difficulty: null, minPrice: null, maxPrice: null }) as any)
+    dispatch(setPage(1) as any)
   }
 
   return (

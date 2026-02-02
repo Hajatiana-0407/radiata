@@ -19,14 +19,14 @@ class CircuitsRepository extends ServiceEntityRepository
 
     public function findCircuitsPaginated(
         ?string $search,
-        ?string $difficulte,
+        ?string $tag,
         ?int $minPrice,
         ?int $maxPrice,
         int $page = 1,
         ?int $limit = 10
     ): array {
         $qb = $this->createQueryBuilder('c')
-            ->join('c.categories' , 'cat')
+            ->join('c.categories', 'cat')
             ->addSelect('cat')
         ;
 
@@ -39,9 +39,9 @@ class CircuitsRepository extends ServiceEntityRepository
             )
                 ->setParameter('search', '%' . $search . '%');
         }
-        if (!empty($difficulte)) {
-            $qb->andWhere('c.difficulte = :difficulte')
-                ->setParameter('difficulte', $difficulte);
+        if (!empty($tag)) {
+            $qb->andWhere('c.tags LIKE :tag')
+                ->setParameter('tag', "%" . $tag . "%");
         }
 
         //  Prix 
@@ -97,6 +97,29 @@ class CircuitsRepository extends ServiceEntityRepository
             'limit' => $limit,
             'totalPages' => (int) ceil(count($paginator) / $limit),
         ];
+    }
+
+
+    public function findAllTags()
+    {
+        $qb = $this->createQueryBuilder('c')
+            ->select('DISTINCT c.tags');
+
+        $results = $qb->getQuery()->getResult();
+
+        $tags = [];
+        foreach ($results as $result) {
+            $circuitTags = $result['tags'];
+            if (!empty($circuitTags)) {
+                $tagsArray = array_map('trim', $circuitTags);
+                $tags = array_merge($tags, $tagsArray);
+            }
+        }
+
+        // Supprimer les doublons et réindexer le tableau
+        $uniqueTags = array_values(array_unique($tags));
+
+        return $uniqueTags;
     }
 
     //    /**

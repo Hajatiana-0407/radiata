@@ -8,9 +8,10 @@ interface DestinationsState {
   error: string | null;
   page: number;
   totalPages: number;
+  tags?: string[]
   filters: {
     search: string;
-    difficulty: string | null;
+    tag: string | null;
     maxPrice: number | null;
     minPrice: number | null;
   };
@@ -24,7 +25,7 @@ const initialState: DestinationsState = {
   totalPages: 1,
   filters: {
     search: '',
-    difficulty: null,
+    tag: null,
     maxPrice: null,
     minPrice: null,
   },
@@ -33,17 +34,39 @@ const initialState: DestinationsState = {
 export const fetchDestinations = createAsyncThunk(
   'destinations/fetch',
   async (
-    { page, search, difficulty, maxPrice }: any = {},
+    { page, search, tag, maxPrice }: any = {},
     { rejectWithValue }
   ) => {
     try {
       const params = new URLSearchParams();
       if (page) params.append('page', page);
       if (search) params.append('search', search);
-      if (difficulty) params.append('difficulty', difficulty);
+      if (tag) params.append('tag', tag);
       if (maxPrice) params.append('maxPrice', maxPrice);
 
       const response = await apiClient.get(`/circuits?${params}`);
+      const result: ApiReturnType = response.data;
+      if (result.success) {
+        return result;
+      } else {
+        return rejectWithValue(result.message || 'Failed to fetch destinations');
+      }
+    } catch (error: any) {
+      return rejectWithValue(error.response?.data?.message || 'Failed to fetch destinations');
+    }
+  }
+);
+
+
+export const fetchAllTags = createAsyncThunk(
+  'destinations/fetchAllTags ',
+  async (
+    { }: any = {},
+    { rejectWithValue }
+  ) => {
+    try {
+
+      const response = await apiClient.get(`/circuits/tags/all`);
       const result: ApiReturnType = response.data;
       if (result.success) {
         return result;
@@ -81,6 +104,21 @@ const destinationsSlice = createSlice({
         state.totalPages = action.payload.pagination?.totalPages || 1;
       })
       .addCase(fetchDestinations.rejected, (state, action) => {
+        state.loading = false;
+        state.error = action.payload as string;
+      });
+
+
+    builder
+      .addCase(fetchAllTags.pending, (state) => {
+        state.loading = true;
+        state.error = null;
+      })
+      .addCase(fetchAllTags.fulfilled, (state, action: { payload: ApiReturnType }) => {
+        state.loading = false;
+        state.tags = action.payload.data;
+      })
+      .addCase(fetchAllTags.rejected, (state, action) => {
         state.loading = false;
         state.error = action.payload as string;
       });

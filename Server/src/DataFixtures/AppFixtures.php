@@ -128,10 +128,10 @@ class AppFixtures extends Fixture
                     'randonnée',
                     'plage'
                 ], $faker->numberBetween(1, 4)))
-                ->setRange(new Range(
-                    min: $faker->numberBetween(100, 500),
-                    max: $faker->numberBetween(501, 2000)
-                ))
+                    ->setRange(new Range(
+                        min: $faker->numberBetween(100, 500),
+                        max: $faker->numberBetween(501, 2000)
+                    ))
                 ->addCategory($categories[$faker->numberBetween(0, (count($categories) - 1))])
                 ->setPeriode($faker->randomElements([
                     'Printemps',

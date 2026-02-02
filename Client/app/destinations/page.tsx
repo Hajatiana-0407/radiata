@@ -26,25 +26,24 @@ type DestinationsByCategory = Record<
 export default function DestinationsPage() {
   const dispatch = useAppDispatch()
   const { items, loading, error, page, totalPages, filters } = useAppSelector((state) => state.destinations);
-  const [categorie, setCategorie] = useState('');
 
   useEffect(() => {
     dispatch(
       fetchDestinations({
         page,
         search: filters.search,
-        difficulty: filters.difficulty,
+        tag: filters.tag,
         minPrice: filters.minPrice,
         maxPrice: filters.maxPrice,
       }) as any,
     )
   }, [dispatch, page, filters])
 
-  const handleSearch = (filterData: { search: string; difficulty: string; minPrice: string; maxPrice: string }) => {
+  const handleSearch = (filterData: { search: string; tag: string; minPrice: string; maxPrice: string }) => {
     dispatch(
       setFilters({
         search: filterData.search,
-        difficulty: filterData.difficulty,
+        tag: filterData.tag,
         minPrice: filterData.minPrice ? Number.parseFloat(filterData.minPrice) : null,
         maxPrice: filterData.maxPrice ? Number.parseFloat(filterData.maxPrice) : null,
       }) as any,

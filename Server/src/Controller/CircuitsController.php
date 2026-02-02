@@ -21,14 +21,14 @@ final class CircuitsController extends AbstractController
         // Récupération des paramètres de requête
         $page = $request->query->getInt('page', 1);
         $search = $request->query->get('search', '');
-        $difficulty = $request->query->get('difficulty', '');
+        $tag = $request->query->get('tag', '');
         $minPrice = $request->query->getInt('minPrice', 0);
         $maxPrice = $request->query->getInt('maxPrice', 10000);
 
         // Récupération des données paginées
         $paginator = $circuitsRepository->findCircuitsPaginated(
             $search,
-            $difficulty,
+            $tag,
             $minPrice,
             $maxPrice,
             $page,
@@ -170,6 +170,19 @@ final class CircuitsController extends AbstractController
             'data' => $circuitData,
         ];
 
+        return $this->json($response);
+    }
+
+    #[Route('/tags/all', name: 'app_circuits_tags', methods: ['GET'])]
+    public function getAllTags(CircuitsRepository $circuitsRepository): Response
+    {
+        $tags = $circuitsRepository->findAllTags();
+
+        $response = [
+            'success' => true,
+            'message' => 'Liste des tags récupérée avec succès',
+            'data' => $tags,
+        ];
         return $this->json($response);
     }
 }
