@@ -66,7 +66,6 @@ class ServicesCrudController extends AbstractCrudController
         $description = TextareaField::new('description', 'Description')
             ->setRequired(true)
             ->setNumOfRows(4)
-            ->hideOnIndex()
             ->setHelp('Description détaillée du service');
 
         $ordreAffichage = IntegerField::new('ordre_affichage', 'Ordre d\'affichage')
@@ -89,6 +88,7 @@ class ServicesCrudController extends AbstractCrudController
             return [
                 $id,
                 $nom,
+                $description , 
                 $ordreAffichage,
                 $actif,
             ];
