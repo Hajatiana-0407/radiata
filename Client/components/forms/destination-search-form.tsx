@@ -1,42 +1,51 @@
 "use client"
 
-import { useState } from "react"
+import { useEffect, useState } from "react"
 import { Search, Gauge, DollarSign, RotateCcw } from "lucide-react"
 import { CustomInput } from "@/components/ui/custom-input"
 import { CustomSelect } from "@/components/ui/custom-select"
 import { Button } from "@/components/ui/button"
-import { DIFFICULTY_LABELS } from "@/lib/utils"
+import { useAppDispatch, useAppSelector } from "@/hooks/use-app-dispatch"
+import { fetchAllTags } from "@/store/slices/destinationsSlice"
 
 interface DestinationSearchFormProps {
-  onSearch: (filters: { search: string; difficulty: string; maxPrice: string; minPrice: string }) => void
+  onSearch: (filters: { search: string; tag: string; maxPrice: string; minPrice: string }) => void
   onReset: () => void
   compact?: boolean
 }
 
 export function DestinationSearchForm({ onSearch, onReset, compact = false }: DestinationSearchFormProps) {
+  const { tags, loading } = useAppSelector(state => state.destinations)
   const [searchTerm, setSearchTerm] = useState("")
-  const [difficulty, setDifficulty] = useState("")
-  const [minPrice, setMinPrice] = useState("0")
-  const [maxPrice, setMaxPrice] = useState("5000")
+  const [tag, setTag] = useState("")
+  const [minPrice, setMinPrice] = useState("")
+  const [maxPrice, setMaxPrice] = useState("");
+  const dispatch = useAppDispatch();
+  console.log('Tag : ', tag);
+
 
   const handleSearch = () => {
-    onSearch({ search: searchTerm, difficulty, minPrice, maxPrice })
+    onSearch({ search: searchTerm, tag, minPrice, maxPrice })
   }
 
   const handleReset = () => {
     setSearchTerm("")
-    setDifficulty("")
-    setMinPrice("0")
-    setMaxPrice("5000")
+    setTag("")
+    setMinPrice("")
+    setMaxPrice("")
     onReset()
   }
 
+  useEffect(() => {
+    dispatch(fetchAllTags({}));
+  }, [dispatch])
+
   if (compact) {
     return (
-      <div className="w-full bg-white rounded-2xl shadow-2xl p-6">
+      <div className="w-full bg-white text-black rounded-2xl shadow-2xl p-6">
         <div className="grid grid-cols-1 md:grid-cols-5 gap-4 items-end">
           {/* Search destination */}
-          <div>
+          <div className="">
             <label className="text-sm font-semibold mb-2 flex items-center gap-2" style={{ color: "#7ac243" }}>
               <div
                 className="h-8 w-8 rounded-lg flex items-center justify-center"
@@ -63,12 +72,12 @@ export function DestinationSearchForm({ onSearch, onReset, compact = false }: De
               >
                 <Gauge className="h-4 w-4" style={{ color: "#40e0d0" }} />
               </div>
-              Difficulté
+              Étiquette
             </label>
             <CustomSelect
-              value={difficulty}
-              onChange={(e) => setDifficulty(e.target.value)}
-              options={Object.entries(DIFFICULTY_LABELS).map(([key, label]) => ({ value: key, label }))}
+              value={tag}
+              onChange={(e) => setTag(e.target.value)}
+              options={tags?.map(tag => ({ value: tag, label: tag })) ?? []}
               className="border-2 focus:border-[#40e0d0] transition-colors"
             />
           </div>
@@ -85,7 +94,7 @@ export function DestinationSearchForm({ onSearch, onReset, compact = false }: De
               Prix Min
             </label>
             <CustomInput
-              placeholder="0"
+              placeholder="Prix minimum"
               type="number"
               value={minPrice}
               onChange={(e) => setMinPrice(e.target.value)}
@@ -106,7 +115,7 @@ export function DestinationSearchForm({ onSearch, onReset, compact = false }: De
             </label>
             <div>
               <CustomInput
-                placeholder="5000"
+                placeholder="Prix maximum"
                 type="number"
                 value={maxPrice}
                 onChange={(e) => setMaxPrice(e.target.value)}
@@ -122,7 +131,10 @@ export function DestinationSearchForm({ onSearch, onReset, compact = false }: De
               className="flex-1 text-white font-semibold hover:shadow-lg transition-all cursor-pointer"
               style={{ backgroundColor: "#7ac243" }}
             >
-              <Search className="h-4 w-4 mr-2" />
+              {loading ?
+                (<div className="h-4 w-4 animate-spin rounded-full border-2 border-border border-t-primary"></div>)
+                : <Search className="h-4 w-4 mr-2" />
+              }
               Chercher
             </Button>
             <Button
@@ -168,8 +180,8 @@ export function DestinationSearchForm({ onSearch, onReset, compact = false }: De
             Difficulté
           </label>
           <CustomSelect
-            value={difficulty}
-            onChange={(e) => setDifficulty(e.target.value)}
+            value={tag}
+            onChange={(e) => setTag(e.target.value)}
             options={[
               { value: "", label: "Toutes les difficultés" },
               { value: "easy", label: "🟢 Facile" },
