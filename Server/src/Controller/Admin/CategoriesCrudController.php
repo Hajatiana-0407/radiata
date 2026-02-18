@@ -103,6 +103,7 @@ class CategoriesCrudController extends AbstractCrudController
         $description = TextareaField::new('description', 'Description')
             ->setRequired(false)
             ->setNumOfRows(3)
+            ->hideOnIndex()
             ->setHelp('Description courte de la catégorie');
         
         // Champ couleur avec sélecteur de couleur
@@ -125,8 +126,9 @@ class CategoriesCrudController extends AbstractCrudController
         if ($pageName === Crud::PAGE_INDEX) {
             return [
                 $id,
+                $icone->setTemplatePath('admin/field/icon.html.twig'),
                 $nom,
-                $description , 
+                $couleur->setTemplatePath('admin/field/color.html.twig'),
                 $ordreAffichage,
                 $dateCreation,
             ];

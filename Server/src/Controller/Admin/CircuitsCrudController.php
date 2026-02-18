@@ -77,10 +77,6 @@ class CircuitsCrudController extends AbstractCrudController
             ->setRequired(true)
             ->setHelp('Titre principal du circuit');
 
-        $localisation = TextField::new('localisation', 'Localisation du circuit')
-            ->setRequired(true)
-            ->setHelp('Localisation du circuit');
-
         $image = ImageField::new('image', 'Image principale')
             ->setBasePath($basePath)
             ->setUploadDir($uploadDir)
@@ -223,7 +219,6 @@ class CircuitsCrudController extends AbstractCrudController
                 $id,
                 $image->setBasePath($basePath)->onlyOnIndex(),
                 $titre,
-                $localisation,
                 $dureeJours->setNumDecimals(0),
                 $prixBase->setNumDecimals(0)->formatValue(function ($value) {
                     return $value ? number_format($value, 0, ',', ' ') . ' €' : '0 €';
@@ -248,7 +243,6 @@ class CircuitsCrudController extends AbstractCrudController
                 $tags,
 
                 FormField::addPanel('Caractéristiques')->setIcon('fa-cogs'),
-                $localisation , 
                 $dureeJours,
                 $prixBase,
                 $groupe_max,
@@ -263,9 +257,9 @@ class CircuitsCrudController extends AbstractCrudController
                 $circuitsSimilaires,
                 $servicesInlus,
 
-                // FormField::addPanel('Référencement')->setIcon('fa-search')->collapsible(),
-                // $metaTitre,
-                // $metaDescription,
+                FormField::addPanel('Référencement')->setIcon('fa-search')->collapsible(),
+                $metaTitre,
+                $metaDescription,
 
                 FormField::addPanel('Publication')->setIcon('fa-globe'),
                 $actif,
@@ -284,11 +278,10 @@ class CircuitsCrudController extends AbstractCrudController
                 $tags,
 
                 FormField::addPanel('Caractéristiques')->setIcon('fa-cogs'),
-                $localisation , 
                 $dureeJours,
                 $prixBase,
-                // $groupe_max,
-                // $groupe_min,
+                $groupe_max,
+                $groupe_min,
                 $point_fort,
                 $conservation_contribution,
                 $difficulte,
@@ -299,9 +292,9 @@ class CircuitsCrudController extends AbstractCrudController
                 $circuitsSimilaires,
                 $servicesInlus,
 
-                // FormField::addPanel('Référencement')->setIcon('fa-search')->collapsible(),
-                // $metaTitre,
-                // $metaDescription,
+                FormField::addPanel('Référencement')->setIcon('fa-search')->collapsible(),
+                $metaTitre,
+                $metaDescription,
 
                 FormField::addPanel('Publication')->setIcon('fa-globe'),
                 $actif,
@@ -323,11 +316,10 @@ class CircuitsCrudController extends AbstractCrudController
             $tags,
 
             FormField::addPanel('Caractéristiques'),
-            $localisation , 
             $dureeJours,
             $prixBase,
-            // $groupe_max,
-            // $groupe_min,
+            $groupe_max,
+            $groupe_min,
             $point_fort,
             $conservation_contribution,
             $difficulte,
@@ -338,9 +330,9 @@ class CircuitsCrudController extends AbstractCrudController
             $circuitsSimilaires,
             $servicesInlus,
 
-            // FormField::addPanel('Référencement'),
-            // $metaTitre,
-            // $metaDescription,
+            FormField::addPanel('Référencement'),
+            $metaTitre,
+            $metaDescription,
 
             FormField::addPanel('Publication'),
             $actif,
