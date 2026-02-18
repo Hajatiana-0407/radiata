@@ -93,7 +93,7 @@ class DashboardController extends AbstractDashboardController
 
         yield MenuItem::section('Clients');
         yield MenuItem::linkToCrud('Liste des clients', 'fa fa-list', Clients::class);
-        // yield MenuItem::linkToCrud('Devis', 'fa fa-file-invoice', Devis::class);
+        yield MenuItem::linkToCrud('Devis', 'fa fa-file-invoice', Devis::class);
         yield MenuItem::linkToCrud('Réservation', 'fa fa-calendar-check', Reservations::class);
         yield MenuItem::linkToCrud('Messages', 'fa fa-message', MessagesContact::class);
 

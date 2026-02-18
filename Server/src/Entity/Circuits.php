@@ -134,14 +134,6 @@ class Circuits
         $this->date_creation = new \DateTime();
         $this->categories = new ArrayCollection();
         $this->services = new ArrayCollection();
-        $this->range = new Range();
-
-        $this->meta_description = '';
-        $this->meto_titre = '';
-
-        $this->localisation = '' ; 
-        $this->is_populare = false;
-
     }
 
     public function getId(): ?int
