@@ -71,7 +71,6 @@ jobs:
             **/.git/**
             **/.github/**
             **/node_modules/**
-            **/.env
             **/.env.local
             **/var/cache/**
             **/var/log/**
