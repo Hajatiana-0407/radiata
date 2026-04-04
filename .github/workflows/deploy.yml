@@ -1,5 +1,4 @@
 name: Deploy Symfony & Next.js
-
 on:
   push:
     branches:
@@ -8,7 +7,6 @@ on:
 jobs:
   deploy:
     runs-on: ubuntu-latest
-
     steps:
       # 1️⃣ Checkout
       - name: Checkout code
@@ -21,43 +19,60 @@ jobs:
           php-version: '8.2'
           extensions: mbstring, intl, pdo_mysql
           tools: composer
-          
-       # Creation of env file 
+
+      # 3️⃣ Création du .env prod
       - name: Create prod env
         run: |
           cd Server
-          echo "APP_ENV=prod" > .env
-          echo "APP_DEBUG=0" >> .env
-          echo "APP_SECRET=${{ secrets.APP_SECRET }}" >> .env
-          echo "DATABASE_URL=mysql://${{ secrets.DATABASE_USER }}:${{ secrets.DB_PASS }}@127.0.0.1:3306/${{ secrets.DATABASE_USER }}?serverVersion=8.0&charset=utf8mb4" >> .env
-          echo "CORS_ALLOW_ORIGIN='^https://radiata\-explorer\.com$'" >> .env
-          
-      # 3️⃣ Installer dépendances Symfony (PROD)
+          cat > .env << EOF
+          APP_ENV=prod
+          APP_DEBUG=0
+          APP_SECRET=${{ secrets.APP_SECRET }}
+          DATABASE_URL=mysql://${{ secrets.DATABASE_USER }}:${{ secrets.DB_PASS }}@127.0.0.1:3306/${{ secrets.DATABASE_USER }}?serverVersion=8.0&charset=utf8mb4
+          CORS_ALLOW_ORIGIN='^https://radiata\-explorer\.com$'
+          EOF
+
+      # 4️⃣ Installer dépendances Symfony (PROD)
       - name: Install backend dependencies (Symfony)
         run: |
           cd Server
           APP_ENV=prod composer install --no-dev --optimize-autoloader
 
-      # 4️⃣ Compiler l’environnement PROD Symfony
+      # 5️⃣ Compiler l'environnement PROD Symfony
       - name: Build Symfony prod env
         run: |
           cd Server
           composer dump-env prod
 
-      # 5️⃣ Setup Node.js (NE PAS TOUCHER)
+      # 6️⃣ Setup Node.js
       - name: Setup Node.js
         uses: actions/setup-node@v4
         with:
           node-version: 20
 
-      # 6️⃣ Build assets Symfony (Encore)
+      # 7️⃣ Build assets Symfony
       - name: Build Symfony assets
         run: |
           cd Server
           npm install
           npm run build
 
-      # 7️⃣ Déploiement backend Symfony (FTP)
+      # 8️⃣ Prépare les dossiers var/
+      - name: Prepare var directories
+        run: |
+          cd Server
+          mkdir -p var/sessions/prod
+          mkdir -p var/log
+          chmod -R 775 var/
+
+      # 9️⃣ Vide le cache local avant déploiement
+      - name: Clear cache folder
+        run: |
+          cd Server
+          rm -rf var/cache
+          mkdir -p var/cache/prod
+
+      # 🔟 Déploiement backend Symfony (FTP)
       - name: Deploy backend (Symfony)
         uses: SamKirkland/FTP-Deploy-Action@v4.3.4
         with:
@@ -72,26 +87,39 @@ jobs:
             **/.github/**
             **/node_modules/**
             **/.env.local
-            **/var/cache/**
             **/var/log/**
 
+      # 1️⃣1️⃣ Déploie un cache vide pour écraser l'ancien
+      - name: Deploy empty cache
+        uses: SamKirkland/FTP-Deploy-Action@v4.3.4
+        with:
+          server: ${{ secrets.FTP_HOST }}
+          username: ${{ secrets.FTP_USER }}
+          password: ${{ secrets.FTP_PASSWORD }}
+          protocol: ftp
+          local-dir: ./Server/var/cache/
+          server-dir: /Server/var/cache/
+
       # ======================
-      # FRONTEND (INCHANGÉ)
+      # FRONTEND (Next.js)
       # ======================
 
+      # 1️⃣2️⃣ Création du .env Next.js
       - name: Create .env for Next.js
         run: |
           cd Client
-          echo "NEXT_PUBLIC_API_URL=${{ secrets.NEXT_PUBLIC_API_URL }}" >> .env
+          echo "NEXT_PUBLIC_API_URL=${{ secrets.NEXT_PUBLIC_API_URL }}" > .env
           echo "NEXT_PUBLIC_APP_NAME=MyApp" >> .env
           echo "NEXT_PUBLIC_BASE_URL=${{ secrets.NEXT_PUBLIC_BASE_URL }}" >> .env
 
+      # 1️⃣3️⃣ Build frontend
       - name: Build frontend (Next.js)
         run: |
           cd Client
           npm install --legacy-peer-deps
           npm run build
 
+      # 1️⃣4️⃣ Déploiement frontend (FTP)
       - name: Deploy frontend (Next.js)
         uses: SamKirkland/FTP-Deploy-Action@v4.3.4
         with:
