@@ -35,7 +35,11 @@ class ReservationsCrudController extends AbstractCrudController
             ->setSearchFields(['client.nom', 'client.prenom', 'circuit.titre'])
             ->setPaginatorPageSize(20)
             ->showEntityActionsInlined()
-            ->setHelp('index', 'Gestion des réservations de circuits');
+            ->setHelp('index', 'Gestion des réservations de circuits')
+            ->setFormOptions(
+        ['csrf_protection' => false],
+        ['csrf_protection' => false]
+    );
     }
 
     public function configureActions(Actions $actions): Actions
@@ -105,7 +109,7 @@ class ReservationsCrudController extends AbstractCrudController
             ->setCustomOption(BooleanField::OPTION_RENDER_AS_SWITCH, true)
             ->setHelp('Réservation confirmée')
             ->formatValue(function ($value, $entity) {
-                return $value ? '✅ Confirmée' : '⏳ En attente';
+                return $value ? 'â Confirmée' : 'â³ En attente';
             });
 
 

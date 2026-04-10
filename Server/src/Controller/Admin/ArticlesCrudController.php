@@ -35,7 +35,12 @@ class ArticlesCrudController extends AbstractCrudController
             ->setSearchFields(['titre', 'contenu', 'meto_titre'])
             ->setPaginatorPageSize(10)
             ->showEntityActionsInlined()
-            ->setHelp('index', 'Gérez vos articles de blog et actualités');
+            ->setHelp('index', 'Gérez vos articles de blog et actualités')
+            ->setFormOptions(
+        ['csrf_protection' => false],
+        ['csrf_protection' => false]
+    )
+            ;
     }
 
     public function configureActions(Actions $actions): Actions

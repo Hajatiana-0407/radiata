@@ -39,7 +39,11 @@ class CircuitsCrudController extends AbstractCrudController
             ->setSearchFields(['titre', 'description', 'slug'])
             ->setPaginatorPageSize(10)
             ->showEntityActionsInlined()
-            ->setHelp('index', 'Gérez vos circuits touristiques');
+            ->setHelp('index', 'Gérez vos circuits touristiques')
+            ->setFormOptions(
+        ['csrf_protection' => false],
+        ['csrf_protection' => false]
+    );
     }
 
     public function configureActions(Actions $actions): Actions
@@ -148,11 +152,11 @@ class CircuitsCrudController extends AbstractCrudController
 
         $difficulte = ChoiceField::new('difficulte', 'Difficulté')
             ->setChoices([
-                '⭐ Facile' => 1,
-                '⭐⭐ Intermédiaire' => 2,
-                '⭐⭐⭐ Difficile' => 3,
-                '⭐⭐⭐⭐ Expert' => 4,
-                '⭐⭐⭐⭐⭐ Extrême' => 5
+                'â­ Facile' => 1,
+                'â­â­ Intermédiaire' => 2,
+                'â­â­â­ Difficile' => 3,
+                'â­â­â­â­ Expert' => 4,
+                'â­â­â­â­â­ Extrême' => 5
             ])
             ->renderAsBadges([
                 1 => 'success',

@@ -70,8 +70,8 @@ class DashboardController extends AbstractDashboardController
         return Dashboard::new()
             ->setTitle('<img src="' . $baseUrl . '/image/logo-no-bg.png" classe="__admin_logo" style="max-height: 150px;">')
             ->setLocales([
-                // 'fr' => '🇫🇷 Français',
-                'en' => '🇬🇧 English'
+                // 'fr' => 'ðÂÂ«ðÂÂ· Français',
+                'en' => 'ðÂÂ¬ðÂÂ§ English'
             ]);
 
         ;

@@ -37,7 +37,11 @@ class GalerieMediasCrudController extends AbstractCrudController
             ->setSearchFields(['titre', 'description', 'nom_ficher'])
             ->setPaginatorPageSize(10)
             ->showEntityActionsInlined()
-            ->setHelp('index', 'Gestion de la galerie médias (images, vidéos, documents)');
+            ->setHelp('index', 'Gestion de la galerie médias (images, vidéos, documents)')
+            ->setFormOptions(
+        ['csrf_protection' => false],
+        ['csrf_protection' => false]
+    );
     }
 
     public function configureActions(Actions $actions): Actions

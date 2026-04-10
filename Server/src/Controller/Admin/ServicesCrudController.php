@@ -33,7 +33,11 @@ class ServicesCrudController extends AbstractCrudController
             ->setSearchFields(['nom', 'description'])
             ->setPaginatorPageSize(20)
             ->showEntityActionsInlined()
-            ->setFormOptions(['validation_groups' => ['Default', 'creation']]);
+            ->setFormOptions(['validation_groups' => ['Default', 'creation']])
+            ->setFormOptions(
+        ['csrf_protection' => false],
+        ['csrf_protection' => false]
+    );
     }
 
     public function configureActions(Actions $actions): Actions

@@ -35,7 +35,11 @@ class DevisCrudController extends AbstractCrudController
             ->setSearchFields(['reference_devis', 'nom_client', 'email', 'telephone'])
             ->setPaginatorPageSize(20)
             ->showEntityActionsInlined()
-            ->setHelp('index', 'Gestion des demandes de devis');
+            ->setHelp('index', 'Gestion des demandes de devis')
+            ->setFormOptions(
+        ['csrf_protection' => false],
+        ['csrf_protection' => false]
+    );
     }
 
     public function configureActions(Actions $actions): Actions
@@ -97,13 +101,13 @@ class DevisCrudController extends AbstractCrudController
 
         $statut = ChoiceField::new('statut', 'Statut')
             ->setChoices([
-                '⚠️ En attente' => 'en_attente',
-                '📞 En cours' => 'en_cours',
-                '✅ Accepté' => 'accepte',
-                '❌ Refusé' => 'refuse',
-                '📋 Devis envoyé' => 'devis_envoye',
-                '💰 Facturé' => 'facture',
-                '📦 Terminé' => 'termine'
+                'â ï¸ En attente' => 'en_attente',
+                'ð En cours' => 'en_cours',
+                'â Accepté' => 'accepte',
+                'â Refusé' => 'refuse',
+                'ð Devis envoyé' => 'devis_envoye',
+                'ð° Facturé' => 'facture',
+                'ð¦ Terminé' => 'termine'
             ])
             ->renderAsBadges([
                 'en_attente' => 'warning',

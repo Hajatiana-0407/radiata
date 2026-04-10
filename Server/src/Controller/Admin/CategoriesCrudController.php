@@ -33,7 +33,11 @@ class CategoriesCrudController extends AbstractCrudController
             ->setDefaultSort(['ordre_affichage' => 'ASC'])
             ->setSearchFields(['nom', 'description'])
             ->setPaginatorPageSize(20)
-            ->showEntityActionsInlined();
+            ->showEntityActionsInlined()
+            ->setFormOptions(
+        ['csrf_protection' => false],
+        ['csrf_protection' => false]
+    );
     }
 
     public function configureActions(Actions $actions): Actions
@@ -62,35 +66,35 @@ class CategoriesCrudController extends AbstractCrudController
         // Champ icône avec sélection d'icônes FontAwesome
         $icone = ChoiceField::new('icone', 'Icône')
             ->setChoices([
-                '📁 Dossier' => 'fas fa-folder',
-                '🏷️ Étiquette' => 'fas fa-tag',
-                '📂 Dossier ouvert' => 'fas fa-folder-open',
-                '📊 Graphique' => 'fas fa-chart-bar',
-                '💰 Finance' => 'fas fa-money-bill-wave',
-                '🛒 Commerce' => 'fas fa-shopping-cart',
-                '🎨 Design' => 'fas fa-palette',
-                '💻 Technologie' => 'fas fa-laptop-code',
-                '🎵 Musique' => 'fas fa-music',
-                '🎬 Film' => 'fas fa-film',
-                '📚 Livre' => 'fas fa-book',
-                '🍕 Nourriture' => 'fas fa-pizza-slice',
-                '🚗 Transport' => 'fas fa-car',
-                '🏥 Santé' => 'fas fa-heartbeat',
-                '🎓 Éducation' => 'fas fa-graduation-cap',
-                '⚽ Sport' => 'fas fa-futbol',
-                '✈️ Voyage' => 'fas fa-plane',
-                '🏠 Maison' => 'fas fa-home',
-                '👕 Mode' => 'fas fa-tshirt',
-                '🔧 Outils' => 'fas fa-tools',
-                '📱 Mobile' => 'fas fa-mobile-alt',
-                '💡 Idées' => 'fas fa-lightbulb',
-                '👥 Personnes' => 'fas fa-users',
-                '📅 Événements' => 'fas fa-calendar-alt',
-                '📰 Actualités' => 'fas fa-newspaper',
-                '🎯 Cible' => 'fas fa-bullseye',
-                '⚡ Énergie' => 'fas fa-bolt',
-                '🌱 Nature' => 'fas fa-leaf',
-                '🏢 Entreprise' => 'fas fa-building',
+                'ð Dossier' => 'fas fa-folder',
+                'ð·ï¸ Étiquette' => 'fas fa-tag',
+                'ð Dossier ouvert' => 'fas fa-folder-open',
+                'ð Graphique' => 'fas fa-chart-bar',
+                'ð° Finance' => 'fas fa-money-bill-wave',
+                'ð Commerce' => 'fas fa-shopping-cart',
+                'ð¨ Design' => 'fas fa-palette',
+                'ð» Technologie' => 'fas fa-laptop-code',
+                'ðµ Musique' => 'fas fa-music',
+                'ð¬ Film' => 'fas fa-film',
+                'ð Livre' => 'fas fa-book',
+                'ð Nourriture' => 'fas fa-pizza-slice',
+                'ð Transport' => 'fas fa-car',
+                'ð¥ Santé' => 'fas fa-heartbeat',
+                'ð Éducation' => 'fas fa-graduation-cap',
+                'â½ Sport' => 'fas fa-futbol',
+                'âï¸ Voyage' => 'fas fa-plane',
+                'ð  Maison' => 'fas fa-home',
+                'ð Mode' => 'fas fa-tshirt',
+                'ð§ Outils' => 'fas fa-tools',
+                'ð± Mobile' => 'fas fa-mobile-alt',
+                'ð¡ Idées' => 'fas fa-lightbulb',
+                'ð¥ Personnes' => 'fas fa-users',
+                'ð Événements' => 'fas fa-calendar-alt',
+                'ð° Actualités' => 'fas fa-newspaper',
+                'ð¯ Cible' => 'fas fa-bullseye',
+                'â¡ Énergie' => 'fas fa-bolt',
+                'ð± Nature' => 'fas fa-leaf',
+                'ð¢ Entreprise' => 'fas fa-building',
             ])
             ->setRequired(false)
             ->renderAsBadges(false)
