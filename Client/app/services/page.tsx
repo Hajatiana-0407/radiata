@@ -34,6 +34,7 @@ export default function ServicesPage() {
     //   features: ['5 destinations', 'Guide privé', 'Repas gastronomiques', 'Hotel 3 étoiles', 'Équipement premium', 'Assurance']
     // }
   ];
+
   useEffect(() => {
     dispatch(fetchAllServices());
     return () => { }
@@ -45,19 +46,11 @@ export default function ServicesPage() {
       <Navbar />
 
       {/* Hero Section */}
-      <HeadingSection title="Nos Services" description="Une gamme complète de services pour une aventure sur mesure" />
+      <HeadingSection title="Nos activités principales" description="Découvrez nos services sur-mesure conçus pour répondre à vos besoins spécifiques" />
 
       {/* Services Grid */}
       <section className="py-20 px-4 bg-linear-to-b from-white to-slate-50">
         <div className="max-w-7xl mx-auto">
-          <div className="text-center mb-16">
-            <h2 className="text-4xl md:text-5xl font-bold mb-6 text-slate-900">
-              Nos <span className="text-[#7ac243]">activités</span> principales
-            </h2>
-            <p className="text-lg text-slate-600 max-w-3xl mx-auto">
-              Découvrez nos services sur-mesure conçus pour répondre à vos besoins spécifiques
-            </p>
-          </div>
 
           {loading ? (
             <div className='flex items-center justify-center py-20'>
@@ -80,7 +73,7 @@ export default function ServicesPage() {
                   </div>
 
                   {/* Titre */}
-                  <h3 className="text-2xl font-bold flex items-center gap-2  text-[#40e0d0] mb-4 capitalize group-hover:text-[#7ac243] transition-colors duration-300">
+                  <h3 className="text-2xl font-bold flex items-center gap-2  text-[#40e0d0] mb-4 group-hover:text-[#7ac243] transition-colors duration-300">
                     <CheckCircle className='w-5 h-5' />
                     {service.name}
                   </h3>

@@ -17,7 +17,7 @@ final class ServicesController extends AbstractController
     #[Route(name: 'app_services_index', methods: ['GET'])]
     public function index(ServicesRepository $servicesRepository): Response
     {
-        $services = $servicesRepository->findAll();
+        $services = $servicesRepository->findAllServices();
         $servicesArray = [];
         foreach ($services as $service) {
             $servicesArray[] = [

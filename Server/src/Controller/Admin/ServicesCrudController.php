@@ -61,7 +61,6 @@ class ServicesCrudController extends AbstractCrudController
         // =========================
         // Champs réutilisables
         // =========================
-        $id = IdField::new('id')->onlyOnIndex();
 
         $nom = TextField::new('nom', 'Nom du service')
             ->setRequired(true)
@@ -70,7 +69,6 @@ class ServicesCrudController extends AbstractCrudController
         $description = TextareaField::new('description', 'Description')
             ->setRequired(true)
             ->setNumOfRows(4)
-            ->hideOnIndex()
             ->setHelp('Description détaillée du service');
 
         $ordreAffichage = IntegerField::new('ordre_affichage', 'Ordre d\'affichage')
@@ -81,20 +79,15 @@ class ServicesCrudController extends AbstractCrudController
             ->setRequired(false)
             ->hideOnIndex() ; 
 
-        $actif = BooleanField::new('actif', 'Actif')
-            ->renderAsSwitch(true)
-            ->setFormTypeOption('data', true) // Valeur par défaut
-            ->setHelp('Service visible sur le site');
 
         // =========================
         // PAGE INDEX (liste)
         // =========================
         if ($pageName === Crud::PAGE_INDEX) {
             return [
-                $id,
                 $nom,
+                $description ,
                 $ordreAffichage,
-                $actif,
             ];
         }
 
@@ -110,7 +103,6 @@ class ServicesCrudController extends AbstractCrudController
 
                 FormField::addPanel('Configuration')->setIcon('fa-cog'),
                 $ordreAffichage,
-                $actif,
             ];
         }
 
@@ -126,7 +118,6 @@ class ServicesCrudController extends AbstractCrudController
 
                 FormField::addPanel('Configuration')->setIcon('fa-cog'),
                 $ordreAffichage,
-                $actif,
             ];
         }
 
@@ -135,14 +126,12 @@ class ServicesCrudController extends AbstractCrudController
         // =========================
         return [
             FormField::addPanel('Informations du service'),
-            $id,
             $nom,
             $description,
             $avantages,
 
             FormField::addPanel('Configuration'),
             $ordreAffichage,
-            $actif,
         ];
     }
 }

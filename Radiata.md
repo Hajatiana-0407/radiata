@@ -1,11 +1,6 @@
 # Liste des tâches
 ## 🔤 Correction des formats de texte
-- [ ] Vérifier le format des caractères dans le module Service
-- [ ] Corriger le problème de majuscule automatique après chaque espace  
-  - Exemple :
-    - Saisi : "Réservation d'hébergement"
-    - Résultat actuel : "Réservation D'hébergement"
-  - Comportement attendu : garder les minuscules après espace
+- [✔] Vérifier le format des caractères dans le module Service
 
 ## 🛠️ Problèmes après modification des services
 - [ ] Corriger l'erreur après modification d’un service
