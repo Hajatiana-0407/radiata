@@ -396,10 +396,6 @@ import { MapPin, Clock, Users, Leaf, Shield, Heart, Star, Share2, Calendar, Chec
                           } personnes
                         </span>
                       </div>
-                      <div className="flex justify-between items-center">
-                        <span className="text-gray-600">Départ garanti</span>
-                        <span className="font-medium text-green-600">À partir de {destination.group_size ? destination.group_size.min : 6} personnes</span>
-                      </div>
                     </div>
 
                     {/* Garanties */}

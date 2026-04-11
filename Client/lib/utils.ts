@@ -5,6 +5,24 @@ export function cn(...inputs: ClassValue[]) {
   return twMerge(clsx(inputs))
 }
 
+export const radiataInfo = {
+  phone: '+261 34 12 345 67' , 
+  email: { 
+    contact : 'contact@radiata-explorer.com' , 
+    admin : 'admin@radiata-explorer.com'
+  } , 
+  socialMedia : {
+    facebook : 'https://www.facebook.com/radiata.explorer' , 
+    instagram : 'https://www.instagram.com/radiata.explorer/' , 
+    linkedin : 'https://www.linkedin.com' ,
+    whatsapp : 'https://wa.me/261341234567'
+  } , 
+  location : {
+    address  : '123 Avenue de la Nature, Antananarivo, Madagascar' ,
+    mapLink : 'https://goo.gl/maps/your-map-link'
+  }
+}
+
 
 
 export function getDificultyLabel(difficulty: number): string {

@@ -1,21 +1,38 @@
-# Liste des tâches
-## 🔤 Correction des formats de texte
-- [✔] Vérifier le format des caractères dans le module Service
+# Liste des tâches – Mise à jour du site
 
-## 🛠️ Problèmes après modification des services
-- [✔] Corriger l'erreur après modification d’un service
-  - Suppression des anciens avantages
-  - Création de nouveaux avantages
-- [✔] Résoudre le problème où le service ne s’ouvre plus côté public
-- [✔] Corriger l’erreur "application error"
+## 🧭 Header
+- [✔] Modifier l’email
+- [✔] Modifier le numéro de contact (en attente de réception du nouveau numéro)
 
-## ⚙️ Fiabilité des modifications
-- [✔] Vérifier pourquoi certaines modifications ne sont pas prises en compte
-- [✔] Corriger les problèmes dans :
-  - Les destinations
-  - Les services (certains ne fonctionnent pas correctement)
+## 🏠 Accueil
+- [ ] Ajouter les prix en :
+  - Euro (€)
+  - Dollar ($)
+  - Ariary (Ar)
+- [ ] Ajouter un système de choix de devise dans la barre de recherche
+- [ ] Modifier le texte "Portée mondiale"
+  - Proposition : "Explorez les plus belles destinations naturelles de Madagascar"
+  - (Ou proposer une meilleure inspiration)
 
-## 🔗 Gestion des relations entre entités
-- [✔] Corriger la relation entre "Nos services" et "service inclus"
-  - Actuellement liés automatiquement
-  - Doivent pouvoir être indépendants (différents)
+## 🔻 Footer
+- [✔] Ajouter les liens vers :
+  - Facebook
+  - Instagram
+  - WhatsApp
+  - LinkedIn
+- [ ] Ajouter un contrat de vente en fichier PDF téléchargeable
+- [✔] Mettre à jour le copyright → 2026
+
+## ❓ FAQ
+- [ ] Modifier certaines questions (contenu à venir)
+
+## ℹ️ À propos
+- [ ] Modifier l’histoire
+- [ ] Mettre à jour certaines valeurs
+
+## 🌍 Destination
+- [✔] Supprimer la mention : "Départ garanti à partir de..."
+- [ ] Ajouter un titre "Itinéraire" dans les circuits (en fonction de la durée)
+
+## 📍 Adresse
+- [✔] Corriger une erreur dans l’adresse complète

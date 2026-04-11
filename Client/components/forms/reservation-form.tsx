@@ -342,7 +342,7 @@ export function ReservationForm({ destinationId }: ReservationFormProps) {
 
             <InputGroup label="Adresse">
               <CustomTextarea
-                placeholder="Votre adresse comptète"
+                placeholder="Votre adresse complète"
                 value={formData.adresse}
                 onChange={(e) =>
                   setFormData({ ...formData, adresse: e.target.value })

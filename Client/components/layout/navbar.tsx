@@ -5,7 +5,7 @@ import Link from "next/link"
 import { useAppSelector } from "@/hooks/use-app-selector"
 import { Button } from "@/components/ui/button"
 import { Phone, Mail, Calendar, Calculator } from "lucide-react"
-import { BaseURL, navItems } from "@/lib/utils"
+import { BaseURL, navItems, radiataInfo } from "@/lib/utils"
 
 export function Navbar() {
   const [isMenuOpen, setIsMenuOpen] = useState(false)
@@ -26,7 +26,7 @@ export function Navbar() {
               >
                 <Phone className="h-4 w-4 text-slate-900" />
               </div>
-              <span>+33 (0)1 23 45 67 89</span>
+              <span>{ radiataInfo.phone} </span>
             </a>
             <span className="text-white/30">|</span>
             <a
@@ -39,7 +39,7 @@ export function Navbar() {
               >
                 <Mail className="h-4 w-4 text-slate-900" />
               </div>
-              <span>info@radiata.com</span>
+              <span> { radiataInfo.email.contact } </span>
             </a>
           </div>
         </div>
