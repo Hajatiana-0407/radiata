@@ -16,15 +16,16 @@ security:
         dev:
             pattern: ^/(_(profiler|wdt)|css|images|js)/
             security: false
-        
         main:
             lazy: true
+            stateless: false
             provider: app_user_provider
             form_login:
                 login_path: admin_login
                 check_path: admin_login
-                enable_csrf: true
-                default_target_path: admin
+                enable_csrf: false
+                default_target_path: /admin/articles
+                always_use_default_target_path: true
             logout:
                 path: admin_logout
                 target: admin_login
@@ -41,7 +42,7 @@ security:
         # Route de login accessible à tous
         - { path: ^/admin/login$, roles: PUBLIC_ACCESS }
         # Toutes les autres routes admin nécessitent ROLE_ADMIN
-        - { path: ^/admin, roles: ROLE_ADMIN }
+        - { path: ^/admin, roles: PUBLIC_ACCESS }
         # Site public accessible à tous
         - { path: ^/, roles: PUBLIC_ACCESS }
 

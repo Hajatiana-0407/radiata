@@ -59,6 +59,8 @@ class Categories
     public function __construct()
     {
         $this->date_creation = new \DateTime();
+        $this->icone = 'fa-solid fa-folder';
+        $this->couleur = '#000000' ; 
         $this->circuits = new ArrayCollection();
         $this->articles = new ArrayCollection();
         $this->galerieMedias = new ArrayCollection();
@@ -183,7 +185,7 @@ class Categories
 
     public function __toString(): string
     {
-        return $this->getNom(); 
+        return $this->getNom();
     }
 
     /**

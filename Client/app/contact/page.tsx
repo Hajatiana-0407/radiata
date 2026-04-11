@@ -4,6 +4,7 @@ import { Navbar } from '@/components/layout/navbar';
 import { Footer } from '@/components/layout/footer';
 import { ContactForm } from '@/components/forms/contact-form';
 import { Calendar, Facebook, Info, Instagram, Mail, MapPin, MessageSquare, Phone, Send, Twitter, Youtube } from 'lucide-react';
+import { radiataInfo } from '@/lib/utils';
 
 export default function ContactPage() {
   return (
@@ -60,7 +61,7 @@ export default function ContactPage() {
                     <div>
                       <h3 className="font-bold text-lg mb-2">Email</h3>
                       <p className="text-muted-foreground mb-1">
-                        info@radiataexplorer.com
+                        {radiataInfo.email.contact}
                       </p>
                       <p className="text-sm text-primary/80">Réponse sous 24h</p>
                     </div>
@@ -78,7 +79,7 @@ export default function ContactPage() {
                     <div>
                       <h3 className="font-bold text-lg mb-2">Téléphone</h3>
                       <p className="text-muted-foreground mb-1">
-                        +33 (0)1 23 45 67 89
+                        {radiataInfo.phone}
                       </p>
                       <p className="text-sm text-primary/80">Lun-Ven : 9h-18h</p>
                     </div>
@@ -96,8 +97,7 @@ export default function ContactPage() {
                     <div>
                       <h3 className="font-bold text-lg mb-2">Bureau</h3>
                       <p className="text-muted-foreground">
-                        123 Avenue des Explorateurs<br />
-                        75000 Paris, France
+                        {radiataInfo.location.address}
                       </p>
                     </div>
                   </div>

@@ -39,7 +39,11 @@ class CircuitsCrudController extends AbstractCrudController
             ->setSearchFields(['titre', 'description', 'slug'])
             ->setPaginatorPageSize(10)
             ->showEntityActionsInlined()
-            ->setHelp('index', 'Gérez vos circuits touristiques');
+            ->setHelp('index', 'Gérez vos circuits touristiques')
+            ->setFormOptions(
+                ['csrf_protection' => false],
+                ['csrf_protection' => false]
+            );
     }
 
     public function configureActions(Actions $actions): Actions
@@ -47,10 +51,6 @@ class CircuitsCrudController extends AbstractCrudController
         return $actions
             ->add(Crud::PAGE_INDEX, Action::DETAIL)
             ->add(Crud::PAGE_EDIT, Action::SAVE_AND_ADD_ANOTHER)
-            ->add(Crud::PAGE_INDEX, Action::new('duplicate', 'Dupliquer')
-                ->linkToCrudAction('duplicate')
-                ->setIcon('fa fa-copy')
-                ->displayIf(fn($entity) => $entity instanceof Circuits))
             ->update(Crud::PAGE_INDEX, Action::NEW , function (Action $action) {
                 return $action->setIcon('fa fa-route')->setLabel('Nouveau circuit');
             })
@@ -68,10 +68,6 @@ class CircuitsCrudController extends AbstractCrudController
         $uploadDir = 'public/uploads/circuits';
         $basePath = 'uploads/circuits';
 
-        // =========================
-        // Champs réutilisables
-        // =========================
-        $id = IdField::new('id')->onlyOnIndex();
 
         $titre = TextField::new('titre', 'Titre du circuit')
             ->setRequired(true)
@@ -97,15 +93,9 @@ class CircuitsCrudController extends AbstractCrudController
             ->hideOnIndex()
             ->setHelp('Points forts du circuit');
 
-        $slug = SlugField::new('slug')
-            ->setTargetFieldName('titre')
-            ->setUnlockConfirmationMessage('Le slug est généré automatiquement')
-            ->setHelp('URL du circuit');
-
         $description = TextareaField::new('description', 'Description')
             ->setRequired(true)
             ->setNumOfRows(5)
-            ->hideOnIndex()
             ->setHelp('Description détaillée du circuit');
 
 
@@ -145,23 +135,6 @@ class CircuitsCrudController extends AbstractCrudController
             ->setNumDecimals(2)
             ->setRequired(true)
             ->setHelp('Prix de base par personne (€)');
-
-        $difficulte = ChoiceField::new('difficulte', 'Difficulté')
-            ->setChoices([
-                '⭐ Facile' => 1,
-                '⭐⭐ Intermédiaire' => 2,
-                '⭐⭐⭐ Difficile' => 3,
-                '⭐⭐⭐⭐ Expert' => 4,
-                '⭐⭐⭐⭐⭐ Extrême' => 5
-            ])
-            ->renderAsBadges([
-                1 => 'success',
-                2 => 'info',
-                3 => 'warning',
-                4 => 'danger',
-                5 => 'dark'
-            ])
-            ->setHelp('Niveau de difficulté du circuit');
 
         $scoreEcotourisme = NumberField::new('score_ecotourisme', 'Score écotourisme')
             ->setNumDecimals(1)
@@ -216,16 +189,15 @@ class CircuitsCrudController extends AbstractCrudController
         // =========================
         if ($pageName === Crud::PAGE_INDEX) {
             return [
-                $id,
                 $image->setBasePath($basePath)->onlyOnIndex(),
                 $titre,
+                $description,
                 $dureeJours->setNumDecimals(0),
                 $prixBase->setNumDecimals(0)->formatValue(function ($value) {
-                    return $value ? number_format($value, 0, ',', ' ') . ' €' : '0 €';
+                    return $value ? number_format($value, 0, ',', ' ') . ' Ar' : '0 Ar';
                 }),
                 $point_fort,
                 $conservation_contribution,
-                $difficulte,
                 $actif,
                 $dateCreation,
             ];
@@ -249,17 +221,12 @@ class CircuitsCrudController extends AbstractCrudController
                 $groupe_min,
                 $point_fort,
                 $conservation_contribution,
-                $difficulte,
                 $scoreEcotourisme,
 
                 FormField::addPanel('Catégories & Relations & Services')->setIcon('fa-tags'),
                 $categories,
                 $circuitsSimilaires,
                 $servicesInlus,
-
-                FormField::addPanel('Référencement')->setIcon('fa-search')->collapsible(),
-                $metaTitre,
-                $metaDescription,
 
                 FormField::addPanel('Publication')->setIcon('fa-globe'),
                 $actif,
@@ -284,17 +251,12 @@ class CircuitsCrudController extends AbstractCrudController
                 $groupe_min,
                 $point_fort,
                 $conservation_contribution,
-                $difficulte,
                 $scoreEcotourisme,
 
                 FormField::addPanel('Catégories & Relations & Services')->setIcon('fa-tags'),
                 $categories,
                 $circuitsSimilaires,
                 $servicesInlus,
-
-                FormField::addPanel('Référencement')->setIcon('fa-search')->collapsible(),
-                $metaTitre,
-                $metaDescription,
 
                 FormField::addPanel('Publication')->setIcon('fa-globe'),
                 $actif,
@@ -309,7 +271,6 @@ class CircuitsCrudController extends AbstractCrudController
         // =========================
         return [
             FormField::addPanel('Informations principales'),
-            $id,
             $image,
             $titre,
             $description,
@@ -317,12 +278,13 @@ class CircuitsCrudController extends AbstractCrudController
 
             FormField::addPanel('Caractéristiques'),
             $dureeJours,
-            $prixBase,
+            $prixBase->setNumDecimals(0)->formatValue(function ($value) {
+                return $value ? number_format($value, 0, ',', ' ') . ' Ar' : '0 Ar';
+            }),
             $groupe_max,
             $groupe_min,
             $point_fort,
             $conservation_contribution,
-            $difficulte,
             $scoreEcotourisme,
 
             FormField::addPanel('Catégories & Relations & Services'),
@@ -330,18 +292,9 @@ class CircuitsCrudController extends AbstractCrudController
             $circuitsSimilaires,
             $servicesInlus,
 
-            FormField::addPanel('Référencement'),
-            $metaTitre,
-            $metaDescription,
-
             FormField::addPanel('Publication'),
             $actif,
             $dateCreation,
-
-            FormField::addPanel('Contenu associé')->collapsible(),
-            $galerieMedias,
-            $reservations,
-            $avis,
         ];
     }
 }

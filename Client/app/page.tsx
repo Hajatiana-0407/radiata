@@ -11,7 +11,7 @@ import { FeatureSection } from "@/components/sections/feature-section"
 import { ContactSection } from "@/components/sections/contact-section"
 import { DestinationCard } from "@/components/cards/destination-card"
 import { Loader } from "@/components/ui/loader"
-import { Leaf, Users, Heart, Globe } from "lucide-react"
+import { Leaf, Users, Heart, Globe, MapPin } from "lucide-react"
 
 export default function Home() {
   const dispatch = useAppDispatch()
@@ -38,9 +38,9 @@ export default function Home() {
       description: "Soutien direct aux communautés locales et à la faune",
     },
     {
-      icon: <Globe className="h-8 w-8" />,
-      title: "Portée Mondiale",
-      description: "Explorez les plus belles destinations naturelles du monde",
+      icon: <MapPin className="h-8 w-8" />,
+      title: "Biodiversité unique",
+      description: "Explorez les paysages et la biodiversité exceptionnels de Madagascar",
     },
   ]
 

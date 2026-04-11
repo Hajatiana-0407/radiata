@@ -22,7 +22,7 @@ const HeadingSection = ({ title, description, children }: HeadingSectionPropsTyp
     useEffect(() => {
         const interval = setInterval(() => {
             setCurrentIndex((prev) => (prev + 1) % images.length)
-        }, 5000) // 5 secondes
+        }, 5000)
 
         return () => clearInterval(interval)
     }, [])
@@ -30,7 +30,7 @@ const HeadingSection = ({ title, description, children }: HeadingSectionPropsTyp
     return (
         <section className="relative overflow-hidden py-20 px-4">
 
-            {/* Images en background (fade) */}
+            {/* Images en background */}
             {images.map((img, index) => (
                 <div
                     key={index}
@@ -45,7 +45,7 @@ const HeadingSection = ({ title, description, children }: HeadingSectionPropsTyp
             ))}
 
             {/* Voile couleur (gardé comme tu aimes) */}
-            <div className="absolute inset-0 bg-gradient-to-r from-[#7ac243]/50 to-[#40e0d0]/50 z-10"></div>
+            <div className="absolute inset-0 bg-linear-to-r from-[#7ac243]/50 to-[#40e0d0]/50 z-10"></div>
 
             {/* Overlay sombre léger */}
             <div className="absolute inset-0 bg-black/30 z-20"></div>
@@ -53,7 +53,15 @@ const HeadingSection = ({ title, description, children }: HeadingSectionPropsTyp
             {/* Contenu */}
             <div className="relative z-30 max-w-4xl mx-auto text-center text-white">
                 <h1 className="text-4xl md:text-5xl font-bold mb-4 animate-fadeIn">
-                    {title}
+                    {title.split(" ").map((word, index) => {
+                        return index === 1 ? (
+                            <span key={index} className="text-[#7ac243]">
+                                {word}{" "}
+                            </span>
+                        ) : (
+                            word + " "
+                        );
+                    })}
                 </h1>
                 <p className="text-lg opacity-90 animate-fadeIn animation-delay-200">
                     {description}

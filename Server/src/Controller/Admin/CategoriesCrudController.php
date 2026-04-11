@@ -33,7 +33,11 @@ class CategoriesCrudController extends AbstractCrudController
             ->setDefaultSort(['ordre_affichage' => 'ASC'])
             ->setSearchFields(['nom', 'description'])
             ->setPaginatorPageSize(20)
-            ->showEntityActionsInlined();
+            ->showEntityActionsInlined()
+            ->setFormOptions(
+        ['csrf_protection' => false],
+        ['csrf_protection' => false]
+    );
     }
 
     public function configureActions(Actions $actions): Actions
@@ -53,49 +57,7 @@ class CategoriesCrudController extends AbstractCrudController
     }
 
     public function configureFields(string $pageName): iterable
-    {
-        // =========================
-        // Champs réutilisables
-        // =========================
-        $id = IdField::new('id')->onlyOnIndex();
-        
-        // Champ icône avec sélection d'icônes FontAwesome
-        $icone = ChoiceField::new('icone', 'Icône')
-            ->setChoices([
-                '📁 Dossier' => 'fas fa-folder',
-                '🏷️ Étiquette' => 'fas fa-tag',
-                '📂 Dossier ouvert' => 'fas fa-folder-open',
-                '📊 Graphique' => 'fas fa-chart-bar',
-                '💰 Finance' => 'fas fa-money-bill-wave',
-                '🛒 Commerce' => 'fas fa-shopping-cart',
-                '🎨 Design' => 'fas fa-palette',
-                '💻 Technologie' => 'fas fa-laptop-code',
-                '🎵 Musique' => 'fas fa-music',
-                '🎬 Film' => 'fas fa-film',
-                '📚 Livre' => 'fas fa-book',
-                '🍕 Nourriture' => 'fas fa-pizza-slice',
-                '🚗 Transport' => 'fas fa-car',
-                '🏥 Santé' => 'fas fa-heartbeat',
-                '🎓 Éducation' => 'fas fa-graduation-cap',
-                '⚽ Sport' => 'fas fa-futbol',
-                '✈️ Voyage' => 'fas fa-plane',
-                '🏠 Maison' => 'fas fa-home',
-                '👕 Mode' => 'fas fa-tshirt',
-                '🔧 Outils' => 'fas fa-tools',
-                '📱 Mobile' => 'fas fa-mobile-alt',
-                '💡 Idées' => 'fas fa-lightbulb',
-                '👥 Personnes' => 'fas fa-users',
-                '📅 Événements' => 'fas fa-calendar-alt',
-                '📰 Actualités' => 'fas fa-newspaper',
-                '🎯 Cible' => 'fas fa-bullseye',
-                '⚡ Énergie' => 'fas fa-bolt',
-                '🌱 Nature' => 'fas fa-leaf',
-                '🏢 Entreprise' => 'fas fa-building',
-            ])
-            ->setRequired(false)
-            ->renderAsBadges(false)
-            ->setHelp('Sélectionnez une icône FontAwesome ou laissez vide');
-        
+    {        
         $nom = TextField::new('nom', 'Nom de la catégorie')
             ->setRequired(true)
             ->setHelp('Nom de la catégorie tel qu\'il apparaîtra sur le site');
@@ -103,13 +65,7 @@ class CategoriesCrudController extends AbstractCrudController
         $description = TextareaField::new('description', 'Description')
             ->setRequired(false)
             ->setNumOfRows(3)
-            ->hideOnIndex()
             ->setHelp('Description courte de la catégorie');
-        
-        // Champ couleur avec sélecteur de couleur
-        $couleur = ColorField::new('couleur', 'Couleur')
-            ->setRequired(false)
-            ->setHelp('Couleur d\'accentuation de la catégorie (format hexadécimal)');
         
         $ordreAffichage = IntegerField::new('ordre_affichage', 'Ordre d\'affichage')
             ->setRequired(true)
@@ -125,10 +81,8 @@ class CategoriesCrudController extends AbstractCrudController
         // =========================
         if ($pageName === Crud::PAGE_INDEX) {
             return [
-                $id,
-                $icone->setTemplatePath('admin/field/icon.html.twig'),
                 $nom,
-                $couleur->setTemplatePath('admin/field/color.html.twig'),
+                $description , 
                 $ordreAffichage,
                 $dateCreation,
             ];
@@ -142,9 +96,6 @@ class CategoriesCrudController extends AbstractCrudController
                 FormField::addPanel('Informations principales')->setIcon('fa-info-circle'),
                 $nom,
                 $description,
-                
-                FormField::addPanel('Apparence')->setIcon('fa-paint-brush'),
-                $icone,
                 
                 FormField::addPanel('Configuration')->setIcon('fa-cog'),
                 $ordreAffichage,
@@ -160,15 +111,8 @@ class CategoriesCrudController extends AbstractCrudController
                 $nom,
                 $description,
                 
-                FormField::addPanel('Apparence')->setIcon('fa-paint-brush'),
-                $icone,
-                $couleur,
-                
                 FormField::addPanel('Configuration')->setIcon('fa-cog'),
                 $ordreAffichage,
-                
-                FormField::addPanel('Informations techniques')->setIcon('fa-history')->collapsible(),
-                $dateCreation,
             ];
         }
 
@@ -177,13 +121,8 @@ class CategoriesCrudController extends AbstractCrudController
         // =========================
         return [
             FormField::addPanel('Informations principales'),
-            $id,
-            $icone,
             $nom,
             $description,
-            
-            FormField::addPanel('Apparence'),
-            $couleur,
             
             FormField::addPanel('Configuration'),
             $ordreAffichage,

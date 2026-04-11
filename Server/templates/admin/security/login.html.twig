@@ -391,7 +391,6 @@
                     </label>
                 </div>
                 
-                <input type="hidden" name="_csrf_token" value="{{ csrf_token('authenticate') }}">
                 
                 <button type="submit" class="btn-login" id="loginButton">
                     <i class="fas fa-sign-in-alt"></i>
@@ -410,78 +409,33 @@
     </div>
     
     <script>
-        // Afficher/Masquer le mot de passe
+        // Toggle password visibility
         const togglePassword = document.getElementById('togglePassword');
         const passwordInput = document.getElementById('password');
         
-        togglePassword.addEventListener('click', function() {
-            const icon = this.querySelector('i');
-            
-            if (passwordInput.type === 'password') {
-                passwordInput.type = 'text';
-                icon.classList.remove('fa-eye');
-                icon.classList.add('fa-eye-slash');
-                this.setAttribute('aria-label', 'Masquer le mot de passe');
-            } else {
-                passwordInput.type = 'password';
-                icon.classList.remove('fa-eye-slash');
-                icon.classList.add('fa-eye');
-                this.setAttribute('aria-label', 'Afficher le mot de passe');
-            }
-            
-            passwordInput.focus();
-        });
-        
-        // Focus automatique sur l'email si vide
+        if (togglePassword) {
+            togglePassword.addEventListener('click', function() {
+                const icon = this.querySelector('i');
+                if (passwordInput.type === 'password') {
+                    passwordInput.type = 'text';
+                    icon.classList.remove('fa-eye');
+                    icon.classList.add('fa-eye-slash');
+                    this.setAttribute('aria-label', 'Masquer le mot de passe');
+                } else {
+                    passwordInput.type = 'password';
+                    icon.classList.remove('fa-eye-slash');
+                    icon.classList.add('fa-eye');
+                    this.setAttribute('aria-label', 'Afficher le mot de passe');
+                }
+                passwordInput.focus();
+            });
+        }
+    
         document.addEventListener('DOMContentLoaded', function() {
             const usernameField = document.getElementById('username');
             if (usernameField && !usernameField.value) {
                 setTimeout(() => usernameField.focus(), 100);
             }
-        });
-        
-        // Animation du bouton de connexion
-        const loginButton = document.getElementById('loginButton');
-        loginButton.addEventListener('mouseenter', function() {
-            this.querySelector('i').style.transform = 'translateX(3px)';
-        });
-        
-        loginButton.addEventListener('mouseleave', function() {
-            this.querySelector('i').style.transform = 'translateX(0)';
-        });
-        
-        // Gestion du "mot de passe oublié" (simulation)
-        document.getElementById('forgotPassword').addEventListener('click', function(e) {
-            e.preventDefault();
-            alert('Fonctionnalité "Mot de passe oublié" à implémenter.\nContactez l\'administrateur système.');
-        });
-        
-        // Validation basique du formulaire
-        document.querySelector('form').addEventListener('submit', function(e) {
-            const username = document.getElementById('username').value.trim();
-            const password = document.getElementById('password').value;
-            
-            if (!username || !password) {
-                e.preventDefault();
-                alert('Veuillez remplir tous les champs requis.');
-                return false;
-            }
-            
-            // Animation de chargement
-            const button = document.getElementById('loginButton');
-            const originalText = button.querySelector('span').textContent;
-            const originalIcon = button.querySelector('i').className;
-            
-            button.querySelector('span').textContent = 'Connexion...';
-            button.querySelector('i').className = 'fas fa-spinner fa-spin';
-            button.disabled = true;
-            
-            // Réinitialiser après 3 secondes (au cas où)
-            setTimeout(() => {
-                button.querySelector('span').textContent = originalText;
-                button.querySelector('i').className = originalIcon;
-                button.disabled = false;
-            }, 3000);
         });
     </script>
 </body>
