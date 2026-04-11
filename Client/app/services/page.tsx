@@ -89,7 +89,7 @@ export default function ServicesPage() {
 
                   {/* Avantages */}
                   <ul className="space-y-3">
-                    {service?.avantages?.map((feature, idx) => (
+                    {service.avantages && service?.avantages.map((feature, idx) => (
                       <li
                         key={feature}
                         className="flex items-start gap-3 text-slate-700 group/item hover:text-slate-900 transition-colors duration-200"

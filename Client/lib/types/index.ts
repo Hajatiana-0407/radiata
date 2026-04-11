@@ -39,7 +39,16 @@ export interface Destination {
   recommended_season?: string[];
   included_services?: Servicetype[];
   tags?: string[];
-  categories?: CategoryType[]
+  categories?: CategoryType[];
+  itineraires?: ItineraireType[];
+}
+
+export type ItineraireType = {
+  id?: string | number;
+  titre: string;
+  description: string;
+  image?: string;
+  ordre: number;
 }
 
 

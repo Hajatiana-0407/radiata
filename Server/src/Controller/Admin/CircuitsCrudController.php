@@ -68,6 +68,16 @@ class CircuitsCrudController extends AbstractCrudController
         $uploadDir = 'public/uploads/circuits';
         $basePath = 'uploads/circuits';
 
+        // En haut avec les autres champs
+        $itineraires = CollectionField::new('itineraires', 'Itinéraires')
+            ->useEntryCrudForm(ItinerairesCrudController::class)
+            ->setFormTypeOption('by_reference', false)
+            ->renderExpanded(true)
+            ->setHelp('Ajoutez les étapes jour par jour');
+        $itinerairesDetail = CollectionField::new('itineraires', 'Itinéraires')
+            ->setTemplatePath('admin/field/collection_itineraires.html.twig')
+            ->onlyOnDetail();
+
 
         $titre = TextField::new('titre', 'Titre du circuit')
             ->setRequired(true)
@@ -228,6 +238,9 @@ class CircuitsCrudController extends AbstractCrudController
                 $circuitsSimilaires,
                 $servicesInlus,
 
+                FormField::addPanel('Itinéraires')->setIcon('fa-map-marked-alt'),
+                $itineraires,
+
                 FormField::addPanel('Publication')->setIcon('fa-globe'),
                 $actif,
             ];
@@ -261,8 +274,9 @@ class CircuitsCrudController extends AbstractCrudController
                 FormField::addPanel('Publication')->setIcon('fa-globe'),
                 $actif,
 
-                FormField::addPanel('Informations techniques')->setIcon('fa-history')->collapsible(),
-                $dateCreation->setFormTypeOption('disabled', 'disabled'),
+                // Dans PAGE_EDIT, idem
+                FormField::addPanel('Itinéraires')->setIcon('fa-map-marked-alt'),
+                $itineraires,
             ];
         }
 
@@ -295,6 +309,9 @@ class CircuitsCrudController extends AbstractCrudController
             FormField::addPanel('Publication'),
             $actif,
             $dateCreation,
+
+            FormField::addPanel('Itinéraires')->setIcon('fa-map-marked-alt'),
+            $itinerairesDetail,
         ];
     }
 }

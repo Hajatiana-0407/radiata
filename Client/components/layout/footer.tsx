@@ -1,5 +1,5 @@
 import { navItems, radiataInfo } from "@/lib/utils"
-import { Leaf, Facebook, Instagram, Twitter, Youtube, MapPin, Phone, Mail, Linkedin } from "lucide-react"
+import { Leaf, Facebook, Instagram, Twitter, Youtube, MapPin, Phone, Mail, Linkedin, FileDown } from "lucide-react"
 
 export function Footer() {
   return (
@@ -33,28 +33,28 @@ export function Footer() {
               </p>
               <div className="flex gap-3">
                 <a
-                  href={ radiataInfo.socialMedia.facebook}
+                  href={radiataInfo.socialMedia.facebook}
                   className="p-2 rounded-full hover:scale-110 transition-transform"
                   style={{ backgroundColor: "#40e0d0" }}
                 >
                   <Facebook className="h-4 w-4" />
                 </a>
                 <a
-                  href={ radiataInfo.socialMedia.instagram}
+                  href={radiataInfo.socialMedia.instagram}
                   className="p-2 rounded-full hover:scale-110 transition-transform"
                   style={{ backgroundColor: "#7ac243" }}
                 >
                   <Instagram className="h-4 w-4" />
                 </a>
                 <a
-                  href={ radiataInfo.socialMedia.linkedin}
+                  href={radiataInfo.socialMedia.linkedin}
                   className="p-2 rounded-full hover:scale-110 transition-transform"
                   style={{ backgroundColor: "#40e0d0" }}
                 >
                   <Linkedin className="h-4 w-4" />
                 </a>
                 <a
-                  href={ radiataInfo.socialMedia.whatsapp}
+                  href={radiataInfo.socialMedia.whatsapp}
                   className="p-2 rounded-full hover:scale-110 transition-transform"
                   style={{ backgroundColor: "#7ac243" }}
                 >
@@ -147,21 +147,18 @@ export function Footer() {
           <div className="mt-12 pt-8 border-t border-slate-600">
             <div className="flex flex-col md:flex-row justify-between items-center gap-4 text-sm text-slate-400">
               <p>© 2026 Radiata Explorer. Tous droits réservés.</p>
-              <div className="flex gap-6">
-                <a href="/privacy" className="hover:text-[#40e0d0] transition-colors">
-                  Politique de confidentialité
-                </a>
-                <a href="/terms" className="hover:text-[#40e0d0] transition-colors">
-                  Conditions d'utilisation
-                </a>
-                <a href="/cookies" className="hover:text-[#40e0d0] transition-colors">
-                  Cookies
-                </a>
-              </div>
+              <a
+                href="/contrat-de-vente.pdf"
+                download
+                className="flex items-center gap-2 px-4 py-2 rounded-lg border border-slate-500 hover:border-[#40e0d0] hover:text-[#40e0d0] transition-all duration-200"
+              >
+                <FileDown className="h-4 w-4" />
+                Télécharger le contrat de vente
+              </a>
             </div>
           </div>
         </div>
       </div>
-    </footer>
+    </footer >
   )
 }
