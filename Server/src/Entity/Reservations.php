@@ -52,6 +52,12 @@ class Reservations
     #[ORM\Column(length: 255, nullable: true)]
     private ?string $hebergement = null;
 
+    #[ORM\Column(length: 255, nullable: true)]
+    private ?string $nom_client = null;
+
+    #[ORM\Column(length: 255, nullable: true)]
+    private ?string $email = null;
+
     public function __construct()
     {
         $this->Services = new ArrayCollection();
@@ -234,6 +240,30 @@ class Reservations
     public function setHebergement(?string $hebergement): static
     {
         $this->hebergement = $hebergement;
+
+        return $this;
+    }
+
+    public function getNomClient(): ?string
+    {
+        return $this->nom_client;
+    }
+
+    public function setNomClient(?string $nom_client): static
+    {
+        $this->nom_client = $nom_client;
+
+        return $this;
+    }
+
+    public function getEmail(): ?string
+    {
+        return $this->email;
+    }
+
+    public function setEmail(?string $email): static
+    {
+        $this->email = $email;
 
         return $this;
     }

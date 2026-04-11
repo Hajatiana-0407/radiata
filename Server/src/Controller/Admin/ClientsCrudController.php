@@ -36,7 +36,11 @@ class ClientsCrudController extends AbstractCrudController
             ->setSearchFields(['nom', 'prenom', 'email', 'ville', 'pays'])
             ->setPaginatorPageSize(20)
             ->showEntityActionsInlined()
-            ->setHelp('index', 'Gestion des clients et de leurs informations');
+            ->setHelp('index', 'Gestion des clients et de leurs informations')
+            ->setFormOptions(
+                ['csrf_protection' => false],
+                ['csrf_protection' => false]
+            );
     }
 
     public function configureActions(Actions $actions): Actions
@@ -57,10 +61,7 @@ class ClientsCrudController extends AbstractCrudController
     }
     public function configureFields(string $pageName): iterable
     {
-        // =========================
-        // Champs réutilisables
-        // =========================
-        $id = IdField::new('id')->onlyOnIndex();
+
 
         $nom = TextField::new('nom', 'Nom')
             ->setRequired(true)
@@ -129,7 +130,6 @@ class ClientsCrudController extends AbstractCrudController
         // =========================
         if ($pageName === Crud::PAGE_INDEX) {
             return [
-                $id,
                 $nom,
                 $prenom,
                 $email,
@@ -194,7 +194,6 @@ class ClientsCrudController extends AbstractCrudController
         // =========================
         return [
             FormField::addPanel('Informations personnelles'),
-            $id,
             $nom,
             $prenom,
             $email,

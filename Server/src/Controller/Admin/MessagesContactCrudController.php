@@ -63,10 +63,6 @@ class MessagesContactCrudController extends AbstractCrudController
 
     public function configureFields(string $pageName): iterable
     {
-        // =========================
-        // Champs réutilisables
-        // =========================
-        $id = IdField::new('id')->onlyOnIndex();
 
         $client = AssociationField::new('client', 'Client associé')
             ->setRequired(false)
@@ -124,8 +120,7 @@ class MessagesContactCrudController extends AbstractCrudController
         // =========================
         if ($pageName === Crud::PAGE_INDEX) {
             return [
-                $id,
-                $sujet , 
+                $sujet,
                 $nom,
                 $email,
                 $telephone,
@@ -141,7 +136,7 @@ class MessagesContactCrudController extends AbstractCrudController
             return [
                 FormField::addPanel('Expéditeur')->setIcon('fa-user'),
                 $client,
-                $sujet , 
+                $sujet,
                 $nom,
                 $email,
                 $telephone,
@@ -164,7 +159,7 @@ class MessagesContactCrudController extends AbstractCrudController
             return [
                 FormField::addPanel('Expéditeur')->setIcon('fa-user'),
                 $client,
-                $sujet , 
+                $sujet,
                 $nom,
                 $email,
                 $telephone,
@@ -185,9 +180,8 @@ class MessagesContactCrudController extends AbstractCrudController
         // =========================
         return [
             FormField::addPanel('Informations expéditeur'),
-            $id,
             $client,
-            $sujet , 
+            $sujet,
             $nom,
             $email,
             $telephone,

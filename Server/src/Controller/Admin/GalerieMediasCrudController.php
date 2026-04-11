@@ -33,7 +33,7 @@ class GalerieMediasCrudController extends AbstractCrudController
         return $crud
             ->setEntityLabelInSingular('Média')
             ->setEntityLabelInPlural('Galerie Médias')
-            ->setDefaultSort(['ordre_affichage' => 'ASC'])
+            ->setDefaultSort(['id' => 'DESC'])
             ->setSearchFields(['titre', 'description', 'nom_ficher'])
             ->setPaginatorPageSize(10)
             ->showEntityActionsInlined()
@@ -62,11 +62,7 @@ class GalerieMediasCrudController extends AbstractCrudController
 
     public function configureFields(string $pageName): iterable
     {
-        // =========================
-        // Champs réutilisables
-        // =========================
-        $id = IdField::new('id')->onlyOnIndex();
-
+      
         $titre = TextField::new('titre', 'Titre du média')
             ->setRequired(true)
             ->setHelp('Titre descriptif du média');
@@ -74,7 +70,6 @@ class GalerieMediasCrudController extends AbstractCrudController
         $description = TextareaField::new('description', 'Description')
             ->setRequired(false)
             ->setNumOfRows(3)
-            ->hideOnIndex()
             ->setHelp('Description détaillée du média');
 
 
@@ -122,10 +117,11 @@ class GalerieMediasCrudController extends AbstractCrudController
         // =========================
         if ($pageName === Crud::PAGE_INDEX) {
             return [
-                $id,
                 $fichier->setBasePath($basePath)->onlyOnIndex(),
                 $titre,
+                $description , 
                 $circuit,
+                $service , 
                 $ordreAffichage,
                 $actif,
                 $dateUpload,
@@ -186,7 +182,6 @@ class GalerieMediasCrudController extends AbstractCrudController
         // =========================
         return [
             FormField::addPanel('Informations média'),
-            $id,
             $titre,
             $description,
             $fichier,
@@ -199,9 +194,6 @@ class GalerieMediasCrudController extends AbstractCrudController
             $tags,
             $ordreAffichage,
             $actif,
-
-            FormField::addPanel('Informations techniques'),
-            $dateUpload,
         ];
     }
 }
