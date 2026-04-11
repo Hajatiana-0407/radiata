@@ -37,10 +37,10 @@ class ArticlesCrudController extends AbstractCrudController
             ->showEntityActionsInlined()
             ->setHelp('index', 'Gérez vos articles de blog et actualités')
             ->setFormOptions(
-        ['csrf_protection' => false],
-        ['csrf_protection' => false]
-    )
-            ;
+                ['csrf_protection' => false],
+                ['csrf_protection' => false]
+            )
+        ;
     }
 
     public function configureActions(Actions $actions): Actions
@@ -48,13 +48,6 @@ class ArticlesCrudController extends AbstractCrudController
         return $actions
             ->add(Crud::PAGE_INDEX, Action::DETAIL)
             ->add(Crud::PAGE_EDIT, Action::SAVE_AND_ADD_ANOTHER)
-            // ->add(Crud::PAGE_INDEX, Action::new('preview', 'Prévisualiser')
-            //     ->linkToUrl(function (Articles $article) {
-            //         return $this->generateUrl('article_show', ['slug' => $article->getSlug()]);
-            //     })
-            //     ->setIcon('fa fa-eye')
-            //     ->setHtmlAttributes(['target' => '_blank'])
-            //     ->displayIf(fn($entity) => $entity->isActif()))
             ->update(Crud::PAGE_INDEX, Action::NEW , function (Action $action) {
                 return $action->setIcon('fa fa-newspaper')->setLabel('Nouvel article');
             })
@@ -74,16 +67,19 @@ class ArticlesCrudController extends AbstractCrudController
         $uploadDir = 'public/uploads/articles';
         $basePath = 'uploads/articles';
 
-        // =========================
-        // Champs réutilisables
-        // =========================
-        $id = IdField::new('id')->onlyOnIndex();
 
         $imageCouverture = ImageField::new('image_couverture', 'Image de couverture')
             ->setBasePath($basePath)
             ->setUploadDir($uploadDir)
             ->setUploadedFileNamePattern('[slug]-[timestamp].[extension]')
-            ->setRequired(true )
+            ->setRequired(true)
+            ->setHelp('Format recommandé: 1200x630px (ratio 16:9)');
+
+        $imageCouvertureUpdate = ImageField::new('image_couverture', 'Image de couverture')
+            ->setBasePath($basePath)
+            ->setUploadDir($uploadDir)
+            ->setUploadedFileNamePattern('[slug]-[timestamp].[extension]')
+            ->setRequired(false)
             ->setHelp('Format recommandé: 1200x630px (ratio 16:9)');
 
         $autheur = TextField::new('autheur', 'Auteur de l\'article')
@@ -139,9 +135,9 @@ class ArticlesCrudController extends AbstractCrudController
         // =========================
         if ($pageName === Crud::PAGE_INDEX) {
             return [
-                $id,
                 $imageCouverture->setBasePath($basePath)->onlyOnIndex(),
                 $titre,
+                $autheur,
                 $datePublication->setFormat('dd/MM/yyyy'),
                 $actif,
             ];
@@ -165,10 +161,6 @@ class ArticlesCrudController extends AbstractCrudController
                 FormField::addPanel('Publication')->setIcon('fa-calendar'),
                 $datePublication->setFormTypeOption('data', new \DateTime()),
                 $actif->setFormTypeOption('data', false),
-
-                FormField::addPanel('Référencement (SEO)')->setIcon('fa-search')->collapsible(),
-                $metaTitre,
-                $metaDescription,
             ];
         }
 
@@ -185,18 +177,11 @@ class ArticlesCrudController extends AbstractCrudController
                 $categories,
 
                 FormField::addPanel('Image de couverture')->setIcon('fa-image'),
-                $imageCouverture,
+                $imageCouvertureUpdate,
 
                 FormField::addPanel('Publication')->setIcon('fa-calendar'),
                 $datePublication,
                 $actif,
-
-                FormField::addPanel('Référencement (SEO)')->setIcon('fa-search')->collapsible(),
-                $metaTitre,
-                $metaDescription,
-
-                FormField::addPanel('Informations techniques')->setIcon('fa-history')->collapsible(),
-                $dateCreation->setFormTypeOption('disabled', 'disabled'),
             ];
         }
 
@@ -206,7 +191,6 @@ class ArticlesCrudController extends AbstractCrudController
         return [
             FormField::addPanel('Contenu'),
             $autheur,
-            $id,
             $imageCouverture,
             $titre,
             $slug,
@@ -216,13 +200,6 @@ class ArticlesCrudController extends AbstractCrudController
             FormField::addPanel('Publication'),
             $datePublication,
             $actif,
-
-            FormField::addPanel('Référencement'),
-            $metaTitre,
-            $metaDescription,
-
-            FormField::addPanel('Informations'),
-            $dateCreation,
         ];
     }
 }
