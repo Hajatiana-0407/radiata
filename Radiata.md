@@ -3,11 +3,11 @@
 - [✔] Vérifier le format des caractères dans le module Service
 
 ## 🛠️ Problèmes après modification des services
-- [ ] Corriger l'erreur après modification d’un service
+- [✔] Corriger l'erreur après modification d’un service
   - Suppression des anciens avantages
   - Création de nouveaux avantages
-- [ ] Résoudre le problème où le service ne s’ouvre plus côté public
-- [ ] Corriger l’erreur "application error"
+- [✔] Résoudre le problème où le service ne s’ouvre plus côté public
+- [✔] Corriger l’erreur "application error"
 
 ## ⚙️ Fiabilité des modifications
 - [ ] Vérifier pourquoi certaines modifications ne sont pas prises en compte

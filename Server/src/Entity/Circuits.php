@@ -23,7 +23,7 @@ class Circuits
     #[ORM\Column(length: 255)]
     private ?string $titre = null;
 
-    #[ORM\Column(length: 255)]
+    #[ORM\Column(length: 255, nullable: true)]
     private ?string $image = '';
 
     #[ORM\Column(length: 255)]
@@ -126,6 +126,7 @@ class Circuits
 
     public function __construct()
     {
+        $this->range = new Range();
         $this->circuits = new ArrayCollection();
         $this->galerieMedias = new ArrayCollection();
         $this->devis = new ArrayCollection();
@@ -134,6 +135,13 @@ class Circuits
         $this->date_creation = new \DateTime();
         $this->categories = new ArrayCollection();
         $this->services = new ArrayCollection();
+
+        $this->is_populare = false ; 
+
+        $this->image = '';
+        $this->meto_titre = '';
+        $this->meta_description = '';
+        $this->localisation = '';
     }
 
     public function getId(): ?int
@@ -433,7 +441,7 @@ class Circuits
 
     public function setImage(string $image): static
     {
-        $this->image = $image;
+        $this->image = $image == null ? ' ' : $image;
 
         return $this;
     }
