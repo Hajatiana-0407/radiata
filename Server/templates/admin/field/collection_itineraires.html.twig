@@ -1,0 +1,12 @@
+{% if field.value is not empty %}
+    <ul class="list-unstyled mb-0">
+        {% for itineraire in field.value %}
+            <li class="mb-1">
+                <span class="badge badge-secondary mr-2">Jour {{ itineraire.ordre }}</span>
+                {{ itineraire.titre }}
+            </li>
+        {% endfor %}
+    </ul>
+{% else %}
+    <em class="text-muted">Aucun itinéraire</em>
+{% endif %}

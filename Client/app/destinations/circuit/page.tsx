@@ -13,7 +13,7 @@ import { getDificultyLabel } from '@/lib/utils';
 import { API_BASE_URL } from '@/lib/api/client';
 import { MapPin, Clock, Users, Leaf, Shield, Heart, Star, Share2, Calendar, CheckCircle, Trees, AlertCircle, BadgeCheck, ChevronRight } from 'lucide-react';
 
- function DestinationDetailPage() {
+function DestinationDetailPage() {
   const params = useSearchParams();
   const router = useRouter();
   const dispatch = useAppDispatch();
@@ -332,6 +332,61 @@ import { MapPin, Clock, Users, Leaf, Shield, Heart, Star, Share2, Calendar, Chec
                   ))}
                 </div>
               </section>
+
+              {/* Section Itinéraires */}
+              {destination.itineraires && destination.itineraires.length > 0 && (
+                <section className="bg-white rounded-2xl p-8 shadow-lg border border-emerald-100">
+                  <div className="flex items-center gap-3 mb-8">
+                    <div className="p-3 bg-emerald-100 rounded-xl">
+                      <MapPin className="h-6 w-6 text-emerald-600" />
+                    </div>
+                    <h2 className="text-3xl font-bold text-gray-900">Itinéraire</h2>
+                  </div>
+
+                  <div className="space-y-4">
+                    { destination.itineraires.map((etape, idx) => (
+                      <div
+                        key={idx}
+                        className="flex gap-4 p-6 rounded-xl border border-emerald-100 hover:border-emerald-300 hover:bg-emerald-50 transition-all duration-200"
+                      >
+                        {/* Numéro du jour */}
+                        <div className="shrink-0 flex flex-col items-center">
+                          <div className="w-10 h-10 bg-emerald-500 text-white rounded-full flex items-center justify-center font-bold text-sm">
+                            {etape.ordre}
+                          </div>
+                          {idx < (destination.itineraires?.length || 0 )  - 1 && (
+                            <div className="w-0.5 h-full bg-emerald-200 mt-2" />
+                          )}
+                        </div>
+
+                        {/* Contenu */}
+                        <div className="flex-1 min-w-0">
+                          <div className="flex items-center gap-2 mb-1">
+                            <span className="text-xs font-semibold text-emerald-600 uppercase tracking-wide">
+                              Jour {etape.ordre}
+                            </span>
+                          </div>
+                          <h3 className="text-lg font-semibold text-gray-900 mb-2">
+                            {etape.titre}
+                          </h3>
+                          <p className="text-gray-600 text-sm leading-relaxed">
+                            {etape.description}
+                          </p>
+
+                          {/* Image optionnelle */}
+                          {etape.image && (
+                            <img
+                              src={`${API_BASE_URL}/uploads/itineraires/${etape.image}`}
+                              alt={etape.titre}
+                              className="mt-4 w-full h-40 object-cover rounded-lg"
+                            />
+                          )}
+                        </div>
+                      </div>
+                    ))}
+                  </div>
+                </section>
+              )}
             </div>
 
             {/* Colonne droite - Carte de réservation */}
@@ -342,7 +397,7 @@ import { MapPin, Clock, Users, Leaf, Shield, Heart, Star, Share2, Calendar, Chec
                   <div className="mb-8">
                     <p className="text-sm text-gray-600 mb-1">Prix tout compris à partir de</p>
                     <div className="flex items-baseline gap-2">
-                      <span className="text-5xl font-bold text-emerald-600">{destination.price}€</span>
+                      <span className="text-5xl font-bold text-emerald-600">{destination.price} Ar</span>
                       <span className="text-gray-500">/personne</span>
                     </div>
                     {/* <p className="text-sm text-gray-600 mt-2">

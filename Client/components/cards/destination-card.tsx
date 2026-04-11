@@ -71,7 +71,7 @@ export function DestinationCard({ destination, link = true }: DestinationCardPro
           <div>
             <p className="text-xs text-slate-500 font-bold">À PARTIR DE</p>
             <p className="text-2xl font-bold" style={{ color: "#7ac243" }}>
-              {destination.price}€
+              {destination.price} Ar
             </p>
           </div>
         </div>

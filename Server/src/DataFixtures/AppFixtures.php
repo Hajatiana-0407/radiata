@@ -10,6 +10,7 @@ use App\Entity\Clients;
 use App\Entity\ClientsTokens;
 use App\Entity\Devis;
 use App\Entity\GalerieMedias;
+use App\Entity\Itineraires;
 use App\Entity\MessagesContact;
 use App\Entity\Reservations;
 use App\Entity\Services;
@@ -154,6 +155,17 @@ class AppFixtures extends Fixture
 
             $manager->persist($circuit);
             $circuits[] = $circuit;
+        }
+
+
+        // --- Itineraires --- 
+        for ($i = 0; $i < 25; $i++) {
+            $itineraires = new Itineraires();
+            $itineraires->setTitre($faker->sentence(3));
+            $itineraires->setDescription($faker->sentence(10));
+            $itineraires->setOrdre( $faker->numberBetween(1 , 15 )) ; 
+            $itineraires->setCircuits($circuits[$faker->numberBetween(0, count($circuits) - 1)]);
+            $manager->persist($itineraires);
         }
 
         // --- Articles ---

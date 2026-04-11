@@ -131,7 +131,7 @@ final class CircuitsController extends AbstractController
     public function show(Circuits $circuit): Response
     {
         $servicesIncluded = $circuit->getServices()->toArray();
-
+        $itineraires = $circuit->getItineraires()->toArray();
         $circuitData = [
             'id' => $circuit->getId(),
             'title' => $circuit->getTitre(),
@@ -162,6 +162,15 @@ final class CircuitsController extends AbstractController
                     'id' => $servicesIncluded->getId()
                 ];
             }, $servicesIncluded),
+            'itineraires' => array_map(function ($itineraires) {
+                return [
+                    'id' => $itineraires->getId(),
+                    'title' => $itineraires->getTitre(),
+                    'description' => $itineraires->getDescription(),
+                    'image' => $itineraires->getImage(),
+                    'ordre' => $itineraires->getOrdre(),
+                ];
+            }, $itineraires),
         ];
 
         $response = [

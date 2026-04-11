@@ -123,6 +123,12 @@ class Circuits
     #[ORM\ManyToMany(targetEntity: Services::class, inversedBy: 'circuits')]
     private Collection $services;
 
+    /**
+     * @var Collection<int, Itineraires>
+     */
+    #[ORM\OneToMany(targetEntity: Itineraires::class, mappedBy: 'circuits', cascade: ['persist', 'remove'])]
+    private Collection $itineraires;
+
 
     public function __construct()
     {
@@ -136,12 +142,13 @@ class Circuits
         $this->categories = new ArrayCollection();
         $this->services = new ArrayCollection();
 
-        $this->is_populare = false ; 
+        $this->is_populare = false;
 
         $this->image = '';
         $this->meto_titre = '';
         $this->meta_description = '';
         $this->localisation = '';
+        $this->itineraires = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -578,6 +585,36 @@ class Circuits
     public function removeService(Services $service): static
     {
         $this->services->removeElement($service);
+
+        return $this;
+    }
+
+    /**
+     * @return Collection<int, Itineraires>
+     */
+    public function getItineraires(): Collection
+    {
+        return $this->itineraires;
+    }
+
+    public function addItineraire(Itineraires $itineraire): static
+    {
+        if (!$this->itineraires->contains($itineraire)) {
+            $this->itineraires->add($itineraire);
+            $itineraire->setCircuits($this);
+        }
+
+        return $this;
+    }
+
+    public function removeItineraire(Itineraires $itineraire): static
+    {
+        if ($this->itineraires->removeElement($itineraire)) {
+            // set the owning side to null (unless already changed)
+            if ($itineraire->getCircuits() === $this) {
+                $itineraire->setCircuits(null);
+            }
+        }
 
         return $this;
     }
